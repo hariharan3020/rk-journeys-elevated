@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RK Journeys Elevated - Premium Tours & Travels. Experience unforgettable journeys with our expert guides and customized tour packages.">
+    <title>RK Journeys Elevated - Premium Tours & Travels</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <i class="fas fa-plane"></i>
+                    RK Journeys
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#packages" class="nav-link">Packages</a></li>
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                    <li><a href="#faq" class="nav-link">FAQ</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">RK Journeys Elevated</h1>
+            <p class="hero-subtitle">Experience premium travel services that transform your journeys into unforgettable memories</p>
+            <div class="btn-group">
+                <a href="#packages" class="btn btn-primary">
+                    Explore Tours <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#about" class="btn btn-secondary">
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="about" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <p class="section-subtitle">Discover what makes RK Journeys Elevated the preferred choice for travelers worldwide</p>
+            
+            <div class="grid-3">
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Expert Guides</h3>
+                    <p class="card-description">Local experts who know every hidden gem and secret spot in each destination</p>
+                </div>
+                
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="feature-title">Flexible Scheduling</h3>
+                    <p class="card-description">Customize your journey your way with our flexible booking options</p>
+                </div>
+                
+                <div class="card feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Small Groups</h3>
+                    <p class="card-description">Personal attention for every traveler with our small group tours</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive travel solutions for seamless journeys</p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="card-title">Flight Booking</h3>
+                    <p class="card-description">Best deals on domestic and international flights with flexible scheduling options</p>
+                </div>
+                
+                <div class="card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h3 class="card-title">Hotel Reservations</h3>
+                    <p class="card-description">Premium accommodations at competitive rates with exclusive member discounts</p>
+                </div>
+                
+                <div class="card">
+                    <div class="feature-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 class="card-title">Transportation</h3>
+                    <p class="card-description">Comfortable and reliable transport services including airport transfers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Tours Section -->
+    <section id="packages" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Popular Tours</h2>
+            <p class="section-subtitle">Explore our most sought-after travel experiences</p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop" alt="Mountain Adventure" class="card-image">
+                    <h3 class="card-title">Mountain Adventure</h3>
+                    <p class="card-description">Experience breathtaking mountain views and thrilling adventures</p>
+                    <div class="card-price">$1,299</div>
+                    <a href="#contact" class="btn btn-primary">Book Now</a>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Beach Paradise" class="card-image">
+                    <h3 class="card-title">Beach Paradise</h3>
+                    <p class="card-description">Relax on pristine beaches with crystal clear waters</p>
+                    <div class="card-price">$999</div>
+                    <a href="#contact" class="btn btn-primary">Book Now</a>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=600&h=400&fit=crop" alt="Cultural Heritage" class="card-image">
+                    <h3 class="card-title">Cultural Heritage</h3>
+                    <p class="card-description">Immerse yourself in rich cultural experiences and traditions</p>
+                    <div class="card-price">$1,499</div>
+                    <a href="#contact" class="btn btn-primary">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="container">
+            <h2 class="section-title">Travel Gallery</h2>
+            <p class="section-subtitle">Captured moments from our incredible journeys around the world</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=600&fit=crop" alt="Mountains">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Mountains</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=600&fit=crop" alt="Beaches">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Beaches</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600&h=600&fit=crop" alt="Cities">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Cities</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=600&fit=crop" alt="Wildlife">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Wildlife</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=600&h=600&fit=crop" alt="Culture">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Culture</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=600&fit=crop" alt="Nature">
+                    <div class="gallery-overlay">
+                        <span class="gallery-title">Nature</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">What Our Travelers Say</h2>
+            <p class="section-subtitle">Real experiences from real travelers who explored the world with us</p>
+            
+            <div class="grid-3">
+                <div class="card testimonial-card">
+                    <p class="testimonial-text">"An absolutely incredible experience! The attention to detail and personalized service made our honeymoon unforgettable."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar"></div>
+                        <div>
+                            <div class="testimonial-name">Sarah Johnson</div>
+                            <div class="testimonial-location">New York, USA</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card testimonial-card">
+                    <p class="testimonial-text">"Professional guides, seamless logistics, and breathtaking destinations. This was our third trip with them."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar"></div>
+                        <div>
+                            <div class="testimonial-name">Michael Chen</div>
+                            <div class="testimonial-location">Singapore</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card testimonial-card">
+                    <p class="testimonial-text">"The wildlife safari exceeded all expectations. Our guide was knowledgeable and passionate."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar"></div>
+                        <div>
+                            <div class="testimonial-name">Emma Williams</div>
+                            <div class="testimonial-location">London, UK</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Find answers to common questions about our tours and services</p>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How do I book a tour?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can book a tour through our website by selecting your desired package and filling out the booking form. Alternatively, you can contact our customer service team directly for personalized assistance.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What is included in the tour price?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our tour prices typically include accommodation, transportation, guided tours, and most meals depending on the package. Specific inclusions are detailed in each tour package description.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can I customize my itinerary?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! We offer customizable itineraries for private tours and small groups. Contact us with your preferences and we will create a personalized journey tailored to your needs.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What is your cancellation policy?
+                        <i class="fas fa-chevron-down faq-icon"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our cancellation policy varies by tour and timing. Generally, cancellations made 30+ days before departure receive a full refund, while those made within 14 days may incur charges.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Get in touch with our team for inquiries, bookings, or assistance</p>
+            
+            <div class="grid-2">
+                <!-- Contact Info -->
+                <div>
+                    <div class="card" style="margin-bottom: 2rem;">
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="feature-icon" style="margin: 0;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">Email</h3>
+                                <p style="color: var(--body-color);">info@rkjourneys.com</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="feature-icon" style="margin: 0;">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">Phone</h3>
+                                <p style="color: var(--body-color);">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="feature-icon" style="margin: 0;">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem;">Office</h3>
+                                <p style="color: var(--body-color);">123 Travel Street, Adventure City</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="card">
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-input" placeholder="Your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" placeholder="your@email.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <input type="text" class="form-input" placeholder="Tour inquiry" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-textarea" placeholder="Tell us about your travel plans..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3 class="footer-title">RK Journeys</h3>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">
+                        Premium travel services that transform your journeys into unforgettable memories.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Quick Links</h3>
+                    <div class="footer-links">
+                        <a href="#home" class="footer-link">Home</a>
+                        <a href="#about" class="footer-link">About</a>
+                        <a href="#services" class="footer-link">Services</a>
+                        <a href="#packages" class="footer-link">Packages</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Legal</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Privacy Policy</a>
+                        <a href="#" class="footer-link">Terms & Conditions</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="footer-links">
+                        <a href="mailto:info@rkjourneys.com" class="footer-link"><i class="fas fa-envelope"></i> info@rkjourneys.com</a>
+                        <a href="tel:+15551234567" class="footer-link"><i class="fas fa-phone"></i> +1 (555) 123-4567</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span class="current-year"></span> RK Journeys Elevated. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript File -->
+    <script src="js/main.js"></script>
+</body>
+</html>
