@@ -7,7 +7,7 @@ export const Route = createFileRoute("/about")({
     meta: [
       { title: "About Us — RK Tours and Travels" },
       { name: "description", content: "Founded 20 years ago in Coimbatore, RK Tours and Travels is a premier cab service across India." },
-      { property: "og:title", content: "About RK Tours and Travels" },
+      { property: "og:title", content: "About  and Travels" },
       { property: "og:url", content: "/about" },
     ],
     links: [{ rel: "canonical", href: "/about" }],

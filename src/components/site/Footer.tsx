@@ -8,12 +8,7 @@ export function Footer() {
       <div className="container-x py-16 grid gap-10 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-full bg-primary">
-              <Car className="size-4 text-white" aria-hidden />
-            </span>
-            <span className="font-display font-bold text-white text-lg">
-              RK Tours & Travels
-            </span>
+            <img src="/images/logo.png" alt="RK Tours Logo" className="size-9" />
           </div>
           <p className="mt-4 text-sm leading-relaxed">
             Premium cab & tour service based in Coimbatore. Trusted for 20 years across India.

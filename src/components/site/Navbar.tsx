@@ -33,12 +33,7 @@ export function Navbar() {
           }`}
         >
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground">
-              <Car className="size-4" aria-hidden />
-            </span>
-            <span className="font-display font-bold tracking-tight text-heading">
-              RK <span className="text-primary">Tours</span>
-            </span>
+            <img src="/images/logo.png" alt="RK Tours Logo" className="size-9" />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-1 text-sm font-medium">
