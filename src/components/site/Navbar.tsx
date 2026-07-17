@@ -20,29 +20,23 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? "py-2" : "py-4"
+      className={`fixed inset-x-0 top-0 z-50 bg-white border-b border-border transition-all duration-500 ${
+        scrolled ? "py-2 shadow-md" : "py-3 shadow-sm"
       }`}
     >
       <div className="container-x">
-        <nav
-          className={`glass flex items-center justify-between gap-4 rounded-full pl-5 pr-2 transition-all duration-500 ${
-            scrolled
-              ? "shadow-[0_10px_40px_-15px_rgba(0,0,0,0.18)] py-2"
-              : "shadow-[0_6px_30px_-15px_rgba(0,0,0,0.12)] py-3"
-          }`}
-        >
+        <nav className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src="/images/logo.png" alt="RK Tours Logo" className="size-9" />
+            <img src="/images/logo.png" alt="RK Tours Logo" className="h-16 w-auto" />
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-1 text-sm font-medium">
+          <ul className="hidden lg:flex items-center gap-6 text-sm font-medium">
             {NAV.map((n) => (
               <li key={n.to}>
                 <Link
                   to={n.to}
-                  className="rounded-full px-3 py-2 text-secondary/90 transition-colors hover:text-primary"
-                  activeProps={{ className: "text-primary bg-primary/5" }}
+                  className="px-3 py-2 text-secondary/90 transition-colors hover:text-primary"
+                  activeProps={{ className: "text-primary font-semibold" }}
                   activeOptions={{ exact: n.to === "/" }}
                 >
                   {n.label}
@@ -57,7 +51,7 @@ export function Navbar() {
             </div>
             <button
               aria-label="Toggle menu"
-              className="grid size-10 place-items-center rounded-full bg-white/70 text-secondary lg:hidden"
+              className="grid size-10 place-items-center rounded-lg bg-surface text-secondary lg:hidden"
               onClick={() => setOpen((v) => !v)}
             >
               {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -66,14 +60,14 @@ export function Navbar() {
         </nav>
 
         {open && (
-          <div className="glass mt-2 rounded-3xl p-4 lg:hidden fade-up">
-            <ul className="grid gap-1">
+          <div className="bg-white border-t border-border lg:hidden fade-up">
+            <ul className="grid gap-1 p-4">
               {NAV.map((n) => (
                 <li key={n.to}>
                   <Link
                     to={n.to}
-                    className="block rounded-2xl px-4 py-3 font-medium text-secondary hover:bg-primary/5 hover:text-primary"
-                    activeProps={{ className: "text-primary bg-primary/5" }}
+                    className="block rounded-lg px-4 py-3 font-medium text-secondary hover:bg-surface hover:text-primary"
+                    activeProps={{ className: "text-primary bg-surface" }}
                     activeOptions={{ exact: n.to === "/" }}
                   >
                     {n.label}
