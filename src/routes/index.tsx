@@ -10,6 +10,7 @@ import destKodai from "@/assets/dest-kodaikanal.jpg";
 import destMunnar from "@/assets/dest-munnar.jpg";
 import destRam from "@/assets/dest-rameshwaram.jpg";
 import destCbe from "@/assets/dest-coimbatore.jpg";
+import newLaunchVideo from "@/assets/WhatsApp Video 2026-07-17 at 11.10.49.mp4";
 import { BookNowButton } from "@/components/site/BookNow";
 import { FleetCard } from "@/components/site/FleetCard";
 import { Navbar } from "@/components/site/Navbar";
@@ -30,6 +31,36 @@ export const Route = createFileRoute("/")({
 
 const iconMap = { Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, MapPinned } as Record<string, any>;
 const destImg: Record<string, string> = { ooty: destOoty, madurai: destMadurai, kodaikanal: destKodai, munnar: destMunnar, rameshwaram: destRam, coimbatore: destCbe };
+const galleryImages = [
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.48.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.49_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.49.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.50_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.50.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.51_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.51.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.11.00.jpeg"
+];
 
 function Home() {
   return (
@@ -120,6 +151,36 @@ function Home() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {FLEET.map((f) => <FleetCard key={f.name} {...f} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* NEWLY LAUNCHED GALLERY */}
+      <section className="section">
+        <div className="container-x">
+          <div className="max-w-2xl">
+            <span className="eyebrow">Newly Launched</span>
+            <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Experience our latest additions.</h2>
+            <p className="mt-4 text-paragraph">Discover our newest vehicles and fleet updates through images and videos.</p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-black">
+              <video
+                src={newLaunchVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
+              <img src={galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
+              <img src={galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
       </section>
@@ -257,8 +318,8 @@ function Home() {
             <Link to="/gallery" className="btn-ghost">View gallery <ChevronRight className="size-4" /></Link>
           </div>
           <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[destOoty, destMunnar, destKodai, destMadurai, destRam, destCbe, hero, destOoty].slice(0,8).map((src, i) => (
-              <div key={i} className={`overflow-hidden rounded-2xl ${i % 3 === 0 ? "row-span-2" : ""}`}>
+            {galleryImages.slice(0, 8).map((src, i) => (
+              <div key={i} className="overflow-hidden rounded-2xl">
                 <img src={src} alt="" loading="lazy" className="size-full object-cover aspect-square hover:scale-110 transition-transform duration-700" />
               </div>
             ))}
@@ -315,16 +376,16 @@ function Home() {
       {/* CTA */}
       <section className="section pt-0">
         <div className="container-x">
-          <div className="relative overflow-hidden rounded-[28px] bg-heading text-white p-10 md:p-16">
-            <div aria-hidden className="absolute -right-20 -top-20 size-80 rounded-full bg-primary/40 blur-3xl" />
-            <div aria-hidden className="absolute -left-16 bottom-0 size-72 rounded-full bg-accent/30 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[28px] bg-primary text-white p-10 md:p-16">
+            <div aria-hidden className="absolute -right-20 -top-20 size-80 rounded-full bg-white/20 blur-3xl" />
+            <div aria-hidden className="absolute -left-16 bottom-0 size-72 rounded-full bg-white/10 blur-3xl" />
             <div className="relative max-w-2xl">
-              <span className="eyebrow" style={{ color: "#ff8b8b" }}>Ready when you are</span>
+              <span className="eyebrow" style={{ color: "#ffeb3b" }}>Ready when you are</span>
               <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl">Your next journey starts with a message.</h2>
-              <p className="mt-4 text-white/80">Reach us on WhatsApp for instant booking. We'll confirm within minutes.</p>
+              <p className="mt-4 text-white/90">Reach us on WhatsApp for instant booking. We'll confirm within minutes.</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <BookNowButton />
-                <a href="tel:+918754271868" className="btn-ghost">
+                <a href="tel:+918754271868" className="btn-ghost text-white hover:bg-white/20">
                   <Phone className="size-4" /> Call Now
                 </a>
               </div>

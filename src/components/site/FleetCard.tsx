@@ -3,8 +3,10 @@ import { BookNowButton } from "./BookNow";
 import etios from "@/assets/car-etios.jpg";
 import dzire from "@/assets/car-dzire.jpg";
 import ciaz from "@/assets/car-ciaz.jpg";
+import innovaCrysta from "@/assets/Toyota_Innova_Crysta.png";
+import forceTraveller from "@/assets/Force Traveller.png";
 
-const IMAGES: Record<string, string> = { etios, dzire, ciaz };
+const IMAGES: Record<string, string> = { etios, dzire, ciaz, innovaCrysta, forceTraveller };
 
 export function FleetCard({
   name, image, passengers, luggage, ac, tag, rate,

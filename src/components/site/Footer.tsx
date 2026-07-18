@@ -4,7 +4,7 @@ import { SITE, NAV, whatsappUrl } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="mt-24 bg-[#141414] text-white/80">
+    <footer className="mt-24 bg-[#20263e] text-heading">
       <div className="container-x py-16 grid gap-10 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">

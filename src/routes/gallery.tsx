@@ -2,29 +2,43 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { useState } from "react";
 import { X } from "lucide-react";
-import hero from "@/assets/hero.jpg";
-import destOoty from "@/assets/dest-ooty.jpg";
-import destMadurai from "@/assets/dest-madurai.jpg";
-import destKodai from "@/assets/dest-kodaikanal.jpg";
-import destMunnar from "@/assets/dest-munnar.jpg";
-import destRam from "@/assets/dest-rameshwaram.jpg";
-import destCbe from "@/assets/dest-coimbatore.jpg";
-import etios from "@/assets/car-etios.jpg";
-import dzire from "@/assets/car-dzire.jpg";
-import ciaz from "@/assets/car-ciaz.jpg";
 
-const IMAGES = [
-  { src: hero, alt: "Family with car on scenic mountain road", span: "row-span-2 col-span-2" },
-  { src: destOoty, alt: "Ooty tea plantations" },
-  { src: destMunnar, alt: "Munnar tea hills", span: "row-span-2" },
-  { src: destKodai, alt: "Kodaikanal misty valley" },
-  { src: destMadurai, alt: "Madurai temple" },
-  { src: destRam, alt: "Rameshwaram bridge", span: "col-span-2" },
-  { src: destCbe, alt: "Coimbatore temple" },
-  { src: etios, alt: "Toyota Etios" },
-  { src: dzire, alt: "Swift Dzire" },
-  { src: ciaz, alt: "Maruti Ciaz" },
+const GALLERY_IMAGES = [
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.48.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.49_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.49.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.50_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.50.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.51_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.51.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_1.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_2.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59.jpeg",
+  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.11.00.jpeg"
 ];
+
+const IMAGES = GALLERY_IMAGES.map((src, i) => ({
+  src,
+  alt: `Gallery image ${i + 1}`,
+  span: i === 0 ? "row-span-2 col-span-2" : i === 2 ? "row-span-2" : i === 5 ? "col-span-2" : ""
+}));
 
 export const Route = createFileRoute("/gallery")({
   head: () => ({

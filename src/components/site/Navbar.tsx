@@ -34,20 +34,14 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
             <img src="/images/logo.png" alt="RK Tours Logo" className="h-16 w-auto" />
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-6 text-sm font-medium">
+          <ul className="hidden lg:flex items-center gap-6 text-base font-semibold">
             {NAV.map((n) => (
               <li key={n.to}>
                 <Link
                   to={n.to}
-                  className={`px-3 py-2 transition-colors hover:text-primary ${
-                    transparent && !scrolled
-                      ? "text-white/90 hover:text-white"
-                      : "text-secondary/90"
-                  }`}
+                  className="px-3 py-2 transition-colors nav-link-force-black"
                   activeProps={{
-                    className: transparent && !scrolled
-                      ? "text-white font-semibold"
-                      : "text-primary font-semibold"
+                    className: "nav-link-force-black"
                   }}
                   activeOptions={{ exact: n.to === "/" }}
                 >
@@ -82,7 +76,8 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
                 <li key={n.to}>
                   <Link
                     to={n.to}
-                    className="block rounded-lg px-4 py-3 font-medium text-secondary hover:bg-surface hover:text-primary"
+                    className="block rounded-lg px-4 py-3 font-medium hover:bg-surface hover:text-primary"
+                    style={{ color: '#000000' }}
                     activeProps={{ className: "text-primary bg-surface" }}
                     activeOptions={{ exact: n.to === "/" }}
                   >

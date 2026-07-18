@@ -206,3 +206,11 @@
   from { transform: translateX(0) }
   to { transform: translateX(-50%) }
 }
+
+.nav-link-force-black {
+  color: #000000 !important;
+}
+
+.nav-link-force-black:hover {
+  color: #0A6EBD !important;
+}

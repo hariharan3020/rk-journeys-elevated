@@ -45,6 +45,8 @@ export const FLEET = [
   { name: "Toyota Etios", image: "etios", passengers: 4, luggage: 3, ac: true, tag: "Comfort Sedan", rate: "₹14/km" },
   { name: "Swift Dzire", image: "dzire", passengers: 4, luggage: 3, ac: true, tag: "City Favorite", rate: "₹14/km" },
   { name: "Maruti Ciaz", image: "ciaz", passengers: 4, luggage: 4, ac: true, tag: "Premium Sedan", rate: "₹15/km" },
+  { name: "Toyota Innova Crysta", image: "innovaCrysta", passengers: 7, luggage: 5, ac: true, tag: "Premium MPV", rate: "₹18/km" },
+  { name: "Force Traveller", image: "forceTraveller", passengers: 12, luggage: 8, ac: true, tag: "Group Travel", rate: "₹22/km" },
 ];
 
 export const PACKAGES = [
