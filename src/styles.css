@@ -41,7 +41,7 @@
 
   --shadow-soft: 0 4px 20px -6px rgb(0 0 0 / 0.08);
   --shadow-float: 0 20px 50px -20px rgb(0 0 0 / 0.18);
-  --shadow-premium: 0 30px 80px -30px rgb(214 40 40 / 0.28);
+  --shadow-premium: 0 30px 80px -30px rgb(10 110 189 / 0.28);
 }
 
 :root {
@@ -58,25 +58,25 @@
   --popover: #ffffff;
   --popover-foreground: #222222;
 
-  --primary: #d62828;
+  --primary: #0A6EBD;
   --primary-foreground: #ffffff;
-  --primary-hover: #b71c1c;
+  --primary-hover: #085a9a;
 
-  --secondary: #3a3a3a;
+  --secondary: #1B263B;
   --secondary-foreground: #ffffff;
 
   --muted: #f5f7fa;
   --muted-foreground: #666666;
 
-  --accent: #2e8b57;
+  --accent: #2E8B57;
   --accent-foreground: #ffffff;
 
-  --destructive: #d62828;
+  --destructive: #F97316;
   --destructive-foreground: #ffffff;
 
   --border: #ececec;
   --input: #ececec;
-  --ring: #d62828;
+  --ring: #0A6EBD;
 }
 
 @layer base {
@@ -131,14 +131,14 @@
   font-weight: 600;
   padding: 0.9rem 1.5rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, #d62828, #b71c1c);
+  background: linear-gradient(135deg, #0A6EBD, #085a9a);
   color: white;
-  box-shadow: 0 10px 30px -12px rgb(214 40 40 / 0.6);
+  box-shadow: 0 10px 30px -12px rgb(10 110 189 / 0.6);
   transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s, filter .35s;
   will-change: transform;
 }
 @utility btn-primary {
-  &:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -12px rgb(214 40 40 / 0.7); filter: brightness(1.05); }
+  &:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -12px rgb(10 110 189 / 0.7); filter: brightness(1.05); }
   &:active { transform: translateY(0); }
 }
 
@@ -157,7 +157,7 @@
   transition: transform .35s, box-shadow .35s, border-color .35s;
 }
 @utility btn-ghost {
-  &:hover { transform: translateY(-2px); border-color: #d62828; color: #d62828; box-shadow: 0 12px 30px -14px rgb(0 0 0 / .18); }
+  &:hover { transform: translateY(-2px); border-color: #0A6EBD; color: #0A6EBD; box-shadow: 0 12px 30px -14px rgb(0 0 0 / .18); }
 }
 
 @utility card-float {
@@ -184,7 +184,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #d62828;
+  color: #0A6EBD;
 }
 
 @utility fade-up {

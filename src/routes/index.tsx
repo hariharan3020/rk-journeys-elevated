@@ -12,6 +12,7 @@ import destRam from "@/assets/dest-rameshwaram.jpg";
 import destCbe from "@/assets/dest-coimbatore.jpg";
 import { BookNowButton } from "@/components/site/BookNow";
 import { FleetCard } from "@/components/site/FleetCard";
+import { Navbar } from "@/components/site/Navbar";
 import { FLEET, SERVICES, TESTIMONIALS, FAQS, PACKAGES } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
@@ -34,65 +35,47 @@ function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="relative pt-20 md:pt-32 pb-16 md:pb-24 overflow-hidden bg-white">
-        <div className="container-x relative">
-          <div className="relative grid gap-12 lg:grid-cols-[1fr_1fr] items-center">
-            <div className="relative z-10 fade-up">
-              <h1 className="font-display font-bold text-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight">
-                Explore India <span className="text-primary">Comfortably</span> with RK Tours and Travels
-              </h1>
-              <p className="mt-6 text-lg text-paragraph max-w-xl leading-relaxed">
-                Safe • Affordable • Comfortable — a premium cab & tour experience crafted in Coimbatore, delivered across India.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <BookNowButton />
-                <Link to="/tariff" className="btn-ghost">
-                  View Tariff <ChevronRight className="size-4" />
-                </Link>
-              </div>
-              <dl className="mt-12 grid grid-cols-3 gap-4 max-w-lg">
-                {[
-                  { k: "20+", v: "Years of trust" },
-                  { k: "10K+", v: "Happy travelers" },
-                  { k: "Pan", v: "India service" },
-                ].map((s) => (
-                  <div key={s.v} className="rounded-2xl bg-surface p-4">
-                    <dt className="font-display font-bold text-2xl text-primary">{s.k}</dt>
-                    <dd className="text-xs text-paragraph mt-1">{s.v}</dd>
-                  </div>
-                ))}
-              </dl>
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={hero}
+            alt="Scenic mountain road with family travelers"
+            width={1920}
+            height={1080}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
+        </div>
+        <Navbar transparent />
+        <div className="container-x relative z-10 pt-24">
+          <div className="max-w-4xl fade-up">
+            <h1 className="font-display font-bold text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tight mb-4">
+              R.K. TOURS & TRAVELS
+            </h1>
+            <p className="font-display font-semibold text-2xl md:text-3xl text-white/90 tracking-widest uppercase mb-6">
+              JOURNEY BEYOND DESTINATIONS
+            </p>
+            <p className="text-xl md:text-2xl text-white/80 font-medium mb-10">
+              Safe. Comfortable. Memorable.
+            </p>
+            <div className="flex flex-wrap gap-4 mb-12">
+              <BookNowButton />
+              <Link to="/tariff" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
+                View Tariff <ChevronRight className="size-4" />
+              </Link>
             </div>
-
-            <div className="relative">
-              <div className="relative rounded-[28px] overflow-hidden shadow-[0_40px_100px_-40px_rgba(0,0,0,0.35)]">
-                <img
-                  src={hero}
-                  alt="Family travelers with a premium cab overlooking misty mountains at sunrise"
-                  width={1920}
-                  height={1200}
-                  className="w-full h-[480px] md:h-[620px] object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                <div className="absolute left-5 bottom-5 right-5 flex items-center justify-between">
-                  <div className="glass rounded-2xl px-4 py-3 text-sm">
-                    <p className="font-display font-semibold text-heading">Coimbatore → Ooty</p>
-                    <p className="text-xs text-paragraph">Sunrise departure • Comfort sedan</p>
-                  </div>
-                  <div className="glass rounded-full px-4 py-2 flex items-center gap-2">
-                    <Star className="size-4 text-amber-500 fill-current" />
-                    <span className="font-display font-semibold text-heading">4.9</span>
-                  </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: ShieldCheck, text: "Safe & Reliable" },
+                { icon: Award, text: "Comfort & Luxury" },
+                { icon: HeadphonesIcon, text: "24/7 Service" },
+                { icon: MapPinned, text: "Pan India Service" },
+              ].map((item) => (
+                <div key={item.text} className="glass rounded-2xl px-5 py-4 flex items-center gap-3">
+                  <item.icon className="size-6 text-primary" />
+                  <span className="font-display font-semibold text-white text-sm">{item.text}</span>
                 </div>
-              </div>
-              <div className="absolute -left-6 top-8 glass rounded-2xl px-4 py-3 hidden md:flex items-center gap-2 float-anim">
-                <ShieldCheck className="size-5 text-accent" />
-                <span className="text-sm font-medium text-heading">Verified Drivers</span>
-              </div>
-              <div className="absolute -right-4 bottom-24 glass rounded-2xl px-4 py-3 hidden md:flex items-center gap-2 float-anim" style={{ animationDelay: "1.5s" }}>
-                <Award className="size-5 text-primary" />
-                <span className="text-sm font-medium text-heading">20 Years Experience</span>
-              </div>
+              ))}
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { Menu, X, Car } from "lucide-react";
 import { NAV } from "@/lib/site";
 import { BookNowButton } from "./BookNow";
 
-export function Navbar() {
+export function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -20,8 +20,12 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-white border-b border-border transition-all duration-500 ${
-        scrolled ? "py-2 shadow-md" : "py-3 shadow-sm"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        transparent
+          ? scrolled
+            ? "bg-white/90 backdrop-blur-md border-b border-border py-2 shadow-md"
+            : "bg-transparent border-none py-3"
+          : `bg-white border-b border-border ${scrolled ? "py-2 shadow-md" : "py-3 shadow-sm"}`
       }`}
     >
       <div className="container-x">
@@ -35,8 +39,16 @@ export function Navbar() {
               <li key={n.to}>
                 <Link
                   to={n.to}
-                  className="px-3 py-2 text-secondary/90 transition-colors hover:text-primary"
-                  activeProps={{ className: "text-primary font-semibold" }}
+                  className={`px-3 py-2 transition-colors hover:text-primary ${
+                    transparent && !scrolled
+                      ? "text-white/90 hover:text-white"
+                      : "text-secondary/90"
+                  }`}
+                  activeProps={{
+                    className: transparent && !scrolled
+                      ? "text-white font-semibold"
+                      : "text-primary font-semibold"
+                  }}
                   activeOptions={{ exact: n.to === "/" }}
                 >
                   {n.label}
@@ -60,7 +72,11 @@ export function Navbar() {
         </nav>
 
         {open && (
-          <div className="bg-white border-t border-border lg:hidden fade-up">
+          <div className={`lg:hidden fade-up ${
+            transparent && !scrolled
+              ? "bg-white/95 backdrop-blur-md border-t border-white/20"
+              : "bg-white border-t border-border"
+          }`}>
             <ul className="grid gap-1 p-4">
               {NAV.map((n) => (
                 <li key={n.to}>
