@@ -21,4 +21,10 @@ export default defineConfig({
     copyPublicDir: true,
   },
   publicDir: "public",
+  // Exclude images folder from public dir copy
+  server: {
+    fs: {
+      strict: false,
+    },
+  },
 });

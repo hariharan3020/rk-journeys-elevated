@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 import { Menu, X, Car } from "lucide-react";
 import { NAV } from "@/lib/site";
 import { BookNowButton } from "./BookNow";
+import logo from "@/assets/logo.png";
 
 export function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const isHome = pathname === "/";
+  const shouldBeTransparent = transparent || isHome;
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
@@ -21,7 +25,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        transparent
+        shouldBeTransparent
           ? scrolled
             ? "bg-white/90 backdrop-blur-md border-b border-border py-2 shadow-md"
             : "bg-transparent border-none py-3"
@@ -31,24 +35,33 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
       <div className="container-x">
         <nav className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src="/images/logo.png" alt="RK Tours Logo" className="h-16 w-auto" />
+            <img 
+              src={logo} 
+              alt="RK Tours Logo" 
+              className={`h-16 w-auto ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_12px_rgba(255,255,255,1)]" : ""}`} 
+            />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-6 text-base font-semibold">
-            {NAV.map((n) => (
-              <li key={n.to}>
-                <Link
-                  to={n.to}
-                  className="px-3 py-2 transition-colors nav-link-force-black"
-                  activeProps={{
-                    className: "nav-link-force-black"
-                  }}
-                  activeOptions={{ exact: n.to === "/" }}
-                >
-                  {n.label}
-                </Link>
-              </li>
-            ))}
+            {NAV.map((n) => {
+              const isTransparentNow = shouldBeTransparent && !scrolled;
+              return (
+                <li key={n.to}>
+                  <Link
+                    to={n.to}
+                    className={`px-3 py-2 transition-colors ${
+                      isTransparentNow ? "text-white hover:text-white/80" : "nav-link-force-black"
+                    }`}
+                    activeProps={{
+                      className: isTransparentNow ? "text-white font-bold" : "nav-link-force-black"
+                    }}
+                    activeOptions={{ exact: n.to === "/" }}
+                  >
+                    {n.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="flex items-center gap-2">

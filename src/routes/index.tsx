@@ -67,7 +67,7 @@ function Home() {
     <>
       {/* HERO */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 -z-10">
           <img
             src={hero}
             alt="Scenic mountain road with family travelers"
@@ -77,10 +77,10 @@ function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         </div>
-        <Navbar transparent />
-        <div className="container-x relative z-10 pt-24">
-          <div className="max-w-4xl fade-up">
-            <h1 className="font-display font-bold text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tight mb-4">
+        <div className="container-x relative z-10">
+          <div className="pt-24">
+            <div className="max-w-4xl fade-up">
+              <h1 className="font-display font-bold text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tight mb-4">
               R.K. TOURS & TRAVELS
             </h1>
             <p className="font-display font-semibold text-2xl md:text-3xl text-white/90 tracking-widest uppercase mb-6">
@@ -108,6 +108,7 @@ function Home() {
                 </div>
               ))}
             </div>
+          </div>
           </div>
         </div>
       </section>
