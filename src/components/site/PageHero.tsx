@@ -12,13 +12,9 @@ export function PageHero({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative pt-36 pb-16 md:pt-44 md:pb-24 overflow-hidden">
+    <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
       <div
-        className="absolute inset-0 -z-10 opacity-70"
-        style={{
-          background:
-            "radial-gradient(60% 60% at 50% 0%, #ffe5e5 0%, transparent 60%), radial-gradient(50% 50% at 90% 10%, #e6f6ee 0%, transparent 60%), #ffffff",
-        }}
+        className="absolute inset-0 -z-10 bg-white"
         aria-hidden
       />
       <div className="container-x fade-up">

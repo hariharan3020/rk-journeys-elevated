@@ -96,13 +96,13 @@ function About() {
       <section className="section pt-0">
         <div className="container-x">
           <div className="rounded-[28px] bg-heading text-white p-10 md:p-14 grid gap-6 md:grid-cols-[auto_1fr] items-center">
-            <div className="grid size-24 place-items-center rounded-full bg-primary text-4xl font-display font-bold">
+            <div className="grid size-24 place-items-center rounded-full bg-primary text-4xl font-display font-bold text-white">
               RK
             </div>
             <div>
               <p className="text-primary text-sm font-semibold">Founder</p>
-              <h3 className="mt-1 font-display font-bold text-3xl">Mr. Raj Kumar</h3>
-              <p className="mt-3 text-white/80 max-w-2xl">
+              <h3 className="mt-1 font-display font-bold text-3xl text-white">Mr. Raj Kumar</h3>
+              <p className="mt-3 text-white/90 max-w-2xl leading-relaxed">
                 "We treat every trip like it's for our own family. That's the promise I started with 20 years ago — and it still guides every ride we drive."
               </p>
             </div>
