@@ -5,7 +5,7 @@ const BASE_URL = "";
 
 const paths = [
   "/", "/about", "/services", "/tariff", "/packages", "/gallery",
-  "/testimonials", "/faqs", "/contact", "/book", "/privacy", "/terms",
+  "/testimonials", "/contact", "/book", "/privacy", "/terms",
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({

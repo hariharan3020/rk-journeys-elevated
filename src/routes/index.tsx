@@ -4,6 +4,7 @@ import {
   Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, Phone,
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
+import mobileHero from "@/assets/mobile hero.png";
 import destOoty from "@/assets/dest-ooty.jpg";
 import destMadurai from "@/assets/dest-madurai.jpg";
 import destKodai from "@/assets/dest-kodaikanal.jpg";
@@ -68,12 +69,19 @@ function Home() {
       {/* HERO */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 -z-10">
+          {/* Desktop hero — hidden on mobile */}
           <img
             src={hero}
             alt="Scenic mountain road with family travelers"
             width={1920}
             height={1080}
-            className="w-full h-full object-cover"
+            className="hidden md:block w-full h-full object-cover"
+          />
+          {/* Mobile hero — visible only on mobile */}
+          <img
+            src={mobileHero}
+            alt="RK Tours and Travels mobile hero"
+            className="block md:hidden w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         </div>
@@ -212,39 +220,7 @@ function Home() {
         </div>
       </section>
 
-      {/* PACKAGES */}
-      <section className="section bg-surface">
-        <div className="container-x">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div className="max-w-xl">
-              <span className="eyebrow">Tour packages</span>
-              <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Popular getaways.</h2>
-            </div>
-            <Link to="/packages" className="btn-ghost">All packages <ChevronRight className="size-4" /></Link>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {PACKAGES.slice(0, 6).map((p) => (
-              <article key={p.name} className="card-float overflow-hidden group">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img src={destImg[p.image]} alt={p.name} loading="lazy" width={1024} height={768}
-                    className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display font-bold text-lg text-heading">{p.name}</h3>
-                    <span className="text-xs font-semibold text-primary">{p.days}</span>
-                  </div>
-                  <p className="mt-2 text-sm text-paragraph">{p.desc}</p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="font-display font-semibold text-heading">{p.price}</span>
-                    <BookNowButton label="Book" className="!py-2 !px-4 text-xs" message={`Hi, I want to book the ${p.name} package`} />
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* TARIFF HIGHLIGHTS */}
       <section className="section">
@@ -254,7 +230,7 @@ function Home() {
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Transparent kilometre pricing.</h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {FLEET.map((f, i) => (
+            {FLEET.slice(0, 3).map((f, i) => (
               <div key={f.name} className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white" : "card-float"}`}>
                 <p className={`text-sm font-semibold ${i === 1 ? "text-primary" : "text-primary"}`}>{f.tag}</p>
                 <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
@@ -271,9 +247,12 @@ function Home() {
               </div>
             ))}
           </div>
-          <p className="mt-8 text-sm text-paragraph text-center">
-            Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.
-          </p>
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <p className="text-sm text-paragraph text-center">
+              Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.
+            </p>
+            <Link to="/tariff" className="btn-primary">All Tariff</Link>
+          </div>
         </div>
       </section>
 
@@ -308,25 +287,7 @@ function Home() {
         </div>
       </section>
 
-      {/* GALLERY teaser */}
-      <section className="section">
-        <div className="container-x">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div className="max-w-xl">
-              <span className="eyebrow">Gallery</span>
-              <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Snapshots from our journeys.</h2>
-            </div>
-            <Link to="/gallery" className="btn-ghost">View gallery <ChevronRight className="size-4" /></Link>
-          </div>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {galleryImages.slice(0, 8).map((src, i) => (
-              <div key={i} className="overflow-hidden rounded-2xl">
-                <img src={src} alt="" loading="lazy" className="size-full object-cover aspect-square hover:scale-110 transition-transform duration-700" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* BOOKING PROCESS */}
       <section className="section bg-surface">
@@ -353,15 +314,14 @@ function Home() {
 
       {/* FAQ */}
       <section className="section">
-        <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.3fr]">
-          <div>
-            <span className="eyebrow">FAQs</span>
+        <div className="container-x">
+          <div className="max-w-2xl mx-auto text-center mb-10">
+            <span className="eyebrow justify-center">FAQs</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Quick answers.</h2>
             <p className="mt-4 text-paragraph">Everything about booking, pricing and travel with us.</p>
-            <Link to="/faqs" className="btn-ghost mt-6">All FAQs <ChevronRight className="size-4" /></Link>
           </div>
-          <div className="space-y-3">
-            {FAQS.slice(0, 4).map((f, i) => (
+          <div className="space-y-3 max-w-3xl mx-auto">
+            {FAQS.map((f, i) => (
               <details key={i} className="group card-float p-5 open:shadow-[var(--shadow-float)]">
                 <summary className="cursor-pointer list-none flex items-center justify-between font-display font-semibold text-heading">
                   {f.q}
@@ -386,7 +346,7 @@ function Home() {
               <p className="mt-4 text-white/90">Reach us on WhatsApp for instant booking. We'll confirm within minutes.</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <BookNowButton />
-                <a href="tel:+918754271868" className="btn-ghost text-white hover:bg-white/20">
+                <a href="tel:+918754271868" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
                   <Phone className="size-4" /> Call Now
                 </a>
               </div>

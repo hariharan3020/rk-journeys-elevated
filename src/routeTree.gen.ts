@@ -17,7 +17,6 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as GalleryRouteImport } from './routes/gallery'
-import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as AboutRouteImport } from './routes/about'
@@ -63,11 +62,6 @@ const GalleryRoute = GalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FaqsRoute = FaqsRouteImport.update({
-  id: '/faqs',
-  path: '/faqs',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -94,7 +88,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/faqs': typeof FaqsRoute
   '/gallery': typeof GalleryRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
@@ -109,7 +102,6 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/faqs': typeof FaqsRoute
   '/gallery': typeof GalleryRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
@@ -125,7 +117,6 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
-  '/faqs': typeof FaqsRoute
   '/gallery': typeof GalleryRoute
   '/packages': typeof PackagesRoute
   '/privacy': typeof PrivacyRoute
@@ -142,7 +133,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/book'
     | '/contact'
-    | '/faqs'
     | '/gallery'
     | '/packages'
     | '/privacy'
@@ -157,7 +147,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/book'
     | '/contact'
-    | '/faqs'
     | '/gallery'
     | '/packages'
     | '/privacy'
@@ -172,7 +161,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/book'
     | '/contact'
-    | '/faqs'
     | '/gallery'
     | '/packages'
     | '/privacy'
@@ -188,7 +176,6 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
-  FaqsRoute: typeof FaqsRoute
   GalleryRoute: typeof GalleryRoute
   PackagesRoute: typeof PackagesRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -257,13 +244,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/faqs': {
-      id: '/faqs'
-      path: '/faqs'
-      fullPath: '/faqs'
-      preLoaderRoute: typeof FaqsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -300,7 +280,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
-  FaqsRoute: FaqsRoute,
   GalleryRoute: GalleryRoute,
   PackagesRoute: PackagesRoute,
   PrivacyRoute: PrivacyRoute,

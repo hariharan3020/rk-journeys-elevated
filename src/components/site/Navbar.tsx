@@ -38,11 +38,11 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
             <img 
               src={logo} 
               alt="RK Tours Logo" 
-              className={`h-16 w-auto ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_12px_rgba(255,255,255,1)]" : ""}`} 
+              className={`h-20 w-auto ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_12px_rgba(255,255,255,1)]" : ""}`} 
             />
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-6 text-base font-semibold">
+          <ul className="hidden lg:flex items-center gap-6 text-sm font-semibold">
             {NAV.map((n) => {
               const isTransparentNow = shouldBeTransparent && !scrolled;
               return (
