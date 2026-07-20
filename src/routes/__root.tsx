@@ -13,9 +13,12 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 
 function NotFoundComponent() {
+  const location = useRouterState({ select: (s) => s.location });
+  const isAdminPath = location.pathname.startsWith("/admin");
+
   return (
     <>
-      <Navbar />
+      {!isAdminPath && <Navbar />}
       <main className="min-h-screen grid place-items-center px-6 pt-32">
         <div className="max-w-lg text-center">
           <p className="eyebrow justify-center">404 — Lost on the road</p>
@@ -31,7 +34,7 @@ function NotFoundComponent() {
           </div>
         </div>
       </main>
-      <Footer />
+      {!isAdminPath && <Footer />}
     </>
   );
 }
@@ -66,6 +69,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useRouterState({ select: (s) => s.location });
+  const isAdminPath = location.pathname.startsWith("/admin");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -73,11 +77,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
+      {!isAdminPath && <Navbar />}
       <main className="min-h-screen">
         <Outlet />
       </main>
-      <Footer />
+      {!isAdminPath && <Footer />}
     </QueryClientProvider>
   );
 }
