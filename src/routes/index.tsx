@@ -285,6 +285,33 @@ function Home() {
             ))}
           </div>
         </div>
+        <div className="mt-16 container-x">
+          <div className="max-w-2xl mx-auto card-float p-8 rounded-3xl">
+            <h3 className="font-display font-bold text-2xl text-heading mb-6">Share your experience</h3>
+            <form className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-heading mb-2">Your Name</label>
+                <input type="text" placeholder="Enter your name" className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-heading mb-2">Rating</label>
+                <select className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" required>
+                  <option value="">Select rating</option>
+                  <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+                  <option value="4">⭐⭐⭐⭐ (4 stars)</option>
+                  <option value="3">⭐⭐⭐ (3 stars)</option>
+                  <option value="2">⭐⭐ (2 stars)</option>
+                  <option value="1">⭐ (1 star)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-heading mb-2">Your Review</label>
+                <textarea placeholder="Share your experience with RK Tours..." rows={4} className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none" required />
+              </div>
+              <button type="submit" className="btn-primary w-full">Submit Review</button>
+            </form>
+          </div>
+        </div>
       </section>
 
 
