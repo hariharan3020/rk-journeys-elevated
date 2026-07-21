@@ -23,6 +23,9 @@ data/
 .wrangler/
 .dev.vars
 
+# Temp / unused assets
+public/ezgif-split/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
