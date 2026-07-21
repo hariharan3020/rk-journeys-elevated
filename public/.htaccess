@@ -1,6 +1,6 @@
 # ── Hostinger / Apache shared hosting — SPA routing fix ──────────────────────
 
-# Disable directory listing (prevents 403 on empty dirs)
+# Disable directory listing
 Options -Indexes
 
 # Required for mod_rewrite on most shared hosts
@@ -9,27 +9,30 @@ Options +FollowSymLinks
 # Set index file
 DirectoryIndex index.html
 
-# ── Force HTTPS (optional but recommended) ────────────────────────────────────
-# Uncomment the four lines below if you want HTTP → HTTPS redirect
-# <IfModule mod_rewrite.c>
-#   RewriteCond %{HTTPS} off
-#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-# </IfModule>
-
-# ── Remove trailing slashes (fixes /packages/ → /packages) ───────────────────
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
 
-  # Remove trailing slash from non-root URLs (prevents 403 on /packages/)
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.*)/$ /$1 [R=301,L]
+  # ── SPA route paths that clash with real server directories ────────────────
+  # These must come FIRST before the generic rules.
+  # /packages and /packages/ are React routes but packages/ is also a real dir.
+  # /gallery  and /gallery/  are React routes but gallery/  is also a real dir.
+  # Serve index.html for these routes so React Router can handle them.
 
-  # Skip real files and directories
+  RewriteRule ^packages/?$   index.html [L]
+  RewriteRule ^gallery/?$    index.html [L]
+  RewriteRule ^services/?$   index.html [L]
+  RewriteRule ^tariff/?$     index.html [L]
+  RewriteRule ^about/?$      index.html [L]
+  RewriteRule ^contact/?$    index.html [L]
+  RewriteRule ^testimonials/?$ index.html [L]
+  RewriteRule ^book/?$       index.html [L]
+  RewriteRule ^admin/?$      index.html [L]
+  RewriteRule ^admin/(.*)$   index.html [L]
+
+  # ── Generic fallback for any other non-file, non-directory request ──────────
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-
-  # Route everything else to index.html for React Router
   RewriteRule ^ index.html [QSA,L]
 </IfModule>
 
@@ -47,9 +50,9 @@ DirectoryIndex index.html
   ExpiresByType application/json "access plus 0 seconds"
 </IfModule>
 
-# ── Security headers ──────────────────────────────────────────────────────────
+# ── Security & caching headers ────────────────────────────────────────────────
 <IfModule mod_headers.c>
-  # Don't send index.html to cache (it must always be fresh for SPA routing)
+  # index.html must never be cached — always fetch fresh for SPA routing
   <FilesMatch "^index\.html$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"

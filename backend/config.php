@@ -1,9 +1,11 @@
 <?php
 // Database configuration
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root'); // Replace with database username
-define('DB_PASS', '');     // Replace with database password
-define('DB_NAME', 'rk_tours_and_travels');
+define('DB_USER', '
+u910074219_rk_tours'); // Replace with database username
+define('DB_PASS', 'Techinta@2026');     // Replace with database password
+define('DB_NAME', '
+u910074219_rk_tours');
 
 try {
     // Create PDO connection
