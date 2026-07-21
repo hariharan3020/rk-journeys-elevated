@@ -1,11 +1,9 @@
 <?php
 // Database configuration
 define('DB_HOST', 'localhost');
-define('DB_USER', '
-u910074219_rk_tours'); // Replace with database username
-define('DB_PASS', 'Techinta@2026');     // Replace with database password
-define('DB_NAME', '
-u910074219_rk_tours');
+define('DB_USER', 'u910074219_rk_tours');
+define('DB_PASS', 'Techinta@2026');
+define('DB_NAME', 'u910074219_rk_tours');
 
 try {
     // Create PDO connection
@@ -20,8 +18,9 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    // In production, log the error and display a user-friendly message.
-    // For development, we display the error message.
-    die("Database connection failed: " . $e->getMessage());
+    http_response_code(500);
+    header("Content-Type: application/json; charset=UTF-8");
+    echo json_encode(["status" => "error", "message" => "Database connection failed."]);
+    exit;
 }
 ?>

@@ -42,7 +42,7 @@ try {
     exit;
 }
 
-// ── Validate file ─────────────────────────────────────────────────────────────
+// ── Validate uploaded file ────────────────────────────────────────────────────
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     $uploadErrors = [
         UPLOAD_ERR_INI_SIZE   => "File exceeds server limit.",
@@ -53,8 +53,8 @@ if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
         UPLOAD_ERR_CANT_WRITE => "Failed to write file.",
         UPLOAD_ERR_EXTENSION  => "Upload blocked by extension.",
     ];
-    $errCode = $_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE;
-    $errMsg  = $uploadErrors[$errCode] ?? "Unknown upload error.";
+    $errCode = isset($_FILES['image']['error']) ? $_FILES['image']['error'] : UPLOAD_ERR_NO_FILE;
+    $errMsg  = isset($uploadErrors[$errCode]) ? $uploadErrors[$errCode] : "Unknown upload error.";
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => $errMsg]);
     exit;
@@ -70,28 +70,43 @@ if (!in_array($mimeType, $allowed)) {
     exit;
 }
 
-if ($file['size'] > 5 * 1024 * 1024) { // 5 MB
+if ($file['size'] > 5 * 1024 * 1024) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => "Image must be under 5 MB."]);
     exit;
 }
 
-// ── Determine upload directory ────────────────────────────────────────────────
-// Files go into public/packages/ so they're served by Vite / web root
+// ── Resolve upload directory ──────────────────────────────────────────────────
+// Works for both local dev (public/ sibling of backend/) and
+// Hostinger live (backend/ and image folders are all inside public_html/)
 $folder = isset($_POST['folder']) ? preg_replace('/[^a-z0-9_-]/', '', strtolower($_POST['folder'])) : 'packages';
-$uploadDir = __DIR__ . '/../public/' . $folder . '/';
 
+// Try sibling public/ first (local dev structure)
+$siblingPublic = __DIR__ . '/../public/' . $folder . '/';
+// Fallback: same directory level as backend/ (Hostinger live structure)
+$sameLevel = __DIR__ . '/../' . $folder . '/';
+
+if (is_dir(__DIR__ . '/../public/')) {
+    $uploadDir = $siblingPublic;
+} else {
+    $uploadDir = $sameLevel;
+}
+
+// Create the directory if it doesn't exist
 if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true);
+    if (!mkdir($uploadDir, 0755, true)) {
+        http_response_code(500);
+        echo json_encode(["status" => "error", "message" => "Could not create upload directory."]);
+        exit;
+    }
 }
 
 // ── Generate unique filename ──────────────────────────────────────────────────
-$ext      = match ($mimeType) {
-    'image/png'  => 'png',
-    'image/webp' => 'webp',
-    default      => 'jpg',
-};
-$filename = uniqid('pkg_', true) . '.' . $ext;
+$ext = 'jpg';
+if ($mimeType === 'image/png')  $ext = 'png';
+if ($mimeType === 'image/webp') $ext = 'webp';
+
+$filename = uniqid('img_', true) . '.' . $ext;
 $destPath = $uploadDir . $filename;
 
 if (!move_uploaded_file($file['tmp_name'], $destPath)) {

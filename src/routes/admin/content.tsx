@@ -13,6 +13,29 @@ import {
   type PackageItem, type FaqItem, type WhyUsItem, type GalleryImage,
 } from "@/lib/useSiteContent";
 
+// ── Asset imports for legacy image key previews ───────────────────────────────
+import destOoty      from "@/assets/dest-ooty.jpg";
+import destKodai     from "@/assets/dest-kodaikanal.jpg";
+import destMunnar    from "@/assets/dest-munnar.jpg";
+import destMadurai   from "@/assets/dest-madurai.jpg";
+import destRam       from "@/assets/dest-rameshwaram.jpg";
+import destCbe       from "@/assets/dest-coimbatore.jpg";
+import carEtios      from "@/assets/car-etios.jpg";
+import carDzire      from "@/assets/car-dzire.jpg";
+import carCiaz       from "@/assets/car-ciaz.jpg";
+import carInnova     from "@/assets/Toyota_Innova_Crysta.png";
+import carTraveller  from "@/assets/Force Traveller.png";
+
+const PACKAGE_ASSET_MAP: Record<string, string> = {
+  ooty: destOoty, kodaikanal: destKodai, munnar: destMunnar,
+  madurai: destMadurai, rameshwaram: destRam, coimbatore: destCbe,
+};
+
+const FLEET_ASSET_MAP: Record<string, string> = {
+  etios: carEtios, dzire: carDzire, ciaz: carCiaz,
+  innovaCrysta: carInnova, forceTraveller: carTraveller,
+};
+
 export const Route = createFileRoute("/admin/content")({
   component: ContentEditorPage,
 });
@@ -477,7 +500,7 @@ const LEGACY_FLEET_KEYS = ["etios", "dzire", "ciaz", "innovaCrysta", "forceTrave
 function resolveFleetPreview(image: string): string | null {
   if (!image) return null;
   if (image.startsWith("/") || image.startsWith("http")) return image;
-  return null; // legacy key — no preview URL available here
+  return FLEET_ASSET_MAP[image] ?? null;
 }
 
 function FleetEditor({ items, setItems }: { items: FleetItem[]; setItems: (v: FleetItem[]) => void }) {
@@ -522,16 +545,18 @@ function FleetCardEditor({
   const [uploadError, setUploadError] = useState("");
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  const adminUser = (() => {
-    try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; }
-  })();
-  const adminPw = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("admin_pw_session") ?? "" : "";
+  const getAdminCreds = () => {
+    const user = (() => { try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; } })();
+    const pw = sessionStorage.getItem("admin_pw_session") ?? "";
+    return { username: user.username ?? "admin", password: pw };
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!adminPw) {
-      setUploadError("Do a save first to store your session password, then upload.");
+    const { username, password } = getAdminCreds();
+    if (!password) {
+      setUploadError("Enter your password once by saving any change first, then upload.");
       return;
     }
     setUploading(true);
@@ -540,17 +565,19 @@ function FleetCardEditor({
       const fd = new FormData();
       fd.append("image", file);
       fd.append("folder", "fleet");
-      fd.append("admin_username", adminUser.username ?? "admin");
-      fd.append("admin_password", adminPw);
+      fd.append("admin_username", username);
+      fd.append("admin_password", password);
       const res = await fetch(getUploadUrl(), { method: "POST", body: fd });
-      const data = await res.json();
-      if (data.status === "success") {
+      let data: { status: string; message?: string; path?: string };
+      try { data = await res.json(); } catch { throw new Error(`Server error ${res.status}`); }
+      if (data.status === "success" && data.path) {
         onUpdate("image", data.path);
+        setUploadError("");
       } else {
         setUploadError(data.message ?? "Upload failed.");
       }
-    } catch {
-      setUploadError("Network error during upload.");
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed. Check server.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -692,7 +719,7 @@ const LEGACY_KEYS = ["ooty", "kodaikanal", "munnar", "madurai", "rameshwaram", "
 function resolvePreviewImage(image: string): string | null {
   if (!image) return null;
   if (image.startsWith("/") || image.startsWith("http")) return image;
-  return null; // legacy key — no URL to preview
+  return PACKAGE_ASSET_MAP[image] ?? null;
 }
 
 function PackageCard({
@@ -707,16 +734,18 @@ function PackageCard({
   const [uploadError, setUploadError] = useState("");
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-  const adminUser = (() => {
-    try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; }
-  })();
-  const adminPw = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("admin_pw_session") ?? "" : "";
+  const getAdminCreds = () => {
+    const user = (() => { try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; } })();
+    const pw = sessionStorage.getItem("admin_pw_session") ?? "";
+    return { username: user.username ?? "admin", password: pw };
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!adminPw) {
-      setUploadError("Save your password first by doing any save operation, then try uploading.");
+    const { username, password } = getAdminCreds();
+    if (!password) {
+      setUploadError("Enter your password once by saving any change first, then upload.");
       return;
     }
     setUploading(true);
@@ -725,17 +754,19 @@ function PackageCard({
       const fd = new FormData();
       fd.append("image", file);
       fd.append("folder", "packages");
-      fd.append("admin_username", adminUser.username ?? "admin");
-      fd.append("admin_password", adminPw);
+      fd.append("admin_username", username);
+      fd.append("admin_password", password);
       const res = await fetch(getUploadUrl(), { method: "POST", body: fd });
-      const data = await res.json();
-      if (data.status === "success") {
+      let data: { status: string; message?: string; path?: string };
+      try { data = await res.json(); } catch { throw new Error(`Server error ${res.status}`); }
+      if (data.status === "success" && data.path) {
         onUpdate("image", data.path);
+        setUploadError("");
       } else {
         setUploadError(data.message ?? "Upload failed.");
       }
-    } catch {
-      setUploadError("Network error during upload.");
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed. Check server.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -771,13 +802,7 @@ function PackageCard({
 
           {/* Upload controls */}
           <div className="flex-1 space-y-2">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              className="hidden"
-              onChange={handleFileChange}
-            />
+            <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleFileChange} />
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
@@ -793,12 +818,11 @@ function PackageCard({
                 <AlertTriangle className="size-3 shrink-0" /> {uploadError}
               </p>
             )}
-            {/* Manual URL fallback */}
             <input
               className={inputCls + " !text-xs !py-1.5"}
               value={item.image}
               onChange={(e) => onUpdate("image", e.target.value)}
-              placeholder="Or type: ooty / /packages/my-img.jpg"
+              placeholder="ooty / kodaikanal / /packages/img.jpg"
             />
           </div>
         </div>
@@ -882,20 +906,28 @@ function GalleryEditor({ gallery, setGallery }: { gallery: SiteContent["gallery"
   const adminPw = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("admin_pw_session") ?? "" : "";
 
   const uploadFile = async (file: File): Promise<string | null> => {
-    if (!adminPw) {
-      setUploadError("Do a save first to store your session password, then upload.");
+    const pw = sessionStorage.getItem("admin_pw_session") ?? "";
+    if (!pw) {
+      setUploadError("Enter your password once by saving any change first, then upload.");
       return null;
     }
+    const user = (() => { try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; } })();
     const fd = new FormData();
     fd.append("image", file);
     fd.append("folder", "gallery");
-    fd.append("admin_username", adminUser.username ?? "admin");
-    fd.append("admin_password", adminPw);
-    const res = await fetch(getUploadUrl(), { method: "POST", body: fd });
-    const data = await res.json();
-    if (data.status === "success") return data.path as string;
-    setUploadError(data.message ?? "Upload failed.");
-    return null;
+    fd.append("admin_username", user.username ?? "admin");
+    fd.append("admin_password", pw);
+    try {
+      const res = await fetch(getUploadUrl(), { method: "POST", body: fd });
+      let data: { status: string; message?: string; path?: string };
+      try { data = await res.json(); } catch { throw new Error(`Server error ${res.status}`); }
+      if (data.status === "success" && data.path) return data.path;
+      setUploadError(data.message ?? "Upload failed.");
+      return null;
+    } catch (err: unknown) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed. Check server.");
+      return null;
+    }
   };
 
   // Add new images (multi-select)
