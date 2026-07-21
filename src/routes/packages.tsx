@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { BookNowButton } from "@/components/site/BookNow";
-import { PACKAGES } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
 import destOoty from "@/assets/dest-ooty.jpg";
 import destMadurai from "@/assets/dest-madurai.jpg";
 import destKodai from "@/assets/dest-kodaikanal.jpg";
@@ -24,7 +24,14 @@ export const Route = createFileRoute("/packages")({
   component: Packages,
 });
 
+/** Resolve package image: uploaded path (starts with /) or legacy key */
+function resolvePackageImage(image: string): string {
+  if (image.startsWith("/") || image.startsWith("http")) return image;
+  return IMG[image] ?? IMG["ooty"];
+}
+
 function Packages() {
+  const { content } = useSiteContent();
   return (
     <>
       <PageHero
@@ -35,11 +42,17 @@ function Packages() {
 
       <section className="section pt-0">
         <div className="container-x grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {PACKAGES.map((p) => (
+          {content.packages.map((p) => (
             <article key={p.name} className="card-float overflow-hidden group">
               <div className="relative aspect-[4/3] overflow-hidden">
-                <img src={IMG[p.image]} alt={p.name} loading="lazy" width={1024} height={768}
-                  className="size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img
+                  src={resolvePackageImage(p.image)}
+                  alt={p.name}
+                  loading="lazy"
+                  width={1024}
+                  height={768}
+                  className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
                 <span className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-primary">
                   {p.days}
                 </span>

@@ -1,4 +1,4 @@
-import { whatsappUrl } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
 import { MessageCircle } from "lucide-react";
 
 export function BookNowButton({
@@ -12,9 +12,15 @@ export function BookNowButton({
   className?: string;
   variant?: "primary" | "ghost";
 }) {
+  const { content } = useSiteContent();
+
+  function buildWhatsappUrl(msg = "Hi, I want to book") {
+    return `https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(msg)}`;
+  }
+
   return (
     <a
-      href={whatsappUrl(message)}
+      href={buildWhatsappUrl(message)}
       target="_blank"
       rel="noopener noreferrer"
       className={`${variant === "primary" ? "btn-primary" : "btn-ghost"} ${className}`}

@@ -8,6 +8,12 @@ import forceTraveller from "@/assets/Force Traveller.png";
 
 const IMAGES: Record<string, string> = { etios, dzire, ciaz, innovaCrysta, forceTraveller };
 
+/** Resolve fleet image: uploaded path (starts with /) or legacy key */
+function resolveFleetImage(image: string): string {
+  if (image.startsWith("/") || image.startsWith("http")) return image;
+  return IMAGES[image] ?? etios;
+}
+
 export function FleetCard({
   name, image, passengers, luggage, ac, tag, rate,
 }: {
@@ -23,7 +29,7 @@ export function FleetCard({
     <article className="card-float overflow-hidden group">
       <div className="relative overflow-hidden bg-surface aspect-[4/3]">
         <img
-          src={IMAGES[image]}
+          src={resolveFleetImage(image)}
           alt={name}
           loading="lazy"
           width={1024}

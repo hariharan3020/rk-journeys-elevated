@@ -17,7 +17,8 @@ import newLaunchVideo from "@/assets/WhatsApp Video 2026-07-17 at 11.10.49.mp4";
 import { BookNowButton } from "@/components/site/BookNow";
 import { FleetCard } from "@/components/site/FleetCard";
 import { Navbar } from "@/components/site/Navbar";
-import { FLEET, SERVICES, TESTIMONIALS, FAQS, PACKAGES } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
+import { TESTIMONIALS } from "@/lib/site";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface ReviewItem {
@@ -51,7 +52,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const iconMap = { Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, MapPinned } as Record<string, any>;
+const iconMap = { Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, MapPinned, ShieldCheck, Wallet, HeadphonesIcon, Award } as Record<string, any>;
 const destImg: Record<string, string> = { ooty: destOoty, madurai: destMadurai, kodaikanal: destKodai, munnar: destMunnar, rameshwaram: destRam, coimbatore: destCbe };
 const galleryImages = [
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.48.jpeg",
@@ -85,6 +86,8 @@ const galleryImages = [
 ];
 
 function Home() {
+  const { content } = useSiteContent();
+
   // ── Reviews state ──────────────────────────────────────────────────────────
   const [reviews, setReviews] = useState<ReviewItem[]>(TESTIMONIALS);
   const [loadedFromDb, setLoadedFromDb] = useState(false);
@@ -188,14 +191,14 @@ function Home() {
           <div className="pt-24">
             <div className="max-w-4xl fade-up">
               <h1 className="font-display font-bold text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tight mb-4">
-              R.K. TOURS & TRAVELS
-            </h1>
-            <p className="font-display font-semibold text-2xl md:text-3xl text-white/90 tracking-widest uppercase mb-6">
-              JOURNEY BEYOND DESTINATIONS
-            </p>
-            <p className="text-xl md:text-2xl text-white/80 font-medium mb-10">
-              Safe. Comfortable. Memorable.
-            </p>
+                {content.hero.headline}
+              </h1>
+              <p className="font-display font-semibold text-2xl md:text-3xl text-white/90 tracking-widest uppercase mb-6">
+                {content.hero.tagline}
+              </p>
+              <p className="text-xl md:text-2xl text-white/80 font-medium mb-10">
+                {content.hero.subtext}
+              </p>
             <div className="flex flex-wrap gap-4 mb-12">
               <BookNowButton />
               <Link to="/tariff" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
@@ -229,20 +232,18 @@ function Home() {
             <p className="mt-4 text-paragraph">Every journey with RK is measured against the same standard — the comfort of family.</p>
           </div>
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              { icon: ShieldCheck, title: "Safety First", desc: "GPS tracked rides and verified professional drivers." },
-              { icon: Wallet, title: "Fair Pricing", desc: "Transparent kilometre rates with no hidden fees." },
-              { icon: HeadphonesIcon, title: "24×7 Support", desc: "Reach us any time, on any day of the year." },
-              { icon: Award, title: "20 Years Trusted", desc: "A legacy built by thousands of return customers." },
-            ].map((f) => (
-              <div key={f.title} className="card-float p-6">
-                <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <f.icon className="size-6" />
+            {content.whyUs.map((f) => {
+              const Icon = iconMap[f.icon] ?? ShieldCheck;
+              return (
+                <div key={f.title} className="card-float p-6">
+                  <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                    <Icon className="size-6" />
+                  </div>
+                  <h3 className="mt-5 font-display font-bold text-lg text-heading">{f.title}</h3>
+                  <p className="mt-2 text-sm text-paragraph">{f.desc}</p>
                 </div>
-                <h3 className="mt-5 font-display font-bold text-lg text-heading">{f.title}</h3>
-                <p className="mt-2 text-sm text-paragraph">{f.desc}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -258,7 +259,7 @@ function Home() {
             <Link to="/tariff" className="btn-ghost">See tariff <ChevronRight className="size-4" /></Link>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {FLEET.map((f) => <FleetCard key={f.name} {...f} />)}
+            {content.fleet.map((f) => <FleetCard key={f.name} {...f} />)}
           </div>
         </div>
       </section>
@@ -284,10 +285,10 @@ function Home() {
               />
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
-              <img src={galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+              <img src={content.gallery.images[0]?.src ?? galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
             </div>
             <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
-              <img src={galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+              <img src={content.gallery.images[1]?.src ?? galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
@@ -301,7 +302,7 @@ function Home() {
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Every kind of trip. Handled.</h2>
           </div>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((s) => {
+            {content.services.map((s) => {
               const Icon = iconMap[s.icon] ?? MapPinned;
               return (
                 <div key={s.title} className="card-float p-6 flex gap-4">
@@ -329,7 +330,7 @@ function Home() {
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Transparent kilometre pricing.</h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {FLEET.slice(0, 3).map((f, i) => (
+            {content.fleet.slice(0, 3).map((f, i) => (
               <div key={f.name} className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white" : "card-float"}`}>
                 <p className={`text-sm font-semibold ${i === 1 ? "text-primary" : "text-primary"}`}>{f.tag}</p>
                 <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
@@ -503,7 +504,7 @@ function Home() {
             <p className="mt-4 text-paragraph">Everything about booking, pricing and travel with us.</p>
           </div>
           <div className="space-y-3 max-w-3xl mx-auto">
-            {FAQS.map((f, i) => (
+            {content.faqs.map((f, i) => (
               <details key={i} className="group card-float p-5 open:shadow-[var(--shadow-float)]">
                 <summary className="cursor-pointer list-none flex items-center justify-between font-display font-semibold text-heading">
                   {f.q}

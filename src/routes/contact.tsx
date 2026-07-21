@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { BookNowButton } from "@/components/site/BookNow";
-import { SITE, whatsappUrl } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
 import { Phone, Mail, MapPin, Instagram, Facebook, MessageCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -19,11 +20,18 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { content } = useSiteContent();
+  const siteInfo = content.siteInfo;
+
+  function whatsappUrlDynamic(message = "Hi, I want to book") {
+    return `https://wa.me/${siteInfo.phoneRaw}?text=${encodeURIComponent(message)}`;
+  }
+
   const [form, setForm] = useState({ name: "", phone: "", message: "" });
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const msg = `Hi, I'm ${form.name || ""}. ${form.message || "I want to book"}${form.phone ? ` (${form.phone})` : ""}`;
-    window.open(whatsappUrl(msg), "_blank");
+    window.open(whatsappUrlDynamic(msg), "_blank");
   };
 
   return (
@@ -33,41 +41,41 @@ function Contact() {
       <section className="section pt-0">
         <div className="container-x grid gap-8 lg:grid-cols-[1fr_1.1fr]">
           <div className="space-y-4">
-            <a href={whatsappUrl()} target="_blank" rel="noreferrer" className="card-float p-6 flex items-center gap-4 group">
+            <a href={whatsappUrlDynamic()} target="_blank" rel="noreferrer" className="card-float p-6 flex items-center gap-4 group">
               <div className="grid size-12 place-items-center rounded-2xl bg-accent/10 text-accent">
                 <MessageCircle className="size-5" />
               </div>
               <div>
                 <p className="font-display font-semibold text-heading">WhatsApp</p>
-                <p className="text-sm text-paragraph">{SITE.phone}</p>
+                <p className="text-sm text-paragraph">{siteInfo.phone}</p>
               </div>
             </a>
-            <a href={`tel:+${SITE.phoneRaw}`} className="card-float p-6 flex items-center gap-4">
+            <a href={`tel:+${siteInfo.phoneRaw}`} className="card-float p-6 flex items-center gap-4">
               <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Phone className="size-5" /></div>
               <div>
                 <p className="font-display font-semibold text-heading">Phone</p>
-                <p className="text-sm text-paragraph">{SITE.phone}</p>
+                <p className="text-sm text-paragraph">{siteInfo.phone}</p>
               </div>
             </a>
-            <a href={`mailto:${SITE.email}`} className="card-float p-6 flex items-center gap-4">
+            <a href={`mailto:${siteInfo.email}`} className="card-float p-6 flex items-center gap-4">
               <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Mail className="size-5" /></div>
               <div>
                 <p className="font-display font-semibold text-heading">Email</p>
-                <p className="text-sm text-paragraph break-all">{SITE.email}</p>
+                <p className="text-sm text-paragraph break-all">{siteInfo.email}</p>
               </div>
             </a>
             <div className="card-float p-6 flex items-center gap-4">
               <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><MapPin className="size-5" /></div>
               <div>
                 <p className="font-display font-semibold text-heading">Location</p>
-                <p className="text-sm text-paragraph">{SITE.city}</p>
+                <p className="text-sm text-paragraph">{siteInfo.city}</p>
               </div>
             </div>
             <div className="flex gap-3">
-              <a href={SITE.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="grid size-12 place-items-center rounded-full bg-heading text-white hover:bg-primary transition">
+              <a href={siteInfo.instagram} target="_blank" rel="noreferrer" aria-label="Instagram" className="grid size-12 place-items-center rounded-full bg-heading text-white hover:bg-primary transition">
                 <Instagram className="size-4" />
               </a>
-              <a href={SITE.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className="grid size-12 place-items-center rounded-full bg-heading text-white hover:bg-primary transition">
+              <a href={siteInfo.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" className="grid size-12 place-items-center rounded-full bg-heading text-white hover:bg-primary transition">
                 <Facebook className="size-4" />
               </a>
             </div>

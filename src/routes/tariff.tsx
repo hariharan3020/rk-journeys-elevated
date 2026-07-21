@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { BookNowButton } from "@/components/site/BookNow";
-import { FLEET } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
 import { Check } from "lucide-react";
 
 export const Route = createFileRoute("/tariff")({
@@ -18,6 +18,8 @@ export const Route = createFileRoute("/tariff")({
 });
 
 function Tariff() {
+  const { content } = useSiteContent();
+
   return (
     <>
       <PageHero
@@ -29,7 +31,7 @@ function Tariff() {
       <section className="section pt-0">
         <div className="container-x">
           <div className="grid gap-6 md:grid-cols-3">
-            {FLEET.map((f, i) => (
+            {content.fleet.map((f, i) => (
               <div key={f.name} className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white scale-[1.02]" : "card-float"}`}>
                 <p className="text-primary text-sm font-semibold">{f.tag}</p>
                 <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>

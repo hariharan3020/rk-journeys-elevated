@@ -1,12 +1,13 @@
 import { Link, useRouterState, useRouter } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import {
-  LayoutDashboard, Star, Settings, LogOut, Menu, X, ChevronRight,
+  LayoutDashboard, Star, Settings, LogOut, Menu, X, ChevronRight, Edit3,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { to: "/admin/dashboard", label: "Dashboard",        icon: LayoutDashboard },
   { to: "/admin/reviews",   label: "Customer Reviews", icon: Star            },
+  { to: "/admin/content",   label: "Content Editor",   icon: Edit3           },
   { to: "/admin/settings",  label: "Settings",         icon: Settings        },
 ];
 

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
+import { useSiteContent } from "@/lib/useSiteContent";
 import { useState } from "react";
 import { X } from "lucide-react";
 
@@ -54,7 +55,10 @@ export const Route = createFileRoute("/gallery")({
 });
 
 function Gallery() {
+  const { content } = useSiteContent();
   const [open, setOpen] = useState<string | null>(null);
+  const visibleImages = content.gallery.images.filter((img) => img.visible && img.src.trim() !== "");
+
   return (
     <>
       <PageHero eyebrow="Gallery" title="Moments from the road." subtitle="A visual diary of our fleet, tours and travelers." />
@@ -62,7 +66,7 @@ function Gallery() {
       <section className="section pt-0">
         <div className="container-x">
           <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-[220px] gap-3">
-            {IMAGES.map((img, i) => (
+            {(visibleImages.length > 0 ? visibleImages : IMAGES).map((img, i) => (
               <button
                 key={i}
                 onClick={() => setOpen(img.src)}

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
 import { BookNowButton } from "@/components/site/BookNow";
-import { SERVICES } from "@/lib/site";
+import { useSiteContent } from "@/lib/useSiteContent";
 import {
   Plane, MapPinned, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer,
 } from "lucide-react";
@@ -22,6 +22,7 @@ export const Route = createFileRoute("/services")({
 const iconMap: Record<string, any> = { Plane, MapPinned, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer };
 
 function Services() {
+  const { content } = useSiteContent();
   return (
     <>
       <PageHero
@@ -34,7 +35,7 @@ function Services() {
 
       <section className="section pt-0">
         <div className="container-x grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((s) => {
+          {content.services.map((s) => {
             const Icon = iconMap[s.icon] ?? MapPinned;
             return (
               <article key={s.title} className="card-float p-7 group">

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Seed default admin user (username: admin, password: admin123)
 INSERT INTO `users` (`username`, `password`) 
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi')
+VALUES ('admin', '$2y$10$tM2a6/8HszFq4V3qG9Q2xufxM/b.s9.O/3V34rJj3R8cUXf5Jg5eO')
 ON DUPLICATE KEY UPDATE `username`=`username`;
 
 -- Create the customer_reviews table
