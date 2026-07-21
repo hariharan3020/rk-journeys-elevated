@@ -499,7 +499,7 @@ const LEGACY_FLEET_KEYS = ["etios", "dzire", "ciaz", "innovaCrysta", "forceTrave
 
 function resolveFleetPreview(image: string): string | null {
   if (!image) return null;
-  if (image.startsWith("/") || image.startsWith("http")) return image;
+  if (image.startsWith("/") || image.startsWith("http")) return resolveAdminPreviewUrl(image);
   return FLEET_ASSET_MAP[image] ?? null;
 }
 
@@ -684,6 +684,28 @@ function getUploadUrl() {
   return `${origin}${sub}/backend/upload-image.php`;
 }
 
+// ── Resolve image URL for admin previews ──────────────────────────────────────
+// Uploaded paths like /packages/img_xxx.jpg are relative to the web root.
+// On live they resolve fine. In dev (Vite on :5173) the files live on the
+// PHP server (localhost/rk-journeys-elevated/public/...), so we prefix them.
+function resolveAdminPreviewUrl(path: string): string {
+  if (!path) return "";
+  // Already absolute
+  if (path.startsWith("http")) return path;
+  // Custom backend configured
+  const custom = typeof localStorage !== "undefined" ? localStorage.getItem("CUSTOM_BACKEND_URL") : null;
+  if (custom) {
+    const base = custom.replace(/\/backend\/?$/, "");
+    return `${base}${path}`;
+  }
+  // Dev: files are served by the PHP server at localhost/rk-journeys-elevated/public/
+  if (import.meta.env.DEV) {
+    return `http://localhost/rk-journeys-elevated/public${path}`;
+  }
+  // Production: path is already relative to web root
+  return path;
+}
+
 // ── Packages Editor ───────────────────────────────────────────────────────────
 function PackagesEditor({ items, setItems }: { items: PackageItem[]; setItems: (v: PackageItem[]) => void }) {
   const update = (i: number, field: keyof PackageItem, val: string) => {
@@ -718,7 +740,7 @@ const LEGACY_KEYS = ["ooty", "kodaikanal", "munnar", "madurai", "rameshwaram", "
 
 function resolvePreviewImage(image: string): string | null {
   if (!image) return null;
-  if (image.startsWith("/") || image.startsWith("http")) return image;
+  if (image.startsWith("/") || image.startsWith("http")) return resolveAdminPreviewUrl(image);
   return PACKAGE_ASSET_MAP[image] ?? null;
 }
 
@@ -1011,7 +1033,7 @@ function GalleryEditor({ gallery, setGallery }: { gallery: SiteContent["gallery"
           <div key={i} className={`relative rounded-xl overflow-hidden border-2 transition ${img.visible ? "border-primary/40" : "border-border opacity-60"}`}>
             {/* Thumbnail */}
             <div className="aspect-[4/3] bg-surface">
-              <img src={img.src} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" loading="lazy"
+              <img src={resolveAdminPreviewUrl(img.src)} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover" loading="lazy"
                 onError={(e) => { (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E"; }} />
             </div>
 

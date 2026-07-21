@@ -1,6 +1,6 @@
 # ── Hostinger / Apache shared hosting — SPA routing fix ──────────────────────
 
-# Disable directory listing
+# Disable directory listing (prevents 403 on empty dirs)
 Options -Indexes
 
 # Required for mod_rewrite on most shared hosts
@@ -13,24 +13,32 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /
 
-  # ── SPA route paths that clash with real server directories ────────────────
-  # These must come FIRST before the generic rules.
-  # /packages and /packages/ are React routes but packages/ is also a real dir.
-  # /gallery  and /gallery/  are React routes but gallery/  is also a real dir.
-  # Serve index.html for these routes so React Router can handle them.
+  # ── 1. Never rewrite actual static files (images, js, css, fonts, etc.) ───
+  # This must be FIRST — skip everything that looks like a real file extension.
+  RewriteRule \.(jpg|jpeg|png|gif|webp|svg|ico|mp4|webm|ogg|mp3|pdf|woff|woff2|ttf|eot|css|js|json|map|txt|xml)$ - [L,NC]
 
-  RewriteRule ^packages/?$   index.html [L]
-  RewriteRule ^gallery/?$    index.html [L]
-  RewriteRule ^services/?$   index.html [L]
-  RewriteRule ^tariff/?$     index.html [L]
-  RewriteRule ^about/?$      index.html [L]
-  RewriteRule ^contact/?$    index.html [L]
+  # ── 2. Explicitly pass through uploaded image folders ─────────────────────
+  # Files inside packages/, gallery/, fleet/ are uploaded images — serve them directly.
+  RewriteRule ^packages/.+   -  [L]
+  RewriteRule ^gallery/.+    -  [L]
+  RewriteRule ^fleet/.+      -  [L]
+  RewriteRule ^backend/.+    -  [L]
+  RewriteRule ^assets/.+     -  [L]
+
+  # ── 3. SPA routes — send to index.html so React Router handles them ────────
+  RewriteRule ^packages/?$     index.html [L]
+  RewriteRule ^gallery/?$      index.html [L]
+  RewriteRule ^fleet/?$        index.html [L]
+  RewriteRule ^services/?$     index.html [L]
+  RewriteRule ^tariff/?$       index.html [L]
+  RewriteRule ^about/?$        index.html [L]
+  RewriteRule ^contact/?$      index.html [L]
   RewriteRule ^testimonials/?$ index.html [L]
-  RewriteRule ^book/?$       index.html [L]
-  RewriteRule ^admin/?$      index.html [L]
-  RewriteRule ^admin/(.*)$   index.html [L]
+  RewriteRule ^book/?$         index.html [L]
+  RewriteRule ^admin/?$        index.html [L]
+  RewriteRule ^admin/(.+)$     index.html [L]
 
-  # ── Generic fallback for any other non-file, non-directory request ──────────
+  # ── 4. Generic fallback for any other non-file, non-directory request ──────
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^ index.html [QSA,L]
@@ -39,29 +47,27 @@ DirectoryIndex index.html
 # ── Cache static assets ───────────────────────────────────────────────────────
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType image/jpg "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/gif "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType image/jpg         "access plus 1 year"
+  ExpiresByType image/jpeg        "access plus 1 year"
+  ExpiresByType image/png         "access plus 1 year"
+  ExpiresByType image/webp        "access plus 1 year"
+  ExpiresByType image/gif         "access plus 1 year"
+  ExpiresByType image/svg+xml     "access plus 1 year"
+  ExpiresByType video/mp4         "access plus 1 year"
+  ExpiresByType text/css          "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/json "access plus 0 seconds"
+  ExpiresByType application/json  "access plus 0 seconds"
 </IfModule>
 
 # ── Security & caching headers ────────────────────────────────────────────────
 <IfModule mod_headers.c>
-  # index.html must never be cached — always fetch fresh for SPA routing
+  # index.html must never be cached — always fresh for SPA routing
   <FilesMatch "^index\.html$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"
     Header set Expires "0"
   </FilesMatch>
 
-  # Prevent clickjacking
   Header always set X-Frame-Options "SAMEORIGIN"
-
-  # Prevent MIME sniffing
   Header always set X-Content-Type-Options "nosniff"
 </IfModule>
