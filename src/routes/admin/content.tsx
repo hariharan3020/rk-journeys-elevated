@@ -234,8 +234,8 @@ function ContentEditorPage() {
         </div>
 
         {/* Main layout */}
-        <div className="flex gap-5 relative">
-          {/* Sidebar tabs */}
+        <div className="flex flex-col md:flex-row gap-5 relative">
+          {/* Sidebar tabs — desktop only */}
           <aside className="hidden md:flex flex-col gap-1 w-44 shrink-0">
             {TABS.map(({ id, label, icon: Icon }) => (
               <button
@@ -256,22 +256,27 @@ function ContentEditorPage() {
             ))}
           </aside>
 
-          {/* Mobile tab selector */}
-          <div className="md:hidden mb-2 w-full">
-            <select
-              value={activeTab}
-              onChange={(e) => setActiveTab(e.target.value as Tab)}
-              className={inputCls}
-            >
-              {TABS.map(({ id, label }) => (
-                <option key={id} value={id}>{label}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Editor panel */}
+          {/* Editor panel — full width on mobile */}
           <div className="flex-1 min-w-0 bg-white rounded-2xl shadow-soft overflow-hidden flex flex-col">
-            <div className="flex-1 p-5 sm:p-6 space-y-5 overflow-y-auto max-h-[calc(100vh-220px)]">
+
+            {/* Mobile tab selector — inside the panel so it stacks above editor content */}
+            <div className="md:hidden p-4 pb-0">
+              <div className="relative">
+                <select
+                  value={activeTab}
+                  onChange={(e) => setActiveTab(e.target.value as Tab)}
+                  className={inputCls}
+                >
+                  {TABS.map(({ id, label }) => (
+                    <option key={id} value={id}>
+                      {label}{dirty.has(id) ? " •" : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex-1 p-4 sm:p-5 md:p-6 space-y-5 overflow-y-auto max-h-[calc(100vh-180px)] md:max-h-[calc(100vh-220px)]">
               {activeTab === "hero" && <HeroEditor hero={hero} setHero={setHeroDirty} />}
               {activeTab === "siteInfo" && <SiteInfoEditor siteInfo={siteInfo} setSiteInfo={setSiteInfoDirty} />}
               {activeTab === "whyUs" && <WhyUsEditor items={whyUs} setItems={setWhyUsDirty} />}
