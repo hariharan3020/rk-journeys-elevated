@@ -12,5 +12,27 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Seed default admin user (username: admin, password: admin123)
 INSERT INTO `users` (`username`, `password`) 
-VALUES ('admin', '$2b$10$DpRnE2BSLMs7neeJr3qKJejmer7zqBjzxrUsDp9lraHp.Diwc4Lh.')
+VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi')
 ON DUPLICATE KEY UPDATE `username`=`username`;
+
+-- Create the customer_reviews table
+CREATE TABLE IF NOT EXISTS `customer_reviews` (
+    `id`         INT AUTO_INCREMENT PRIMARY KEY,
+    `name`       VARCHAR(100) NOT NULL,
+    `email`      VARCHAR(150) DEFAULT NULL,
+    `role`       VARCHAR(100) DEFAULT NULL,        -- e.g. "Family Trip", "Business Traveler"
+    `message`    TEXT NOT NULL,
+    `rating`     TINYINT UNSIGNED NOT NULL DEFAULT 5 CHECK (`rating` BETWEEN 1 AND 5),
+    `status`     ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Seed the 5 existing frontend testimonials as approved reviews
+INSERT INTO `customer_reviews` (`name`, `role`, `message`, `rating`, `status`) VALUES
+  ('Arjun Ramesh',   'Business Traveler', 'Punctual, clean cars and courteous drivers. RK is my go-to for airport runs.',                   5, 'approved'),
+  ('Priya Sundaram', 'Family Trip',       'Our Ooty trip was stress-free. The driver was patient and knew every scenic stop.',               5, 'approved'),
+  ('Vikram N.',      'Corporate Client',  'We use RK for all executive travel. Reliability and pricing are unmatched.',                      5, 'approved'),
+  ('Meera Krishnan', 'Temple Tour',       'Rameshwaram darshan was seamless. Comfortable ride and thoughtful planning.',                     5, 'approved'),
+  ('Rahul Iyer',     'Wedding',           'Fleet arrived on time, immaculately maintained. Guests were impressed.',                          5, 'approved')
+ON DUPLICATE KEY UPDATE `name`=`name`;

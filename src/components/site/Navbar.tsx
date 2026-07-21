@@ -38,7 +38,7 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
             <img 
               src={logo} 
               alt="RK Tours Logo" 
-              className={`h-20 w-auto ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_12px_rgba(255,255,255,1)]" : ""}`} 
+              className={`h-12 sm:h-16 lg:h-20 w-auto object-contain ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_8px_rgba(0,0,0,0.4)]" : ""}`} 
             />
           </Link>
 

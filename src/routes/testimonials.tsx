@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { PageHero } from "@/components/site/PageHero";
 import { TESTIMONIALS } from "@/lib/site";
 import { Quote, Star } from "lucide-react";
@@ -16,14 +17,53 @@ export const Route = createFileRoute("/testimonials")({
   component: Testimonials,
 });
 
+interface DBReview {
+  id: number;
+  name: string;
+  role: string | null;
+  message: string;
+  rating: number;
+  created_at: string;
+}
+
+function getBackendUrl(endpoint: string) {
+  if (import.meta.env.DEV) return `http://localhost/rk-journeys-elevated/backend/${endpoint}`;
+  const origin = window.location.origin;
+  const parts = window.location.pathname.split("/");
+  const sub = parts[1] && parts[1] !== "testimonials" ? `/${parts[1]}` : "";
+  return `${origin}${sub}/backend/${endpoint}`;
+}
+
 function Testimonials() {
+  const [dbReviews, setDbReviews] = useState<DBReview[]>([]);
+  const [loadedFromDb, setLoadedFromDb] = useState(false);
+
+  useEffect(() => {
+    fetch(`${getBackendUrl("reviews.php")}?public=1`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.status === "success" && Array.isArray(data.reviews)) {
+          setDbReviews(data.reviews);
+          setLoadedFromDb(true);
+        }
+      })
+      .catch(() => {
+        // Silently fall back to static data if backend is unavailable
+      });
+  }, []);
+
+  // Use DB reviews if available, otherwise fall back to static TESTIMONIALS
+  const reviews = loadedFromDb
+    ? dbReviews.map((r) => ({ name: r.name, role: r.role ?? "", text: r.message, rating: r.rating }))
+    : TESTIMONIALS;
+
   return (
     <>
       <PageHero eyebrow="Testimonials" title="Loved by travelers across India." subtitle="Real words from customers who trusted us with their journeys." />
 
       <section className="section pt-0">
         <div className="container-x grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
+          {reviews.map((t, i) => (
             <article key={i} className="card-float p-8 relative">
               <Quote className="absolute right-6 top-6 size-8 text-primary/15" />
               <div className="flex items-center gap-1 text-amber-500">

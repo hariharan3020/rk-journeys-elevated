@@ -70,7 +70,7 @@ function AdminIndex() {
           localStorage.setItem("isAdminAuthenticated", "true");
           localStorage.setItem(
             "adminUser",
-            JSON.stringify({ username: data.user.username, role: "admin" })
+            JSON.stringify({ id: data.user.id, username: data.user.username, role: "admin" })
           );
           // Redirect to admin dashboard
           router.navigate({ to: "/admin/dashboard" });

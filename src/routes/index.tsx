@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, useEffect, useRef } from "react";
 import {
   ShieldCheck, Wallet, HeadphonesIcon, Award, MapPinned, Star, ChevronRight,
   Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, Phone,
+  CheckCircle2, AlertCircle,
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import mobileHero from "@/assets/mobile hero.png";
@@ -16,6 +18,25 @@ import { BookNowButton } from "@/components/site/BookNow";
 import { FleetCard } from "@/components/site/FleetCard";
 import { Navbar } from "@/components/site/Navbar";
 import { FLEET, SERVICES, TESTIMONIALS, FAQS, PACKAGES } from "@/lib/site";
+
+// ── Types ────────────────────────────────────────────────────────────────────
+interface ReviewItem {
+  name: string;
+  role: string;
+  text: string;
+  rating: number;
+}
+
+// ── Backend helper ────────────────────────────────────────────────────────────
+function getBackendUrl(endpoint: string) {
+  const custom = typeof localStorage !== "undefined" ? localStorage.getItem("CUSTOM_BACKEND_URL") : null;
+  if (custom) return `${custom}/${endpoint}`;
+  if (import.meta.env.DEV) return `http://localhost/rk-journeys-elevated/backend/${endpoint}`;
+  const origin = window.location.origin;
+  const parts = window.location.pathname.split("/");
+  const sub = parts[1] && parts[1] !== "" ? `/${parts[1]}` : "";
+  return `${origin}${sub}/backend/${endpoint}`;
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,6 +85,84 @@ const galleryImages = [
 ];
 
 function Home() {
+  // ── Reviews state ──────────────────────────────────────────────────────────
+  const [reviews, setReviews] = useState<ReviewItem[]>(TESTIMONIALS);
+  const [loadedFromDb, setLoadedFromDb] = useState(false);
+
+  // Form state
+  const [formName, setFormName] = useState("");
+  const [formRole, setFormRole] = useState("");
+  const [formRating, setFormRating] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(false);
+  const [formError, setFormError] = useState("");
+
+  // Fetch approved reviews from DB
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch(`${getBackendUrl("reviews.php")}?public=1`);
+      const data = await res.json();
+      if (data.status === "success" && Array.isArray(data.reviews) && data.reviews.length > 0) {
+        setReviews(
+          data.reviews.map((r: any) => ({
+            name: r.name,
+            role: r.role ?? "",
+            text: r.message,
+            rating: r.rating,
+          }))
+        );
+        setLoadedFromDb(true);
+      }
+    } catch {
+      // Keep static fallback silently
+    }
+  };
+
+  useEffect(() => { fetchReviews(); }, []);
+
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormError("");
+    setFormSuccess(false);
+    setFormLoading(true);
+
+    try {
+      const res = await fetch(getBackendUrl("submit-review.php"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formName,
+          role: formRole,
+          rating: Number(formRating),
+          message: formMessage,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.status === "success") {
+        setFormSuccess(true);
+        setFormName("");
+        setFormRole("");
+        setFormRating("");
+        setFormMessage("");
+        // Refresh displayed reviews after submission
+        await fetchReviews();
+        // Auto-hide success message after 6 s
+        setTimeout(() => setFormSuccess(false), 6000);
+      } else {
+        setFormError(data.message || "Failed to submit. Please try again.");
+      }
+    } catch {
+      setFormError("Could not connect to the server. Please check your connection.");
+    } finally {
+      setFormLoading(false);
+    }
+  };
+
+  // Duplicate reviews so the marquee loops seamlessly
+  const marqueeItems = reviews.length > 0 ? [...reviews, ...reviews] : [...TESTIMONIALS, ...TESTIMONIALS];
+
   return (
     <>
       {/* HERO */}
@@ -266,7 +365,7 @@ function Home() {
         </div>
         <div className="mt-12 relative">
           <div className="flex gap-6 marquee w-max px-6">
-            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            {marqueeItems.map((t, i) => (
               <div key={i} className="w-[340px] shrink-0 card-float p-6">
                 <div className="flex items-center gap-1 text-amber-500">
                   {[...Array(t.rating)].map((_, k) => <Star key={k} className="size-4 fill-current" />)}
@@ -288,14 +387,56 @@ function Home() {
         <div className="mt-16 container-x">
           <div className="max-w-2xl mx-auto card-float p-8 rounded-3xl">
             <h3 className="font-display font-bold text-2xl text-heading mb-6">Share your experience</h3>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-heading mb-2">Your Name</label>
-                <input type="text" placeholder="Enter your name" className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" required />
+
+            {formSuccess && (
+              <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+                <CheckCircle2 className="size-5 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold">Thank you for your review!</p>
+                  <p className="mt-0.5 opacity-80">Your experience has been submitted and will appear here once approved.</p>
+                </div>
+              </div>
+            )}
+
+            {formError && (
+              <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
+                <AlertCircle className="size-5 shrink-0 mt-0.5" />
+                <p>{formError}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleReviewSubmit} className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-heading mb-2">Your Name <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    placeholder="e.g. Arjun Ramesh"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-heading mb-2">Trip Type <span className="text-paragraph text-xs font-normal">(optional)</span></label>
+                  <input
+                    type="text"
+                    value={formRole}
+                    onChange={(e) => setFormRole(e.target.value)}
+                    placeholder="e.g. Family Trip, Airport Run"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-heading mb-2">Rating</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" required>
+                <label className="block text-sm font-medium text-heading mb-2">Rating <span className="text-red-500">*</span></label>
+                <select
+                  value={formRating}
+                  onChange={(e) => setFormRating(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                >
                   <option value="">Select rating</option>
                   <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
                   <option value="4">⭐⭐⭐⭐ (4 stars)</option>
@@ -305,10 +446,24 @@ function Home() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-heading mb-2">Your Review</label>
-                <textarea placeholder="Share your experience with RK Tours..." rows={4} className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none" required />
+                <label className="block text-sm font-medium text-heading mb-2">Your Review <span className="text-red-500">*</span></label>
+                <textarea
+                  value={formMessage}
+                  onChange={(e) => setFormMessage(e.target.value)}
+                  placeholder="Share your experience with RK Tours..."
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                  required
+                  minLength={10}
+                />
               </div>
-              <button type="submit" className="btn-primary w-full">Submit Review</button>
+              <button
+                type="submit"
+                disabled={formLoading}
+                className="btn-primary w-full disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {formLoading ? "Submitting…" : "Submit Review"}
+              </button>
             </form>
           </div>
         </div>
