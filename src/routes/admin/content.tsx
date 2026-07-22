@@ -4,13 +4,14 @@ import {
   Home, Info, Briefcase, Car, Package, HelpCircle, Image as ImageIcon,
   Save, Plus, Trash2, GripVertical, CheckCircle, AlertTriangle,
   ChevronDown, ChevronUp, Eye, EyeOff, Phone, Mail, Globe,
-  Edit3, RefreshCw,
+  Edit3, RefreshCw, IndianRupee,
 } from "lucide-react";
 import { AdminLayout } from "@/components/site/AdminLayout";
 import {
   useSiteContent, saveSiteContent,
   type SiteContent, type ServiceItem, type FleetItem,
   type PackageItem, type FaqItem, type WhyUsItem, type GalleryImage,
+  type TariffItem, type TariffRate, type TariffTableRow,
 } from "@/lib/useSiteContent";
 
 // ── Asset imports for legacy image key previews ───────────────────────────────
@@ -41,7 +42,7 @@ export const Route = createFileRoute("/admin/content")({
 });
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type Tab = "hero" | "siteInfo" | "whyUs" | "services" | "fleet" | "packages" | "faqs" | "gallery";
+type Tab = "hero" | "siteInfo" | "whyUs" | "services" | "fleet" | "packages" | "faqs" | "gallery" | "tariff";
 type SaveState = "idle" | "saving" | "saved" | "error";
 
 // ── Shared UI helpers ─────────────────────────────────────────────────────────
@@ -111,6 +112,7 @@ const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "whyUs",   label: "Why Us",       icon: CheckCircle },
   { id: "services", label: "Services",     icon: Briefcase },
   { id: "fleet",    label: "Fleet",        icon: Car },
+  { id: "tariff",   label: "Tariff",       icon: IndianRupee },
   { id: "packages", label: "Packages",     icon: Package },
   { id: "faqs",     label: "FAQs",         icon: HelpCircle },
   { id: "gallery",  label: "Gallery",      icon: ImageIcon },
@@ -121,11 +123,6 @@ function ContentEditorPage() {
   const { content, loading } = useSiteContent();
   const [activeTab, setActiveTab] = useState<Tab>("hero");
   const [saveState, setSaveState] = useState<SaveState>("idle");
-  const [adminPassword, setAdminPassword] = useState(() => {
-    return typeof sessionStorage !== "undefined" ? sessionStorage.getItem("admin_pw_session") ?? "" : "";
-  });
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
-  const [pendingSaveSection, setPendingSaveSection] = useState<{ key: keyof SiteContent; value: unknown } | null>(null);
 
   // Track which sections have unsaved local changes — skip backend sync for those
   const [dirty, setDirty] = useState<Set<keyof SiteContent>>(new Set());
@@ -139,6 +136,7 @@ function ContentEditorPage() {
   const [packages, setPackages] = useState(content.packages);
   const [faqs, setFaqs] = useState(content.faqs);
   const [gallery, setGallery] = useState(content.gallery);
+  const [tariff, setTariff] = useState(content.tariff);
 
   // Helpers that mark a section dirty when the user edits it
   const markDirty = (key: keyof SiteContent) => setDirty((prev) => new Set(prev).add(key));
@@ -151,6 +149,7 @@ function ContentEditorPage() {
   const setPackagesDirty= (v: SiteContent["packages"]) => { setPackages(v); markDirty("packages"); };
   const setFaqsDirty    = (v: SiteContent["faqs"])     => { setFaqs(v);     markDirty("faqs"); };
   const setGalleryDirty = (v: SiteContent["gallery"])  => { setGallery(v);  markDirty("gallery"); };
+  const setTariffDirty  = (v: SiteContent["tariff"])   => { setTariff(v);   markDirty("tariff"); };
 
   // Sync drafts from backend ONLY for sections that are not locally dirty
   useEffect(() => {
@@ -162,19 +161,19 @@ function ContentEditorPage() {
     if (!dirty.has("packages")) setPackages(content.packages);
     if (!dirty.has("faqs"))     setFaqs(content.faqs);
     if (!dirty.has("gallery"))  setGallery(content.gallery);
+    if (!dirty.has("tariff"))   setTariff(content.tariff);
   }, [content]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const adminUser = (() => {
     try { return JSON.parse(localStorage.getItem("adminUser") ?? "{}"); } catch { return {}; }
   })();
 
-  const doSave = useCallback(async (sectionKey: keyof SiteContent, value: unknown, password: string) => {
+  const doSave = useCallback(async (sectionKey: keyof SiteContent, value: unknown) => {
+    const password = typeof sessionStorage !== "undefined" ? sessionStorage.getItem("admin_pw_session") ?? "" : "";
     setSaveState("saving");
     const result = await saveSiteContent(sectionKey, value, adminUser.username ?? "admin", password);
     if (result.ok) {
       setSaveState("saved");
-      sessionStorage.setItem("admin_pw_session", password);
-      setAdminPassword(password);
       // Clear dirty flag for this section — backend is now in sync
       setDirty((prev) => { const next = new Set(prev); next.delete(sectionKey); return next; });
       setTimeout(() => setSaveState("idle"), 3000);
@@ -185,22 +184,8 @@ function ContentEditorPage() {
   }, [adminUser.username]);
 
   const handleSave = useCallback((sectionKey: keyof SiteContent, value: unknown) => {
-    if (adminPassword) {
-      doSave(sectionKey, value, adminPassword);
-    } else {
-      setPendingSaveSection({ key: sectionKey, value });
-      setShowPasswordPrompt(true);
-    }
-  }, [adminPassword, doSave]);
-
-  const handlePasswordConfirm = (pw: string) => {
-    setAdminPassword(pw);
-    setShowPasswordPrompt(false);
-    if (pendingSaveSection) {
-      doSave(pendingSaveSection.key, pendingSaveSection.value, pw);
-      setPendingSaveSection(null);
-    }
-  };
+    doSave(sectionKey, value);
+  }, [doSave]);
 
   const currentSectionData = (): { key: keyof SiteContent; value: unknown } => {
     switch (activeTab) {
@@ -212,6 +197,7 @@ function ContentEditorPage() {
       case "packages": return { key: "packages", value: packages };
       case "faqs":     return { key: "faqs",     value: faqs };
       case "gallery":  return { key: "gallery",  value: gallery };
+      case "tariff":   return { key: "tariff",   value: tariff };
     }
   };
 
@@ -228,14 +214,6 @@ function ContentEditorPage() {
 
   return (
     <AdminLayout>
-      {/* Password Prompt Modal */}
-      {showPasswordPrompt && (
-        <PasswordPromptModal
-          onConfirm={handlePasswordConfirm}
-          onCancel={() => { setShowPasswordPrompt(false); setPendingSaveSection(null); }}
-        />
-      )}
-
       <div className="space-y-5">
         {/* Page heading */}
         <div className="flex items-center justify-between">
@@ -248,12 +226,6 @@ function ContentEditorPage() {
               <p className="text-xs text-paragraph mt-0.5">Edit every section of your website</p>
             </div>
           </div>
-          {adminPassword && (
-            <button onClick={() => { setAdminPassword(""); sessionStorage.removeItem("admin_pw_session"); }}
-              className="text-xs text-paragraph hover:text-red-500 transition flex items-center gap-1">
-              <EyeOff className="size-3" /> Clear session password
-            </button>
-          )}
         </div>
 
         {/* Main layout */}
@@ -305,6 +277,7 @@ function ContentEditorPage() {
               {activeTab === "whyUs" && <WhyUsEditor items={whyUs} setItems={setWhyUsDirty} />}
               {activeTab === "services" && <ServicesEditor items={services} setItems={setServicesDirty} />}
               {activeTab === "fleet" && <FleetEditor items={fleet} setItems={setFleetDirty} />}
+              {activeTab === "tariff" && <TariffEditor tariff={tariff} setTariff={setTariffDirty} />}
               {activeTab === "packages" && <PackagesEditor items={packages} setItems={setPackagesDirty} />}
               {activeTab === "faqs" && <FaqsEditor items={faqs} setItems={setFaqsDirty} />}
               {activeTab === "gallery" && <GalleryEditor gallery={gallery} setGallery={setGalleryDirty} />}
@@ -319,39 +292,6 @@ function ContentEditorPage() {
         </div>
       </div>
     </AdminLayout>
-  );
-}
-
-// ── Password Prompt Modal ─────────────────────────────────────────────────────
-function PasswordPromptModal({ onConfirm, onCancel }: { onConfirm: (pw: string) => void; onCancel: () => void }) {
-  const [pw, setPw] = useState("");
-  return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
-      <div className="bg-background rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary"><Save className="size-5" /></div>
-          <div>
-            <p className="font-display font-bold text-heading">Confirm Your Password</p>
-            <p className="text-xs text-paragraph">Required to save changes</p>
-          </div>
-        </div>
-        <input
-          type="password"
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && pw && onConfirm(pw)}
-          placeholder="Your admin password"
-          className={inputCls}
-          autoFocus
-        />
-        <div className="flex gap-2 justify-end">
-          <button onClick={onCancel} className="btn-ghost !py-2 !px-4 !text-sm">Cancel</button>
-          <button onClick={() => pw && onConfirm(pw)} disabled={!pw} className="btn-primary !py-2 !px-4 !text-sm gap-2 disabled:opacity-60">
-            <Save className="size-4" /> Save
-          </button>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -507,7 +447,7 @@ function FleetEditor({ items, setItems }: { items: FleetItem[]; setItems: (v: Fl
   const remove = (i: number) => setItems(items.filter((_, idx) => idx !== i));
   const add = () => setItems([
     ...items,
-    { name: "New Vehicle", image: "etios", passengers: 4, luggage: 3, ac: true, tag: "New", rate: "₹0/km" },
+    { name: "New Vehicle", image: "etios", passengers: 4, luggage: 3, ac: true, tag: "New", rate: "₹0/km", rateVisible: true },
   ]);
 
   return (
@@ -663,6 +603,17 @@ function FleetCardEditor({
             onChange={(e) => onUpdate("luggage", parseInt(e.target.value) || 0)} />
         </Field>
       </div>
+      <Field label="Rate badge visibility">
+        <label className="inline-flex items-center gap-2 text-sm text-paragraph">
+          <input
+            type="checkbox"
+            checked={item.rateVisible !== false}
+            onChange={(e) => onUpdate("rateVisible", e.target.checked)}
+            className="form-checkbox rounded border-border text-primary"
+          />
+          <span>{item.rateVisible === false ? "Hidden on fleet card" : "Shown on fleet card"}</span>
+        </label>
+      </Field>
       <Field label="Air Conditioning">
         <label className="inline-flex items-center gap-2 text-sm text-paragraph">
           <input type="checkbox" checked={item.ac} onChange={(e) => onUpdate("ac", e.target.checked)} className="form-checkbox rounded border-border text-primary" />
@@ -857,6 +808,295 @@ function PackageCard({
       </div>
       <Field label="Description">
         <input className={inputCls} value={item.desc} onChange={(e) => onUpdate("desc", e.target.value)} />
+      </Field>
+    </div>
+  );
+}
+
+// ── Tariff Editor ─────────────────────────────────────────────────────────────
+function TariffEditor({
+  tariff, setTariff,
+}: {
+  tariff: SiteContent["tariff"];
+  setTariff: (v: SiteContent["tariff"]) => void;
+}) {
+  const setItems = (items: TariffItem[]) => setTariff({ ...tariff, items });
+  const setNote  = (note: string)        => setTariff({ ...tariff, note });
+  const updateTableRow = (category: "outstation" | "local", index: number, field: keyof TariffTableRow, value: string) => {
+    const rows = [...(tariff.rows?.[category] ?? [])];
+    rows[index] = { ...rows[index], [field]: value };
+    setTariff({ ...tariff, rows: { ...tariff.rows, [category]: rows } });
+  };
+  const addTableRow = (category: "outstation" | "local") => {
+    const rows = [...(tariff.rows?.[category] ?? []), { vehicle: "New Vehicle", minKm: "300", farePerKm: "₹0", driverBata: "₹0", amount: "₹0" }];
+    setTariff({ ...tariff, rows: { ...tariff.rows, [category]: rows } });
+  };
+  const removeTableRow = (category: "outstation" | "local", index: number) => {
+    const rows = (tariff.rows?.[category] ?? []).filter((_, rowIndex) => rowIndex !== index);
+    setTariff({ ...tariff, rows: { ...tariff.rows, [category]: rows } });
+  };
+
+  const addItem = () => setItems([
+    ...tariff.items,
+    {
+      vehicle: "New Vehicle",
+      tag: "New",
+      passengers: 4,
+      luggage: 3,
+      ac: true,
+      featured: false,
+      rates: [{ tripType: "Outstation", rate: "₹0/km", category: "outstation" }],
+    },
+  ]);
+
+  const removeItem = (i: number) => setItems(tariff.items.filter((_, idx) => idx !== i));
+
+  const updateItem = (i: number, field: keyof TariffItem, val: unknown) => {
+    const n = [...tariff.items];
+    n[i] = { ...n[i], [field]: val };
+    setItems(n);
+  };
+
+  const addRate = (i: number) => {
+    const n = [...tariff.items];
+    n[i] = { ...n[i], rates: [...n[i].rates, { tripType: "New Trip Type", rate: "₹0", category: "local" }] };
+    setItems(n);
+  };
+
+  const updateRate = (i: number, ri: number, field: keyof TariffRate, val: string) => {
+    const n = [...tariff.items];
+    const rates = [...n[i].rates];
+    rates[ri] = { ...rates[ri], [field]: val };
+    n[i] = { ...n[i], rates };
+    setItems(n);
+  };
+
+  const removeRate = (i: number, ri: number) => {
+    const n = [...tariff.items];
+    n[i] = { ...n[i], rates: n[i].rates.filter((_, idx) => idx !== ri) };
+    setItems(n);
+  };
+
+  return (
+    <div className="space-y-5">
+      <SectionHeader
+        icon={IndianRupee}
+        title="Tariff"
+        subtitle="Vehicle rates per trip type — add, edit and reorder"
+      />
+
+      {/* Live preview banner */}
+      <div className="rounded-xl bg-primary/5 border border-primary/20 p-4 text-xs text-primary font-medium flex items-center gap-2">
+        <IndianRupee className="size-4 shrink-0" />
+        Changes here update the live Tariff page. Each vehicle card shows a rate table.
+      </div>
+
+      {/* Editable public tariff categories */}
+      <div className="rounded-2xl border border-border bg-surface p-4 space-y-4">
+        <div>
+          <p className="font-display font-bold text-sm text-heading">Tariff categories</p>
+          <p className="mt-1 text-xs text-paragraph">These two labels and descriptions appear in the tariff page selector and navigation dropdown.</p>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {(["outstation", "local"] as const).map((category) => (
+            <div key={category} className="rounded-xl border border-border bg-background p-3 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-wider text-primary">{category} category</p>
+              <Field label="Display name">
+                <input
+                  className={inputCls}
+                  value={tariff.categories?.[category]?.label ?? ""}
+                  onChange={(e) => setTariff({ ...tariff, categories: { ...tariff.categories, [category]: { ...tariff.categories[category], label: e.target.value } } })}
+                  placeholder={category === "outstation" ? "Outstation Tariff" : "Local Tariff"}
+                />
+              </Field>
+              <Field label="Short description">
+                <input
+                  className={inputCls}
+                  value={tariff.categories?.[category]?.description ?? ""}
+                  onChange={(e) => setTariff({ ...tariff, categories: { ...tariff.categories, [category]: { ...tariff.categories[category], description: e.target.value } } })}
+                  placeholder={category === "outstation" ? "Per kilometre journeys" : "City & airport packages"}
+                />
+              </Field>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Reference-style table editor */}
+      {(["outstation", "local"] as const).map((category) => (
+        <div key={category} className="rounded-2xl border border-border bg-surface p-4 space-y-4">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="font-display font-bold text-sm text-heading">{tariff.categories[category].label} table</p>
+              <p className="mt-1 text-xs text-paragraph">Edit the exact values shown in the public tariff table.</p>
+            </div>
+            <button onClick={() => addTableRow(category)} className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-white"><Plus className="size-3.5" /> Add row</button>
+          </div>
+          <div className="space-y-3">
+            {(tariff.rows?.[category] ?? []).map((row, index) => (
+              <div key={index} className="rounded-xl border border-border bg-background p-3 space-y-3">
+                {/* Row number indicator */}
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-primary">Row {index + 1}</span>
+                  <button onClick={() => removeTableRow(category, index)} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-red-400 hover:bg-red-50 hover:text-red-600 transition"><Trash2 className="size-3" /> Remove</button>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
+                  <Field label="Vehicle">
+                    <input className={inputCls} value={row.vehicle} onChange={(e) => updateTableRow(category, index, "vehicle", e.target.value)} placeholder="e.g. Swift" />
+                  </Field>
+                  <Field label="Rent / Day">
+                    <input className={inputCls} value={row.rentPerDay ?? ""} onChange={(e) => updateTableRow(category, index, "rentPerDay", e.target.value)} placeholder="e.g. ₹2600 or —" />
+                  </Field>
+                  <Field label="Free Km / Day">
+                    <input className={inputCls} value={row.minKm} onChange={(e) => updateTableRow(category, index, "minKm", e.target.value)} placeholder="e.g. 100 km" />
+                  </Field>
+                  <Field label="Fare / Km After Free">
+                    <input className={inputCls} value={row.farePerKm} onChange={(e) => updateTableRow(category, index, "farePerKm", e.target.value)} placeholder="e.g. ₹12" />
+                  </Field>
+                  <Field label="Driver Bata">
+                    <input className={inputCls} value={row.driverBata} onChange={(e) => updateTableRow(category, index, "driverBata", e.target.value)} placeholder="e.g. ₹400" />
+                  </Field>
+                  <Field label="Total">
+                    <input className={inputCls} value={row.amount} onChange={(e) => updateTableRow(category, index, "amount", e.target.value)} placeholder="e.g. ₹3000" />
+                  </Field>
+                  <Field label="Action Button Label">
+                    <input className={inputCls} value={row.actionLabel ?? ""} onChange={(e) => updateTableRow(category, index, "actionLabel", e.target.value)} placeholder="Book Now" />
+                  </Field>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <div className="space-y-4">
+        {tariff.items.map((item, i) => (
+          <div key={i} className={`rounded-2xl border-2 overflow-hidden ${item.featured ? "border-primary" : "border-border"}`}>
+            {/* Card header */}
+            <div className={`flex items-center justify-between px-4 py-3 ${item.featured ? "bg-primary/10" : "bg-surface"}`}>
+              <div className="flex items-center gap-3">
+                <span className="font-display font-bold text-sm text-heading">{item.vehicle || `Vehicle ${i + 1}`}</span>
+                {item.featured && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-white bg-primary px-2 py-0.5 rounded-full">
+                    Featured
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => updateItem(i, "featured", !item.featured)}
+                  className={`text-[11px] px-2.5 py-1 rounded-lg font-medium transition ${
+                    item.featured
+                      ? "bg-primary text-white"
+                      : "bg-background border border-border text-paragraph hover:border-primary hover:text-primary"
+                  }`}
+                >
+                  {item.featured ? "★ Featured" : "☆ Set Featured"}
+                </button>
+                <button onClick={() => removeItem(i)} className="size-7 grid place-items-center rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition">
+                  <Trash2 className="size-3.5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4 space-y-4">
+              {/* Basic info */}
+              <div className="grid sm:grid-cols-2 gap-3">
+                <Field label="Vehicle Name">
+                  <input className={inputCls} value={item.vehicle}
+                    onChange={(e) => updateItem(i, "vehicle", e.target.value)} />
+                </Field>
+                <Field label="Tag / Label">
+                  <input className={inputCls} value={item.tag}
+                    onChange={(e) => updateItem(i, "tag", e.target.value)} placeholder="e.g. Comfort Sedan" />
+                </Field>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <Field label="Passengers">
+                  <input type="number" className={inputCls} min={1} max={50} value={item.passengers}
+                    onChange={(e) => updateItem(i, "passengers", parseInt(e.target.value) || 1)} />
+                </Field>
+                <Field label="Luggage">
+                  <input type="number" className={inputCls} min={0} max={20} value={item.luggage}
+                    onChange={(e) => updateItem(i, "luggage", parseInt(e.target.value) || 0)} />
+                </Field>
+                <Field label="AC">
+                  <button
+                    type="button"
+                    onClick={() => updateItem(i, "ac", !item.ac)}
+                    className={`w-full rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+                      item.ac ? "bg-primary text-white" : "bg-surface border border-border text-paragraph"
+                    }`}
+                  >
+                    {item.ac ? "AC ✓" : "Non-AC"}
+                  </button>
+                </Field>
+              </div>
+
+              {/* Rates table */}
+              <div>
+                <p className="text-sm font-medium text-heading mb-2">Rate Table</p>
+                <div className="space-y-2">
+                  {item.rates.map((rate, ri) => (
+                    <div key={ri} className="flex items-center gap-2">
+                      <input
+                        className={inputCls + " flex-1"}
+                        value={rate.tripType}
+                        onChange={(e) => updateRate(i, ri, "tripType", e.target.value)}
+                        placeholder="Trip type (e.g. Outstation)"
+                      />
+                      <select
+                        className={inputCls + " w-36 shrink-0"}
+                        value={rate.category ?? (rate.tripType.toLowerCase().includes("outstation") ? "outstation" : "local")}
+                        onChange={(e) => updateRate(i, ri, "category", e.target.value as "outstation" | "local")}
+                      >
+                        <option value="outstation">Outstation</option>
+                        <option value="local">Local</option>
+                      </select>
+                      <input
+                        className={inputCls + " w-32 shrink-0"}
+                        value={rate.rate}
+                        onChange={(e) => updateRate(i, ri, "rate", e.target.value)}
+                        placeholder="₹14/km"
+                      />
+                      <button
+                        onClick={() => removeRate(i, ri)}
+                        className="size-8 shrink-0 grid place-items-center rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => addRate(i)}
+                  className="mt-2 flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition"
+                >
+                  <Plus className="size-3.5" /> Add rate row
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Add vehicle button */}
+      <button
+        onClick={addItem}
+        className="flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-border hover:border-primary text-paragraph hover:text-primary text-sm font-medium transition w-full justify-center"
+      >
+        <Plus className="size-4" /> Add Vehicle
+      </button>
+
+      {/* Footer note */}
+      <Field label="Footer Note" hint="Shown below the tariff cards on the live page">
+        <textarea
+          className={textareaCls + " h-20"}
+          value={tariff.note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Any extra charges, conditions..."
+        />
       </Field>
     </div>
   );

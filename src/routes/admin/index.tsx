@@ -17,21 +17,16 @@ function AdminIndex() {
   const [isRegistering, setIsRegistering] = useState(false);
 
   const getBackendUrl = (endpoint: string) => {
+    // 1. Runtime override (set via browser console for local dev)
     const customUrl = localStorage.getItem("CUSTOM_BACKEND_URL");
-    if (customUrl) {
-      return `${customUrl}/${endpoint}`;
-    }
+    if (customUrl) return `${customUrl.replace(/\/$/, "")}/${endpoint}`;
 
-    const origin = window.location.origin;
-    const pathname = window.location.pathname;
-    const pathParts = pathname.split("/");
-    const projectSubDir = pathParts[1] && pathParts[1] !== "admin" ? `/${pathParts[1]}` : "";
+    // 2. Build-time env variable (set in .env / .env.production)
+    const configuredUrl = import.meta.env.VITE_BACKEND_URL;
+    if (configuredUrl) return `${configuredUrl.replace(/\/$/, "")}/${endpoint}`;
 
-    if (import.meta.env.DEV) {
-      return `http://localhost/rk-journeys-elevated/backend/${endpoint}`;
-    }
-
-    return `${origin}${projectSubDir}/backend/${endpoint}`;
+    // 3. Always fall back to the production backend on the live domain
+    return `https://rktoursandtravels.in/backend/${endpoint}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,11 +48,16 @@ function AdminIndex() {
       });
 
       const text = await response.text();
-      let data;
+      let data: { status?: string; message?: string; user?: { id: number; username: string } };
       try {
         data = JSON.parse(text);
-      } catch (parseErr) {
-        throw new Error(`Invalid server response structure: ${text.substring(0, 100)}`);
+      } catch {
+        if (!text.trim()) {
+          throw new Error(
+            `The backend server is unavailable (HTTP ${response.status}). Start Apache/PHP or configure VITE_BACKEND_URL.`
+          );
+        }
+        throw new Error(`Backend returned a non-JSON response: ${text.substring(0, 100)}`);
       }
 
       if (response.ok && data.status === "success") {
@@ -72,6 +72,8 @@ function AdminIndex() {
             "adminUser",
             JSON.stringify({ id: data.user.id, username: data.user.username, role: "admin" })
           );
+          // Store password in sessionStorage so the content editor can save without re-prompting
+          sessionStorage.setItem("admin_pw_session", password);
           // Redirect to admin dashboard
           router.navigate({ to: "/admin/dashboard" });
         }
@@ -79,7 +81,11 @@ function AdminIndex() {
         setError(data.message || `Failed to ${isRegistering ? "register" : "login"}`);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to connect to the backend server. Please verify database connection.");
+      setError(
+        err instanceof TypeError && err.message === "Failed to fetch"
+          ? `Unable to reach the backend server at ${getBackendUrl("login.php")}. Check your internet connection or contact support.`
+          : err.message || "Failed to connect to the backend server. Please verify database connection."
+      );
       console.error(err);
     } finally {
       setLoading(false);

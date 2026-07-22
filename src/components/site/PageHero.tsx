@@ -13,10 +13,7 @@ export function PageHero({
 }) {
   return (
     <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
-      <div
-        className="absolute inset-0 -z-10 bg-white"
-        aria-hidden
-      />
+      <div className="absolute inset-0 -z-10 bg-white" aria-hidden />
       <div className="container-x fade-up">
         {eyebrow && <span className="eyebrow">{eyebrow}</span>}
         <h1 className="mt-3 font-display font-bold text-4xl md:text-6xl leading-[1.05] max-w-3xl text-heading">

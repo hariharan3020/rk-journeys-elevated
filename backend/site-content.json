@@ -98,19 +98,21 @@
             "name": "Toyota Etios",
             "image": "etios",
             "passengers": 4,
-            "luggage": 3,
+            "luggage": 4,
             "ac": true,
             "tag": "Comfort Sedan",
-            "rate": "₹14/km"
+            "rate": "14/km",
+            "rateVisible": false
         },
         {
             "name": "Swift Dzire",
             "image": "dzire",
             "passengers": 4,
-            "luggage": 3,
+            "luggage": 2,
             "ac": true,
             "tag": "City Favorite",
-            "rate": "₹14/km"
+            "rate": "₹14/km",
+            "rateVisible": false
         },
         {
             "name": "Maruti Ciaz",
@@ -119,7 +121,8 @@
             "luggage": 4,
             "ac": true,
             "tag": "Premium Sedan",
-            "rate": "₹15/km"
+            "rate": "₹15/km",
+            "rateVisible": false
         },
         {
             "name": "Toyota Innova Crysta",
@@ -128,16 +131,18 @@
             "luggage": 5,
             "ac": true,
             "tag": "Premium MPV",
-            "rate": "₹18/km"
+            "rate": "₹18/km",
+            "rateVisible": false
         },
         {
             "name": "Force Traveller",
             "image": "forceTraveller",
             "passengers": 12,
-            "luggage": 8,
+            "luggage": 10,
             "ac": true,
             "tag": "Group Travel",
-            "rate": "₹22/km"
+            "rate": "₹22/km",
+            "rateVisible": false
         }
     ],
     "packages": [
@@ -325,5 +330,228 @@
                 "visible": true
             }
         ]
+    },
+    "tariff": {
+        "categories": {
+            "outstation": {
+                "label": "Outstation Tariff",
+                "description": "Per kilometre journeys"
+            },
+            "local": {
+                "label": "Local Tariff",
+                "description": "City & airport packages"
+            }
+        },
+        "rows": {
+            "outstation": [
+                {
+                    "vehicle": "Swift",
+                    "minKm": "300",
+                    "farePerKm": "₹14",
+                    "driverBata": "₹400",
+                    "amount": "₹4300"
+                },
+                {
+                    "vehicle": "Etios",
+                    "minKm": "300",
+                    "farePerKm": "₹14",
+                    "driverBata": "₹400",
+                    "amount": "₹4300"
+                },
+                {
+                    "vehicle": "Ciaz",
+                    "minKm": "300",
+                    "farePerKm": "₹14",
+                    "driverBata": "₹400",
+                    "amount": "₹4600"
+                },
+                {
+                    "vehicle": "Ertiga",
+                    "minKm": "350",
+                    "farePerKm": "₹17",
+                    "driverBata": "₹400",
+                    "amount": "₹5500"
+                },
+                {
+                    "vehicle": "Innova",
+                    "minKm": "350",
+                    "farePerKm": "₹18",
+                    "driverBata": "₹500",
+                    "amount": "₹6800"
+                },
+                {
+                    "vehicle": "Crysta",
+                    "minKm": "400",
+                    "farePerKm": "₹20",
+                    "driverBata": "₹500",
+                    "amount": "₹8500"
+                },
+                {
+                    "vehicle": "Coach Van",
+                    "minKm": "400",
+                    "farePerKm": "₹45",
+                    "driverBata": "₹800",
+                    "amount": "₹18800"
+                },
+                {
+                    "vehicle": "Bus",
+                    "minKm": "400",
+                    "farePerKm": "Call for details",
+                    "driverBata": "Call for details",
+                    "amount": "Call for details",
+                    "actionLabel": "Contact Us"
+                }
+            ],
+            "local": [
+                {
+                    "vehicle": "Swift",
+                    "minKm": "80",
+                    "farePerKm": "₹1,200 / 8 hrs",
+                    "driverBata": "Included",
+                    "amount": "₹1,200"
+                },
+                {
+                    "vehicle": "Etios",
+                    "minKm": "80",
+                    "farePerKm": "₹1,200 / 8 hrs",
+                    "driverBata": "Included",
+                    "amount": "₹1,200"
+                },
+                {
+                    "vehicle": "Ciaz or Amaze",
+                    "minKm": "80",
+                    "farePerKm": "₹1,400 / 8 hrs",
+                    "driverBata": "Included",
+                    "amount": "₹1,400"
+                },
+                {
+                    "vehicle": "Innova Crysta",
+                    "minKm": "80",
+                    "farePerKm": "₹1,800 / 8 hrs",
+                    "driverBata": "Included",
+                    "amount": "₹1,800"
+                },
+                {
+                    "vehicle": "Force Traveller",
+                    "minKm": "80",
+                    "farePerKm": "₹2,500 / 8 hrs",
+                    "driverBata": "Included",
+                    "amount": "₹2,500"
+                }
+            ]
+        },
+        "items": [
+            {
+                "vehicle": "Toyota Etios",
+                "tag": "Comfort Sedan",
+                "passengers": 4,
+                "luggage": 3,
+                "ac": true,
+                "featured": false,
+                "rates": [
+                    {
+                        "tripType": "Outstation",
+                        "rate": "₹14/km"
+                    },
+                    {
+                        "tripType": "Local (8hrs/80km)",
+                        "rate": "₹1,200"
+                    },
+                    {
+                        "tripType": "Airport Transfer",
+                        "rate": "₹800"
+                    }
+                ]
+            },
+            {
+                "vehicle": "Swift Dzire",
+                "tag": "City Favourite",
+                "passengers": 4,
+                "luggage": 3,
+                "ac": true,
+                "featured": true,
+                "rates": [
+                    {
+                        "tripType": "Outstation",
+                        "rate": "₹14/km"
+                    },
+                    {
+                        "tripType": "Local (8hrs/80km)",
+                        "rate": "₹1,200"
+                    },
+                    {
+                        "tripType": "Airport Transfer",
+                        "rate": "₹800"
+                    }
+                ]
+            },
+            {
+                "vehicle": "Maruti Ciaz",
+                "tag": "Premium Sedan",
+                "passengers": 4,
+                "luggage": 4,
+                "ac": true,
+                "featured": false,
+                "rates": [
+                    {
+                        "tripType": "Outstation",
+                        "rate": "₹15/km"
+                    },
+                    {
+                        "tripType": "Local (8hrs/80km)",
+                        "rate": "₹1,400"
+                    },
+                    {
+                        "tripType": "Airport Transfer",
+                        "rate": "₹900"
+                    }
+                ]
+            },
+            {
+                "vehicle": "Toyota Innova Crysta",
+                "tag": "Premium MPV",
+                "passengers": 7,
+                "luggage": 5,
+                "ac": true,
+                "featured": false,
+                "rates": [
+                    {
+                        "tripType": "Outstation",
+                        "rate": "₹18/km"
+                    },
+                    {
+                        "tripType": "Local (8hrs/80km)",
+                        "rate": "₹1,800"
+                    },
+                    {
+                        "tripType": "Airport Transfer",
+                        "rate": "₹1,200"
+                    }
+                ]
+            },
+            {
+                "vehicle": "Force Traveller",
+                "tag": "Group Travel",
+                "passengers": 12,
+                "luggage": 8,
+                "ac": true,
+                "featured": false,
+                "rates": [
+                    {
+                        "tripType": "Outstation",
+                        "rate": "₹22/km"
+                    },
+                    {
+                        "tripType": "Local (8hrs/80km)",
+                        "rate": "₹2,500"
+                    },
+                    {
+                        "tripType": "Airport Transfer",
+                        "rate": "₹1,800"
+                    }
+                ]
+            }
+        ],
+        "note": "Other state permits, border taxes, toll gate charges, and parking fees are extra. Driver batta as applicable for outstation trips. Rates may vary based on season and route."
     }
 }

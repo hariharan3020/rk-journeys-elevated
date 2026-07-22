@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { ScrollExperience } from "@/components/site/ScrollExperience";
 
 function NotFoundComponent() {
   const location = useRouterState({ select: (s) => s.location });
@@ -77,6 +78,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollExperience enabled={!isAdminPath} />
       {!isAdminPath && <Navbar />}
       <main className="min-h-screen">
         <Outlet />

@@ -1,11 +1,15 @@
 <?php
 // ── Database configuration ─────────────────────────────────────────────────
-// Hostinger MySQL settings — get these from:
-// hPanel → Databases → MySQL Databases → your database details
-define('DB_HOST', 'localhost');          // Usually 'localhost' on Hostinger
-define('DB_USER', 'u910074219_rk_tours'); // Your Hostinger DB username
-define('DB_PASS', 'Techinta@2026');       // Your Hostinger DB password
-define('DB_NAME', 'u910074219_rk_tours'); // Your Hostinger DB name
+$isLocalDevelopment = in_array(
+    $_SERVER['HTTP_HOST'] ?? '',
+    ['localhost', '127.0.0.1', '127.0.0.1:8000', 'localhost:8000', '127.0.0.1:8080', 'localhost:8080'],
+    true
+);
+
+define('DB_HOST', '127.0.0.1');
+define('DB_USER', $isLocalDevelopment ? 'root' : 'u910074219_rk_tours');
+define('DB_PASS', $isLocalDevelopment ? '' : 'Techinta@2026');
+define('DB_NAME', $isLocalDevelopment ? 'rk_tours_and_travels' : 'u910074219_rk_tours');
 
 try {
     $pdo = new PDO(

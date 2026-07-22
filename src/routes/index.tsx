@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   ShieldCheck, Wallet, HeadphonesIcon, Award, MapPinned, Star, ChevronRight,
   Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, Phone,
@@ -7,28 +7,15 @@ import {
 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
 import mobileHero from "@/assets/mobile hero.png";
-import destOoty from "@/assets/dest-ooty.jpg";
-import destMadurai from "@/assets/dest-madurai.jpg";
-import destKodai from "@/assets/dest-kodaikanal.jpg";
-import destMunnar from "@/assets/dest-munnar.jpg";
-import destRam from "@/assets/dest-rameshwaram.jpg";
-import destCbe from "@/assets/dest-coimbatore.jpg";
 import newLaunchVideo from "@/assets/WhatsApp Video 2026-07-17 at 11.10.49.mp4";
 import { BookNowButton } from "@/components/site/BookNow";
 import { FleetCard } from "@/components/site/FleetCard";
-import { Navbar } from "@/components/site/Navbar";
 import { useSiteContent } from "@/lib/useSiteContent";
 import { TESTIMONIALS } from "@/lib/site";
+import { PremiumReveal } from "@/components/site/PremiumReveal";
 
-// ── Types ────────────────────────────────────────────────────────────────────
-interface ReviewItem {
-  name: string;
-  role: string;
-  text: string;
-  rating: number;
-}
+interface ReviewItem { name: string; role: string; text: string; rating: number; }
 
-// ── Backend helper ────────────────────────────────────────────────────────────
 function getBackendUrl(endpoint: string) {
   const custom = typeof localStorage !== "undefined" ? localStorage.getItem("CUSTOM_BACKEND_URL") : null;
   if (custom) return `${custom}/${endpoint}`;
@@ -53,7 +40,7 @@ export const Route = createFileRoute("/")({
 });
 
 const iconMap = { Plane, Clock, Briefcase, Landmark, Users, Palmtree, HeartHandshake, BusFront, Timer, MapPinned, ShieldCheck, Wallet, HeadphonesIcon, Award } as Record<string, any>;
-const destImg: Record<string, string> = { ooty: destOoty, madurai: destMadurai, kodaikanal: destKodai, munnar: destMunnar, rameshwaram: destRam, coimbatore: destCbe };
+
 const galleryImages = [
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.48.jpeg",
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.49_1.jpeg",
@@ -64,35 +51,12 @@ const galleryImages = [
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.51.jpeg",
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52_1.jpeg",
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.52.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53_2.jpeg",
   "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.53.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.54.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55_2.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.55.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.56.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57_2.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.57.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.58.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_1.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59_2.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.59.jpeg",
-  "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.11.00.jpeg"
 ];
 
 function Home() {
   const { content } = useSiteContent();
-
-  // ── Reviews state ──────────────────────────────────────────────────────────
   const [reviews, setReviews] = useState<ReviewItem[]>(TESTIMONIALS);
-  const [loadedFromDb, setLoadedFromDb] = useState(false);
-
-  // Form state
   const [formName, setFormName] = useState("");
   const [formRole, setFormRole] = useState("");
   const [formRating, setFormRating] = useState("");
@@ -101,94 +65,49 @@ function Home() {
   const [formSuccess, setFormSuccess] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // Fetch approved reviews from DB
   const fetchReviews = async () => {
     try {
       const res = await fetch(`${getBackendUrl("reviews.php")}?public=1`);
       const data = await res.json();
       if (data.status === "success" && Array.isArray(data.reviews) && data.reviews.length > 0) {
-        setReviews(
-          data.reviews.map((r: any) => ({
-            name: r.name,
-            role: r.role ?? "",
-            text: r.message,
-            rating: r.rating,
-          }))
-        );
-        setLoadedFromDb(true);
+        setReviews(data.reviews.map((r: any) => ({ name: r.name, role: r.role ?? "", text: r.message, rating: r.rating })));
       }
-    } catch {
-      // Keep static fallback silently
-    }
+    } catch {}
   };
 
   useEffect(() => { fetchReviews(); }, []);
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormError("");
-    setFormSuccess(false);
-    setFormLoading(true);
-
+    setFormError(""); setFormSuccess(false); setFormLoading(true);
     try {
       const res = await fetch(getBackendUrl("submit-review.php"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formName,
-          role: formRole,
-          rating: Number(formRating),
-          message: formMessage,
-        }),
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: formName, role: formRole, rating: Number(formRating), message: formMessage }),
       });
       const data = await res.json();
-
       if (data.status === "success") {
-        setFormSuccess(true);
-        setFormName("");
-        setFormRole("");
-        setFormRating("");
-        setFormMessage("");
-        // Refresh displayed reviews after submission
+        setFormSuccess(true); setFormName(""); setFormRole(""); setFormRating(""); setFormMessage("");
         await fetchReviews();
-        // Auto-hide success message after 6 s
         setTimeout(() => setFormSuccess(false), 6000);
-      } else {
-        setFormError(data.message || "Failed to submit. Please try again.");
-      }
-    } catch {
-      setFormError("Could not connect to the server. Please check your connection.");
-    } finally {
-      setFormLoading(false);
-    }
+      } else { setFormError(data.message || "Failed to submit. Please try again."); }
+    } catch { setFormError("Could not connect to the server. Please check your connection."); }
+    finally { setFormLoading(false); }
   };
 
-  // Duplicate reviews so the marquee loops seamlessly
   const marqueeItems = reviews.length > 0 ? [...reviews, ...reviews] : [...TESTIMONIALS, ...TESTIMONIALS];
 
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          {/* Desktop hero — hidden on mobile */}
-          <img
-            src={hero}
-            alt="Scenic mountain road with family travelers"
-            width={1920}
-            height={1080}
-            className="hidden md:block w-full h-full object-cover"
-          />
-          {/* Mobile hero — visible only on mobile */}
-          <img
-            src={mobileHero}
-            alt="RK Tours and Travels mobile hero"
-            className="block md:hidden w-full h-full object-cover"
-          />
+      <section className="relative min-h-screen flex items-center overflow-hidden hero-stage">
+        <div className="absolute inset-0 -z-10" data-hero-parallax>
+          <img src={hero} alt="Scenic mountain road with family travelers" width={1920} height={1080} className="hidden md:block w-full h-full object-cover" />
+          <img src={mobileHero} alt="RK Tours and Travels mobile hero" className="block md:hidden w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60" />
         </div>
         <div className="container-x relative z-10">
-          <div className="pt-24">
+          <div className="pt-24" data-reveal>
             <div className="max-w-4xl fade-up">
               <h1 className="font-display font-bold text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.1] tracking-tight mb-4">
                 {content.hero.headline}
@@ -199,46 +118,44 @@ function Home() {
               <p className="text-xl md:text-2xl text-white/80 font-medium mb-10">
                 {content.hero.subtext}
               </p>
-            <div className="flex flex-wrap gap-4 mb-12">
-              <BookNowButton />
-              <Link to="/tariff" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
-                View Tariff <ChevronRight className="size-4" />
-              </Link>
+              <div className="flex flex-wrap gap-4 mb-12">
+                <BookNowButton />
+                <Link to="/tariff" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
+                  View Tariff <ChevronRight className="size-4" />
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { icon: ShieldCheck, text: "Safe & Reliable" },
+                  { icon: Award, text: "Comfort & Luxury" },
+                  { icon: HeadphonesIcon, text: "24/7 Service" },
+                  { icon: MapPinned, text: "Pan India Service" },
+                ].map((item) => (
+                  <div key={item.text} className="glass rounded-2xl px-5 py-4 flex items-center gap-3">
+                    <item.icon className="size-6 text-primary" />
+                    <span className="font-display font-semibold text-white text-sm">{item.text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { icon: ShieldCheck, text: "Safe & Reliable" },
-                { icon: Award, text: "Comfort & Luxury" },
-                { icon: HeadphonesIcon, text: "24/7 Service" },
-                { icon: MapPinned, text: "Pan India Service" },
-              ].map((item) => (
-                <div key={item.text} className="glass rounded-2xl px-5 py-4 flex items-center gap-3">
-                  <item.icon className="size-6 text-primary" />
-                  <span className="font-display font-semibold text-white text-sm">{item.text}</span>
-                </div>
-              ))}
-            </div>
-          </div>
           </div>
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="section">
+      <section className="section premium-section">
         <div className="container-x">
-          <div className="max-w-2xl">
+          <PremiumReveal className="max-w-2xl">
             <span className="eyebrow">Why choose us</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Rides built on trust, not shortcuts.</h2>
             <p className="mt-4 text-paragraph">Every journey with RK is measured against the same standard — the comfort of family.</p>
-          </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          </PremiumReveal>
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4" data-reveal-group>
             {content.whyUs.map((f) => {
               const Icon = iconMap[f.icon] ?? ShieldCheck;
               return (
-                <div key={f.title} className="card-float p-6">
-                  <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <Icon className="size-6" />
-                  </div>
+                <div key={f.title} data-reveal-item className="card-float p-6">
+                  <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Icon className="size-6" /></div>
                   <h3 className="mt-5 font-display font-bold text-lg text-heading">{f.title}</h3>
                   <p className="mt-2 text-sm text-paragraph">{f.desc}</p>
                 </div>
@@ -249,45 +166,37 @@ function Home() {
       </section>
 
       {/* FLEET */}
-      <section className="section bg-surface">
+      <section className="section bg-surface premium-section">
         <div className="container-x">
-          <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-4" data-reveal>
             <div className="max-w-xl">
               <span className="eyebrow">Our fleet</span>
               <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">A car for every journey.</h2>
             </div>
             <Link to="/tariff" className="btn-ghost">See tariff <ChevronRight className="size-4" /></Link>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {content.fleet.map((f) => <FleetCard key={f.name} {...f} />)}
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+            {content.fleet.map((f) => <div key={f.name} data-reveal-item><FleetCard {...f} /></div>)}
           </div>
         </div>
       </section>
 
-      {/* NEWLY LAUNCHED GALLERY */}
-      <section className="section">
+      {/* NEWLY LAUNCHED */}
+      <section className="section premium-section">
         <div className="container-x">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl" data-reveal>
             <span className="eyebrow">Newly Launched</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Experience our latest additions.</h2>
             <p className="mt-4 text-paragraph">Discover our newest vehicles and fleet updates through images and videos.</p>
           </div>
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-black">
-              <video
-                src={newLaunchVideo}
-                autoPlay
-                loop
-                muted
-                playsInline
-                controls
-                className="w-full h-full object-cover"
-              />
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-group>
+            <div data-reveal-item className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-black">
+              <video src={newLaunchVideo} autoPlay loop muted playsInline controls className="w-full h-full object-cover" />
             </div>
-            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
+            <div data-reveal-item className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
               <img src={content.gallery.images[0]?.src ?? galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
             </div>
-            <div className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
+            <div data-reveal-item data-depth className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
               <img src={content.gallery.images[1]?.src ?? galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
             </div>
           </div>
@@ -295,20 +204,18 @@ function Home() {
       </section>
 
       {/* SERVICES */}
-      <section className="section">
+      <section className="section premium-section">
         <div className="container-x">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl" data-reveal>
             <span className="eyebrow">Services</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Every kind of trip. Handled.</h2>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
             {content.services.map((s) => {
               const Icon = iconMap[s.icon] ?? MapPinned;
               return (
-                <div key={s.title} className="card-float p-6 flex gap-4">
-                  <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <Icon className="size-5" />
-                  </div>
+                <div key={s.title} data-reveal-item className="card-float p-6 flex gap-4">
+                  <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary"><Icon className="size-5" /></div>
                   <div>
                     <h3 className="font-display font-semibold text-heading">{s.title}</h3>
                     <p className="mt-1 text-sm text-paragraph">{s.desc}</p>
@@ -320,19 +227,17 @@ function Home() {
         </div>
       </section>
 
-
-
       {/* TARIFF HIGHLIGHTS */}
-      <section className="section">
+      <section className="section premium-section">
         <div className="container-x">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl" data-reveal>
             <span className="eyebrow">Tariff highlights</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Transparent kilometre pricing.</h2>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal-group>
             {content.fleet.slice(0, 3).map((f, i) => (
-              <div key={f.name} className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white" : "card-float"}`}>
-                <p className={`text-sm font-semibold ${i === 1 ? "text-primary" : "text-primary"}`}>{f.tag}</p>
+              <div key={f.name} data-reveal-item className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white" : "card-float"}`}>
+                <p className="text-sm font-semibold text-primary">{f.tag}</p>
                 <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
                 <p className={`mt-6 font-display font-bold text-5xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.rate}</p>
                 <p className={`text-sm ${i === 1 ? "text-white/70" : "text-paragraph"}`}>Outstation • per km</p>
@@ -342,15 +247,13 @@ function Home() {
                   <li>• Experienced driver</li>
                 </ul>
                 <div className="mt-6">
-                  <BookNowButton className={`w-full ${i === 1 ? "" : ""}`} message={`Hi, I want to book a ${f.name}`} />
+                  <BookNowButton className="w-full" message={`Hi, I want to book a ${f.name}`} />
                 </div>
               </div>
             ))}
           </div>
           <div className="mt-8 flex flex-col items-center gap-4">
-            <p className="text-sm text-paragraph text-center">
-              Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.
-            </p>
+            <p className="text-sm text-paragraph text-center">Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.</p>
             <Link to="/tariff" className="btn-primary">All Tariff</Link>
           </div>
         </div>
@@ -373,9 +276,7 @@ function Home() {
                 </div>
                 <p className="mt-4 text-sm text-paragraph leading-relaxed">"{t.text}"</p>
                 <div className="mt-5 flex items-center gap-3">
-                  <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-primary font-display font-bold">
-                    {t.name[0]}
-                  </div>
+                  <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-primary font-display font-bold">{t.name[0]}</div>
                   <div>
                     <p className="font-display font-semibold text-heading text-sm">{t.name}</p>
                     <p className="text-xs text-paragraph">{t.role}</p>
@@ -388,7 +289,6 @@ function Home() {
         <div className="mt-16 container-x">
           <div className="max-w-2xl mx-auto card-float p-8 rounded-3xl">
             <h3 className="font-display font-bold text-2xl text-heading mb-6">Share your experience</h3>
-
             {formSuccess && (
               <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
                 <CheckCircle2 className="size-5 shrink-0 mt-0.5" />
@@ -398,46 +298,28 @@ function Home() {
                 </div>
               </div>
             )}
-
             {formError && (
               <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
-                <AlertCircle className="size-5 shrink-0 mt-0.5" />
-                <p>{formError}</p>
+                <AlertCircle className="size-5 shrink-0 mt-0.5" /><p>{formError}</p>
               </div>
             )}
-
             <form onSubmit={handleReviewSubmit} className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-heading mb-2">Your Name <span className="text-red-500">*</span></label>
-                  <input
-                    type="text"
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
-                    placeholder="e.g. Arjun Ramesh"
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                    required
-                  />
+                  <input type="text" value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Arjun Ramesh"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" required />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-heading mb-2">Trip Type <span className="text-paragraph text-xs font-normal">(optional)</span></label>
-                  <input
-                    type="text"
-                    value={formRole}
-                    onChange={(e) => setFormRole(e.target.value)}
-                    placeholder="e.g. Family Trip, Airport Run"
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <input type="text" value={formRole} onChange={(e) => setFormRole(e.target.value)} placeholder="e.g. Family Trip, Airport Run"
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-heading mb-2">Rating <span className="text-red-500">*</span></label>
-                <select
-                  value={formRating}
-                  onChange={(e) => setFormRating(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                >
+                <select value={formRating} onChange={(e) => setFormRating(e.target.value)} required
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary">
                   <option value="">Select rating</option>
                   <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
                   <option value="4">⭐⭐⭐⭐ (4 stars)</option>
@@ -448,29 +330,17 @@ function Home() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-heading mb-2">Your Review <span className="text-red-500">*</span></label>
-                <textarea
-                  value={formMessage}
-                  onChange={(e) => setFormMessage(e.target.value)}
-                  placeholder="Share your experience with RK Tours..."
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                  required
-                  minLength={10}
-                />
+                <textarea value={formMessage} onChange={(e) => setFormMessage(e.target.value)}
+                  placeholder="Share your experience with RK Tours..." rows={4} required minLength={10}
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none" />
               </div>
-              <button
-                type="submit"
-                disabled={formLoading}
-                className="btn-primary w-full disabled:opacity-60 disabled:cursor-not-allowed"
-              >
+              <button type="submit" disabled={formLoading} className="btn-primary w-full disabled:opacity-60 disabled:cursor-not-allowed">
                 {formLoading ? "Submitting…" : "Submit Review"}
               </button>
             </form>
           </div>
         </div>
       </section>
-
-
 
       {/* BOOKING PROCESS */}
       <section className="section bg-surface">
@@ -481,8 +351,8 @@ function Home() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
-              { n: "01", t: "Tap Book Now", d: "We open WhatsApp with a ready-to-send message." },
-              { n: "02", t: "Confirm details", d: "Share your dates, pickup and car of choice." },
+              { n: "01", t: "Tap Book Now",       d: "We open WhatsApp with a ready-to-send message." },
+              { n: "02", t: "Confirm details",    d: "Share your dates, pickup and car of choice." },
               { n: "03", t: "Travel comfortably", d: "Our driver arrives on time. You enjoy the ride." },
             ].map((s) => (
               <div key={s.n} className="card-float p-8">

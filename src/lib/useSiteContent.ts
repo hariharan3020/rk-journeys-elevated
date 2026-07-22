@@ -38,6 +38,7 @@ export interface FleetItem {
   ac: boolean;
   tag: string;
   rate: string;
+  rateVisible?: boolean;
 }
 
 export interface PackageItem {
@@ -58,6 +59,37 @@ export interface GalleryImage {
   visible: boolean;
 }
 
+export interface TariffRate {
+  tripType: string;   // e.g. "Outstation", "Local (8hrs/80km)"
+  rate: string;       // e.g. "₹14/km"
+  category?: "outstation" | "local";
+}
+
+export interface TariffCategory {
+  label: string;
+  description: string;
+}
+
+export interface TariffTableRow {
+  vehicle: string;
+  rentPerDay?: string;
+  minKm: string;
+  farePerKm: string;
+  driverBata: string;
+  amount: string;
+  actionLabel?: string;
+}
+
+export interface TariffItem {
+  vehicle: string;        // e.g. "Toyota Etios"
+  tag: string;            // e.g. "Comfort Sedan"
+  passengers: number;
+  luggage: number;
+  ac: boolean;
+  rates: TariffRate[];    // multiple trip types with their rates
+  featured: boolean;      // highlighted card (dark background)
+}
+
 export interface SiteContent {
   hero: HeroContent;
   siteInfo: SiteInfo;
@@ -67,6 +99,18 @@ export interface SiteContent {
   packages: PackageItem[];
   faqs: FaqItem[];
   gallery: { images: GalleryImage[] };
+  tariff: {
+    categories: {
+      outstation: TariffCategory;
+      local: TariffCategory;
+    };
+    rows: {
+      outstation: TariffTableRow[];
+      local: TariffTableRow[];
+    };
+    items: TariffItem[];
+    note: string;
+  };
 }
 
 // ── Default fallback content (mirrors site.ts constants) ─────────────────────
@@ -105,11 +149,11 @@ export const DEFAULT_CONTENT: SiteContent = {
     { title: "24×7 Cab Service", desc: "Anytime, anywhere across India.", icon: "Timer" },
   ],
   fleet: [
-    { name: "Toyota Etios", image: "etios", passengers: 4, luggage: 3, ac: true, tag: "Comfort Sedan", rate: "₹14/km" },
-    { name: "Swift Dzire", image: "dzire", passengers: 4, luggage: 3, ac: true, tag: "City Favorite", rate: "₹14/km" },
-    { name: "Maruti Ciaz", image: "ciaz", passengers: 4, luggage: 4, ac: true, tag: "Premium Sedan", rate: "₹15/km" },
-    { name: "Toyota Innova Crysta", image: "innovaCrysta", passengers: 7, luggage: 5, ac: true, tag: "Premium MPV", rate: "₹18/km" },
-    { name: "Force Traveller", image: "forceTraveller", passengers: 12, luggage: 8, ac: true, tag: "Group Travel", rate: "₹22/km" },
+    { name: "Toyota Etios", image: "etios", passengers: 4, luggage: 3, ac: true, tag: "Comfort Sedan", rate: "₹14/km", rateVisible: true },
+    { name: "Swift Dzire", image: "dzire", passengers: 4, luggage: 3, ac: true, tag: "City Favorite", rate: "₹14/km", rateVisible: true },
+    { name: "Maruti Ciaz", image: "ciaz", passengers: 4, luggage: 4, ac: true, tag: "Premium Sedan", rate: "₹15/km", rateVisible: true },
+    { name: "Toyota Innova Crysta", image: "innovaCrysta", passengers: 7, luggage: 5, ac: true, tag: "Premium MPV", rate: "₹18/km", rateVisible: true },
+    { name: "Force Traveller", image: "forceTraveller", passengers: 12, luggage: 8, ac: true, tag: "Group Travel", rate: "₹22/km", rateVisible: true },
   ],
   packages: [
     { name: "Ooty & Coonoor", days: "2N / 3D", price: "From ₹8,500", image: "ooty", desc: "Tea gardens, toy train and misty hills." },
@@ -135,17 +179,116 @@ export const DEFAULT_CONTENT: SiteContent = {
       { src: "/gallery/galleryWhatsApp_Image_2026-07-17_at_11.10.50_1.jpeg", visible: true },
     ],
   },
+  tariff: {
+    categories: {
+      outstation: { label: "Outstation Tariff", description: "Per kilometre journeys" },
+      local: { label: "Local Tariff", description: "City & airport packages" },
+    },
+    rows: {
+      outstation: [
+        { vehicle: "Swift", rentPerDay: "—", minKm: "300", farePerKm: "₹13", driverBata: "₹400", amount: "₹4300" },
+        { vehicle: "Etios", rentPerDay: "—", minKm: "300", farePerKm: "₹13", driverBata: "₹400", amount: "₹4300" },
+        { vehicle: "Ciaz or Amaze", rentPerDay: "—", minKm: "300", farePerKm: "₹14", driverBata: "₹400", amount: "₹4600" },
+        { vehicle: "Ertiga", rentPerDay: "—", minKm: "350", farePerKm: "₹17", driverBata: "₹400", amount: "₹5500" },
+        { vehicle: "Innova", rentPerDay: "—", minKm: "350", farePerKm: "₹18", driverBata: "₹500", amount: "₹6800" },
+        { vehicle: "Crysta", rentPerDay: "—", minKm: "400", farePerKm: "₹20", driverBata: "₹500", amount: "₹8500" },
+        { vehicle: "Hycross", rentPerDay: "—", minKm: "400", farePerKm: "₹22", driverBata: "₹500", amount: "₹9300" },
+        { vehicle: "Audi (Premium Sedan)", rentPerDay: "—", minKm: "350", farePerKm: "₹85", driverBata: "₹900", amount: "₹30650" },
+        { vehicle: "Benz (Premium Sedan)", rentPerDay: "—", minKm: "350", farePerKm: "₹85", driverBata: "₹900", amount: "₹30650" },
+        { vehicle: "BMW (Premium Sedan)", rentPerDay: "—", minKm: "350", farePerKm: "₹85", driverBata: "₹900", amount: "₹30650" },
+        { vehicle: "Jaguar (Premium Sedan)", rentPerDay: "—", minKm: "350", farePerKm: "₹85", driverBata: "₹900", amount: "₹30650" },
+        { vehicle: "Tempo Traveller", rentPerDay: "—", minKm: "400", farePerKm: "₹30", driverBata: "₹600", amount: "₹12600" },
+        { vehicle: "Urbania", rentPerDay: "—", minKm: "400", farePerKm: "₹38", driverBata: "₹600", amount: "₹15800" },
+        { vehicle: "Coach Van", rentPerDay: "—", minKm: "400", farePerKm: "₹45", driverBata: "₹800", amount: "₹18800" },
+        { vehicle: "Bus", minKm: "400", farePerKm: "Call for details", driverBata: "Call for details", amount: "Call for details", actionLabel: "Contact Us" },
+      ],
+      local: [
+        { vehicle: "Swift", rentPerDay: "₹1,200", minKm: "80", farePerKm: "₹14", driverBata: "Included", amount: "₹1,200" },
+        { vehicle: "Etios", rentPerDay: "₹1,200", minKm: "80", farePerKm: "₹14", driverBata: "Included", amount: "₹1,200" },
+        { vehicle: "Ciaz or Amaze", rentPerDay: "₹1,400", minKm: "80", farePerKm: "₹15", driverBata: "Included", amount: "₹1,400" },
+        { vehicle: "Innova Crysta", rentPerDay: "₹1,800", minKm: "80", farePerKm: "₹18", driverBata: "Included", amount: "₹1,800" },
+        { vehicle: "Force Traveller", rentPerDay: "₹2,500", minKm: "80", farePerKm: "₹22", driverBata: "Included", amount: "₹2,500" },
+      ],
+    },
+    items: [
+      {
+        vehicle: "Toyota Etios",
+        tag: "Comfort Sedan",
+        passengers: 4,
+        luggage: 3,
+        ac: true,
+        featured: false,
+        rates: [
+          { tripType: "Outstation", rate: "₹14/km" },
+          { tripType: "Local (8hrs/80km)", rate: "₹1,200" },
+          { tripType: "Airport Transfer", rate: "₹800" },
+        ],
+      },
+      {
+        vehicle: "Swift Dzire",
+        tag: "City Favourite",
+        passengers: 4,
+        luggage: 3,
+        ac: true,
+        featured: true,
+        rates: [
+          { tripType: "Outstation", rate: "₹14/km" },
+          { tripType: "Local (8hrs/80km)", rate: "₹1,200" },
+          { tripType: "Airport Transfer", rate: "₹800" },
+        ],
+      },
+      {
+        vehicle: "Maruti Ciaz",
+        tag: "Premium Sedan",
+        passengers: 4,
+        luggage: 4,
+        ac: true,
+        featured: false,
+        rates: [
+          { tripType: "Outstation", rate: "₹15/km" },
+          { tripType: "Local (8hrs/80km)", rate: "₹1,400" },
+          { tripType: "Airport Transfer", rate: "₹900" },
+        ],
+      },
+      {
+        vehicle: "Toyota Innova Crysta",
+        tag: "Premium MPV",
+        passengers: 7,
+        luggage: 5,
+        ac: true,
+        featured: false,
+        rates: [
+          { tripType: "Outstation", rate: "₹18/km" },
+          { tripType: "Local (8hrs/80km)", rate: "₹1,800" },
+          { tripType: "Airport Transfer", rate: "₹1,200" },
+        ],
+      },
+      {
+        vehicle: "Force Traveller",
+        tag: "Group Travel",
+        passengers: 12,
+        luggage: 8,
+        ac: true,
+        featured: false,
+        rates: [
+          { tripType: "Outstation", rate: "₹22/km" },
+          { tripType: "Local (8hrs/80km)", rate: "₹2,500" },
+          { tripType: "Airport Transfer", rate: "₹1,800" },
+        ],
+      },
+    ],
+    note: "Other state permits, border taxes, toll gate charges, and parking fees are extra. Driver batta as applicable for outstation trips. Rates may vary based on season and route.",
+  },
 };
 
 // ── Backend URL helper (mirrors getBackendUrl in AdminLayout) ─────────────────
 function getSiteContentUrl() {
   const custom = typeof localStorage !== "undefined" ? localStorage.getItem("CUSTOM_BACKEND_URL") : null;
-  if (custom) return `${custom}/site-content.php`;
-  if (import.meta.env.DEV) return "http://localhost/rk-journeys-elevated/backend/site-content.php";
-  const origin = window.location.origin;
-  const parts = window.location.pathname.split("/");
-  const sub = parts[1] && !["admin", "gallery", "about", "services", "tariff", "packages", "testimonials", "contact", "book"].includes(parts[1]) ? `/${parts[1]}` : "";
-  return `${origin}${sub}/backend/site-content.php`;
+  if (custom) return `${custom.replace(/\/$/, "")}/site-content.php`;
+  const configuredUrl = import.meta.env.VITE_BACKEND_URL;
+  if (configuredUrl) return `${configuredUrl.replace(/\/$/, "")}/site-content.php`;
+  // Always fall back to the production backend on the live domain
+  return "https://rktoursandtravels.in/backend/site-content.php";
 }
 
 // ── Module-level cache & subscriber registry ──────────────────────────────────
@@ -161,7 +304,22 @@ async function fetchFromBackend(): Promise<SiteContent> {
   const url = `${getSiteContentUrl()}?_=${Date.now()}`;
   const res = await fetch(url, { cache: "no-store" });
   const data: SiteContent = await res.json();
-  return { ...DEFAULT_CONTENT, ...data };
+  return {
+    ...DEFAULT_CONTENT,
+    ...data,
+    tariff: {
+      ...DEFAULT_CONTENT.tariff,
+      ...data.tariff,
+      categories: {
+        ...DEFAULT_CONTENT.tariff.categories,
+        ...(data.tariff?.categories ?? {}),
+      },
+      rows: {
+        ...DEFAULT_CONTENT.tariff.rows,
+        ...(data.tariff?.rows ?? {}),
+      },
+    },
+  };
 }
 
 async function refreshCache(): Promise<void> {

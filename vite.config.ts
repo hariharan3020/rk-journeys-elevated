@@ -20,6 +20,21 @@ function excludeEzgifSplit() {
   };
 }
 
+// Custom plugin: copy backend/ PHP files into dist/backend/ after build
+function copyBackendFiles() {
+  return {
+    name: "copy-backend-files",
+    closeBundle() {
+      const src = path.resolve(__dirname, "backend");
+      const dest = path.resolve(__dirname, "dist", "backend");
+      if (fs.existsSync(src)) {
+        fs.cpSync(src, dest, { recursive: true });
+        console.log("✓ Copied backend/ PHP files to dist/backend/");
+      }
+    },
+  };
+}
+
 export default defineConfig({
   plugins: [
     TanStackRouterVite(),
@@ -27,6 +42,7 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     excludeEzgifSplit(),
+    copyBackendFiles(),
   ],
   resolve: {
     alias: {
@@ -42,6 +58,14 @@ export default defineConfig({
   server: {
     fs: {
       strict: false,
+    },
+    proxy: {
+      "/backend": {
+        target: "http://localhost:80",
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/backend/, "/rk-journeys-elevated/backend"),
+      },
     },
   },
 });

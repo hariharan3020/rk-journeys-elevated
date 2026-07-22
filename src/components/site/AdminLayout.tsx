@@ -13,12 +13,11 @@ const NAV_ITEMS = [
 
 function getBackendUrl(endpoint: string) {
   const custom = typeof localStorage !== "undefined" ? localStorage.getItem("CUSTOM_BACKEND_URL") : null;
-  if (custom) return `${custom}/${endpoint}`;
-  if (import.meta.env.DEV) return `http://localhost/rk-journeys-elevated/backend/${endpoint}`;
-  const origin = window.location.origin;
-  const parts = window.location.pathname.split("/");
-  const sub = parts[1] && !["admin"].includes(parts[1]) ? `/${parts[1]}` : "";
-  return `${origin}${sub}/backend/${endpoint}`;
+  if (custom) return `${custom.replace(/\/$/, "")}/${endpoint}`;
+  const configuredUrl = import.meta.env.VITE_BACKEND_URL;
+  if (configuredUrl) return `${configuredUrl.replace(/\/$/, "")}/${endpoint}`;
+  // Always fall back to the production backend on the live domain
+  return `https://rktoursandtravels.in/backend/${endpoint}`;
 }
 
 export { getBackendUrl };

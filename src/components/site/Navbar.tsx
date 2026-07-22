@@ -1,14 +1,17 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Car } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { NAV } from "@/lib/site";
 import { BookNowButton } from "./BookNow";
 import logo from "@/assets/logo.png";
+import { useSiteContent } from "@/lib/useSiteContent";
 
 export function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { content } = useSiteContent();
+  const tariffCategories = content.tariff.categories;
 
   const isHome = pathname === "/";
   const shouldBeTransparent = transparent || isHome;
@@ -35,26 +38,44 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
       <div className="container-x">
         <nav className="flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img 
-              src={logo} 
-              alt="RK Tours Logo" 
-              className={`h-12 sm:h-16 lg:h-20 w-auto object-contain ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_8px_rgba(0,0,0,0.4)]" : ""}`} 
+            <img
+              src={logo}
+              alt="RK Tours Logo"
+              className={`h-12 sm:h-16 lg:h-20 w-auto object-contain ${shouldBeTransparent && !scrolled ? "drop-shadow-[0_0_8px_rgba(0,0,0,0.4)]" : ""}`}
             />
           </Link>
 
           <ul className="hidden lg:flex items-center gap-6 text-sm font-semibold">
             {NAV.map((n) => {
               const isTransparentNow = shouldBeTransparent && !scrolled;
+              if (n.to === "/tariff") {
+                return (
+                  <li key={n.to} className="group relative">
+                    <button
+                      type="button"
+                      className={`flex items-center gap-1 px-3 py-2 transition-colors ${isTransparentNow ? "text-white hover:text-white/80" : "nav-link-force-black"}`}
+                    >
+                      Tariff <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180" />
+                    </button>
+                    <div className="invisible absolute left-0 top-full w-56 translate-y-2 rounded-2xl border border-border bg-white p-2 opacity-0 shadow-premium transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                      <Link to="/tariff#outstation" className="block rounded-xl px-3 py-2.5 text-sm text-heading hover:bg-surface hover:text-primary">
+                        <span className="block font-semibold">{tariffCategories.outstation.label}</span>
+                        <span className="mt-0.5 block text-xs font-normal text-paragraph">{tariffCategories.outstation.description}</span>
+                      </Link>
+                      <Link to="/tariff#local" className="block rounded-xl px-3 py-2.5 text-sm text-heading hover:bg-surface hover:text-primary">
+                        <span className="block font-semibold">{tariffCategories.local.label}</span>
+                        <span className="mt-0.5 block text-xs font-normal text-paragraph">{tariffCategories.local.description}</span>
+                      </Link>
+                    </div>
+                  </li>
+                );
+              }
               return (
                 <li key={n.to}>
                   <Link
                     to={n.to}
-                    className={`px-3 py-2 transition-colors ${
-                      isTransparentNow ? "text-white hover:text-white/80" : "nav-link-force-black"
-                    }`}
-                    activeProps={{
-                      className: isTransparentNow ? "text-white font-bold" : "nav-link-force-black"
-                    }}
+                    className={`px-3 py-2 transition-colors ${isTransparentNow ? "text-white hover:text-white/80" : "nav-link-force-black"}`}
+                    activeProps={{ className: isTransparentNow ? "text-white font-bold" : "nav-link-force-black" }}
                     activeOptions={{ exact: n.to === "/" }}
                   >
                     {n.label}
@@ -79,23 +100,27 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
         </nav>
 
         {open && (
-          <div className={`lg:hidden fade-up ${
-            transparent && !scrolled
-              ? "bg-white/95 backdrop-blur-md border-t border-white/20"
-              : "bg-white border-t border-border"
-          }`}>
+          <div className={`lg:hidden fade-up ${transparent && !scrolled ? "bg-white/95 backdrop-blur-md border-t border-white/20" : "bg-white border-t border-border"}`}>
             <ul className="grid gap-1 p-4">
               {NAV.map((n) => (
                 <li key={n.to}>
-                  <Link
-                    to={n.to}
-                    className="block rounded-lg px-4 py-3 font-medium hover:bg-surface hover:text-primary"
-                    style={{ color: '#000000' }}
-                    activeProps={{ className: "text-primary bg-surface" }}
-                    activeOptions={{ exact: n.to === "/" }}
-                  >
-                    {n.label}
-                  </Link>
+                  {n.to === "/tariff" ? (
+                    <div className="rounded-xl bg-surface/70 p-2">
+                      <p className="px-2 py-1 text-xs font-bold uppercase tracking-wider text-primary">Tariff</p>
+                      <Link to="/tariff#outstation" className="block rounded-lg px-2 py-2 font-medium text-heading hover:bg-white hover:text-primary">{tariffCategories.outstation.label}</Link>
+                      <Link to="/tariff#local" className="block rounded-lg px-2 py-2 font-medium text-heading hover:bg-white hover:text-primary">{tariffCategories.local.label}</Link>
+                    </div>
+                  ) : (
+                    <Link
+                      to={n.to}
+                      className="block rounded-lg px-4 py-3 font-medium hover:bg-surface hover:text-primary"
+                      style={{ color: "#000000" }}
+                      activeProps={{ className: "text-primary bg-surface" }}
+                      activeOptions={{ exact: n.to === "/" }}
+                    >
+                      {n.label}
+                    </Link>
+                  )}
                 </li>
               ))}
               <li className="pt-2">

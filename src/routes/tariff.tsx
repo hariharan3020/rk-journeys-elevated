@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/site/PageHero";
-import { BookNowButton } from "@/components/site/BookNow";
 import { useSiteContent } from "@/lib/useSiteContent";
-import { Check } from "lucide-react";
+import { CircleHelp } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/tariff")({
   head: () => ({
     meta: [
       { title: "Tariff — RK Tours and Travels" },
-      { name: "description", content: "Transparent outstation kilometre rates for Etios, Swift Dzire and Ciaz." },
+      { name: "description", content: "Transparent kilometre rates for outstation, local and airport trips across all vehicles." },
       { property: "og:title", content: "Tariff — RK Tours and Travels" },
       { property: "og:url", content: "/tariff" },
     ],
@@ -19,43 +19,77 @@ export const Route = createFileRoute("/tariff")({
 
 function Tariff() {
   const { content } = useSiteContent();
+  const { note, categories, rows } = content.tariff;
+  const [category, setCategory] = useState<"outstation" | "local">("outstation");
+
+  useEffect(() => {
+    const syncCategory = () => {
+      setCategory(window.location.hash === "#local" ? "local" : "outstation");
+    };
+    syncCategory();
+    window.addEventListener("hashchange", syncCategory);
+    return () => window.removeEventListener("hashchange", syncCategory);
+  }, []);
+
+  const selectCategory = (next: "outstation" | "local") => {
+    setCategory(next);
+    window.history.replaceState(null, "", `/tariff#${next}`);
+  };
+
+  const activeRows = rows[category];
 
   return (
     <>
-      <PageHero
-        eyebrow="Tariff"
-        title="Simple, transparent kilometre pricing."
-        subtitle="Outstation kilometre basis — no surprises, no hidden fees."
-      />
-
+      <PageHero eyebrow="Tariff" title={categories[category].label} subtitle={categories[category].description} />
       <section className="section pt-0">
-        <div className="container-x">
-          <div className="grid gap-6 md:grid-cols-3">
-            {content.fleet.map((f, i) => (
-              <div key={f.name} className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white scale-[1.02]" : "card-float"}`}>
-                <p className="text-primary text-sm font-semibold">{f.tag}</p>
-                <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
-                <p className={`mt-6 font-display font-bold text-6xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.rate}</p>
-                <p className={`text-sm ${i === 1 ? "text-white/70" : "text-paragraph"}`}>Outstation • per km</p>
-                <ul className={`mt-6 space-y-3 text-sm ${i === 1 ? "text-white/85" : "text-paragraph"}`}>
-                  <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> {f.passengers} passengers</li>
-                  <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> {f.luggage} bags capacity</li>
-                  <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> Fully air-conditioned</li>
-                  <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> Experienced driver</li>
-                  <li className="flex items-center gap-2"><Check className="size-4 text-accent" /> 24×7 support</li>
-                </ul>
-                <div className="mt-8">
-                  <BookNowButton className="w-full" message={`Hi, I want to book a ${f.name}`} />
-                </div>
+        <div className="container-x space-y-10">
+          <div className="mx-auto grid max-w-3xl grid-cols-2 rounded-3xl border border-border bg-surface p-1.5 shadow-soft" role="tablist" aria-label="Tariff categories">
+            {([
+              { id: "outstation" as const, ...categories.outstation },
+              { id: "local" as const, ...categories.local },
+            ]).map((tab) => (
+              <button key={tab.id} id={tab.id} role="tab" aria-selected={category === tab.id}
+                onClick={() => selectCategory(tab.id)}
+                className={`rounded-2xl px-4 py-3 text-left transition-all ${category === tab.id ? "bg-white shadow-premium" : "hover:bg-white/60"}`}>
+                <span className={`block font-display text-sm font-bold ${category === tab.id ? "text-primary" : "text-heading"}`}>{tab.label}</span>
+                <span className="mt-0.5 block text-xs text-paragraph">{tab.description}</span>
+              </button>
+            ))}
+          </div>
+
+          <div key={category} className="tariff-table-shell overflow-hidden rounded-2xl border border-border bg-white shadow-soft">
+            <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-primary/10 px-5 py-4 text-[11px] font-bold uppercase tracking-wider text-primary md:grid">
+              <span>Vehicle</span><span>Rent/Day</span><span>Free Km/Day</span><span>Fare/Km After Free</span><span>Driver Bata</span><span>Total</span><span>Action</span>
+            </div>
+            {activeRows.map((row, index) => (
+              <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-border px-4 py-4 text-sm transition-colors hover:bg-primary/[0.03] md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-5">
+                <div className="font-semibold text-heading"><span className="mr-2 text-[10px] text-primary md:hidden">VEHICLE</span>{row.vehicle}</div>
+                <div><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">RENT/DAY</span>{row.rentPerDay ?? "—"}</div>
+                <div><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FREE KM/DAY</span>{row.minKm}</div>
+                <div><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FARE/KM AFTER FREE</span>{row.farePerKm}</div>
+                <div><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">DRIVER BATA</span>{row.driverBata}</div>
+                <div className="font-bold text-heading"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">TOTAL</span>{row.amount}</div>
+                <a href={`https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(`Hi, I want to enquire about ${row.vehicle} ${category} tariff`)}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex w-fit items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-primary-hover">
+                  {row.actionLabel ?? "Book Now"}
+                </a>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 rounded-2xl bg-surface p-6 md:p-8">
-            <p className="text-sm text-paragraph">
-              <strong className="text-heading font-display">Note:</strong> Other state permits, border taxes, toll gate charges, and parking fees are extra. Driver batta as applicable for outstation trips. Rates may vary based on season and route.
-            </p>
-          </div>
+          {note && (
+            <div className="rounded-2xl bg-surface p-6 md:p-8">
+              <h2 className="flex items-center gap-2 font-display text-lg font-bold text-primary"><CircleHelp className="size-4" /> Terms & Conditions</h2>
+              <p className="mt-4 text-sm leading-relaxed text-paragraph"><strong className="text-heading font-display">Note: </strong>{note}</p>
+              <ul className="mt-4 grid gap-2 text-sm text-paragraph md:grid-cols-2">
+                <li>• Parking and toll charges are extra.</li>
+                <li>• Night driving charges may apply.</li>
+                <li>• Kilometre calculation is based on the agreed route.</li>
+                <li>• Air conditioning is unavailable while parked.</li>
+              </ul>
+            </div>
+          )}
         </div>
       </section>
     </>

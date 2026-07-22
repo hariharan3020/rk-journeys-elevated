@@ -8,14 +8,13 @@ import forceTraveller from "@/assets/Force Traveller.png";
 
 const IMAGES: Record<string, string> = { etios, dzire, ciaz, innovaCrysta, forceTraveller };
 
-/** Resolve fleet image: uploaded path (starts with /) or legacy key */
 function resolveFleetImage(image: string): string {
   if (image.startsWith("/") || image.startsWith("http")) return image;
   return IMAGES[image] ?? etios;
 }
 
 export function FleetCard({
-  name, image, passengers, luggage, ac, tag, rate,
+  name, image, passengers, luggage, ac, tag, rate, rateVisible = true,
 }: {
   name: string;
   image: string;
@@ -24,6 +23,7 @@ export function FleetCard({
   ac: boolean;
   tag: string;
   rate: string;
+  rateVisible?: boolean;
 }) {
   return (
     <article className="card-float overflow-hidden group">
@@ -39,9 +39,11 @@ export function FleetCard({
         <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-secondary shadow-sm">
           {tag}
         </span>
-        <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
-          {rate}
-        </span>
+        {rateVisible && rate.trim() && (
+          <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+            {rate}
+          </span>
+        )}
       </div>
       <div className="p-6">
         <h3 className="font-display font-bold text-xl text-heading">{name}</h3>
@@ -56,6 +58,7 @@ export function FleetCard({
         </div>
         <div className="mt-6">
           <BookNowButton
+            label="Enquire Now"
             className="w-full !py-2.5 text-sm"
             message={`Hi, I want to book a ${name}`}
           />

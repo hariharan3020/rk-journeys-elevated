@@ -8,10 +8,8 @@ const InstagramIcon = ({ className }: { className?: string }) => (
     <path fillRule="evenodd" clipRule="evenodd" d="M12 2C9.28 2 8.94 2.01 7.84 2.06C6.75 2.11 6 2.31 5.34 2.57C4.66 2.83 4.07 3.2 3.49 3.79C2.9 4.38 2.53 4.97 2.26 5.65C2 6.31 1.8 7.06 1.75 8.16C1.7 9.25 1.69 9.59 1.69 12.31C1.69 15.03 1.7 15.37 1.75 16.46C1.8 17.56 2 18.3 2.26 18.96C2.53 19.64 2.9 20.24 3.49 20.82C4.08 21.41 4.67 21.78 5.34 22.04C6.01 22.3 6.75 22.5 7.84 22.55C8.94 22.6 9.28 22.61 12 22.61C14.72 22.61 15.06 22.6 16.16 22.55C17.25 22.5 17.99 22.3 18.66 22.04C19.34 21.78 19.93 21.41 20.51 20.82C21.1 20.23 21.47 19.64 21.74 18.96C22 18.3 22.2 17.56 22.25 16.46C22.3 15.37 22.31 15.03 22.31 12.31C22.31 9.59 22.3 9.25 22.25 8.16C22.2 7.06 22 6.31 21.74 5.65C21.47 4.97 21.1 4.38 20.51 3.79C19.92 3.2 19.33 2.83 18.66 2.57C17.99 2.31 17.25 2.11 16.16 2.06C15.06 2.01 14.72 2 12 2ZM12 4.04C14.67 4.04 14.99 4.05 16.07 4.1C17 4.14 17.5 4.3 17.84 4.43C18.28 4.6 18.6 4.8 18.93 5.14C19.27 5.48 19.47 5.79 19.64 6.24C19.77 6.58 19.93 7.08 19.97 8.01C20.02 9.09 20.03 9.4 20.03 12.08C20.03 14.76 20.02 15.08 19.97 16.15C19.93 17.09 19.77 17.59 19.64 17.93C19.47 18.37 19.27 18.69 18.93 19.03C18.59 19.36 18.28 19.57 17.84 19.74C17.5 19.87 17 20.03 16.07 20.07C14.99 20.12 14.67 20.13 12 20.13C9.33 20.13 9.01 20.12 7.93 20.07C6.99 20.03 6.49 19.87 6.16 19.74C5.72 19.57 5.4 19.37 5.07 19.03C4.73 18.7 4.53 18.38 4.36 17.93C4.23 17.59 4.07 17.09 4.03 16.15C3.98 15.08 3.97 14.76 3.97 12.08C3.97 9.4 3.98 9.09 4.03 8.01C4.07 7.08 4.23 6.58 4.36 6.24C4.53 5.8 4.73 5.48 5.07 5.14C5.41 4.8 5.72 4.6 6.16 4.43C6.49 4.3 6.99 4.14 7.93 4.1C9.01 4.05 9.33 4.04 12 4.04ZM12 6.89C9.17 6.89 6.88 9.18 6.88 12.01C6.88 14.84 9.17 17.13 12 17.13C14.83 17.13 17.12 14.84 17.12 12.01C17.12 9.18 14.83 6.89 12 6.89ZM12 15.3C10.18 15.3 8.71 13.83 8.71 12C8.71 10.17 10.18 8.7 12 8.7C13.82 8.7 15.29 10.17 15.29 12C15.29 13.83 13.82 15.3 12 15.3ZM17.65 7.64C17.65 8.32 17.1 8.87 16.42 8.87C15.74 8.87 15.19 8.32 15.19 7.64C15.19 6.96 15.74 6.41 16.42 6.41C17.1 6.41 17.65 6.96 17.65 7.64Z" fill="url(#instagram-gradient)"/>
     <defs>
       <linearGradient id="instagram-gradient" x1="2.25" y1="22.25" x2="21.75" y2="1.75" gradientUnits="userSpaceOnUse">
-        <stop stopColor="#FEDA75"/>
-        <stop offset="0.25" stopColor="#FA7E1E"/>
-        <stop offset="0.5" stopColor="#D62976"/>
-        <stop offset="0.75" stopColor="#962FBF"/>
+        <stop stopColor="#FEDA75"/><stop offset="0.25" stopColor="#FA7E1E"/>
+        <stop offset="0.5" stopColor="#D62976"/><stop offset="0.75" stopColor="#962FBF"/>
         <stop offset="1" stopColor="#4F5BD5"/>
       </linearGradient>
     </defs>
@@ -28,9 +26,7 @@ const FacebookIcon = ({ className }: { className?: string }) => (
 export function Footer() {
   return (
     <footer className="mt-24 bg-[#0A0D14] text-white/70 border-t border-white/10 relative overflow-hidden">
-      {/* Subtle background glow effect */}
       <div aria-hidden className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
-
       <div className="container-x py-12 relative z-10">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
@@ -52,18 +48,14 @@ export function Footer() {
               </a>
             </div>
           </div>
-
           <div>
             <h4 className="font-display font-semibold text-white tracking-wide uppercase text-xs">Explore</h4>
             <ul className="mt-5 space-y-3 text-sm">
               {NAV.map((n) => (
-                <li key={n.to}>
-                  <Link to={n.to} className="hover:text-white transition-colors duration-300">{n.label}</Link>
-                </li>
+                <li key={n.to}><Link to={n.to} className="hover:text-white transition-colors duration-300">{n.label}</Link></li>
               ))}
             </ul>
           </div>
-
           <div>
             <h4 className="font-display font-semibold text-white tracking-wide uppercase text-xs">Services</h4>
             <ul className="mt-5 space-y-3 text-sm">
@@ -73,7 +65,6 @@ export function Footer() {
               <li><Link to="/book" className="hover:text-white font-medium text-primary transition-colors duration-300">Book a Ride</Link></li>
             </ul>
           </div>
-
           <div>
             <h4 className="font-display font-semibold text-white tracking-wide uppercase text-xs">Contact Us</h4>
             <ul className="mt-5 space-y-4 text-sm">
@@ -97,7 +88,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-
       <div className="border-t border-white/10 relative z-10">
         <div className="container-x py-5 flex flex-col-reverse md:flex-row gap-4 items-center justify-between text-xs text-white/40">
           <p>© {new Date().getFullYear()} RK Tours and Travels. All rights reserved.</p>

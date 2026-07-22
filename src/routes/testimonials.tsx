@@ -17,14 +17,7 @@ export const Route = createFileRoute("/testimonials")({
   component: Testimonials,
 });
 
-interface DBReview {
-  id: number;
-  name: string;
-  role: string | null;
-  message: string;
-  rating: number;
-  created_at: string;
-}
+interface DBReview { id: number; name: string; role: string | null; message: string; rating: number; created_at: string; }
 
 function getBackendUrl(endpoint: string) {
   if (import.meta.env.DEV) return `http://localhost/rk-journeys-elevated/backend/${endpoint}`;
@@ -47,12 +40,9 @@ function Testimonials() {
           setLoadedFromDb(true);
         }
       })
-      .catch(() => {
-        // Silently fall back to static data if backend is unavailable
-      });
+      .catch(() => {});
   }, []);
 
-  // Use DB reviews if available, otherwise fall back to static TESTIMONIALS
   const reviews = loadedFromDb
     ? dbReviews.map((r) => ({ name: r.name, role: r.role ?? "", text: r.message, rating: r.rating }))
     : TESTIMONIALS;
@@ -60,7 +50,6 @@ function Testimonials() {
   return (
     <>
       <PageHero eyebrow="Testimonials" title="Loved by travelers across India." subtitle="Real words from customers who trusted us with their journeys." />
-
       <section className="section pt-0">
         <div className="container-x grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((t, i) => (
