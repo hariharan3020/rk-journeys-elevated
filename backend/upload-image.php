@@ -45,16 +45,16 @@ try {
 // ── Validate uploaded file ────────────────────────────────────────────────────
 if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
     $uploadErrors = [
-        UPLOAD_ERR_INI_SIZE   => "File exceeds server limit.",
-        UPLOAD_ERR_FORM_SIZE  => "File exceeds form limit.",
-        UPLOAD_ERR_PARTIAL    => "File only partially uploaded.",
-        UPLOAD_ERR_NO_FILE    => "No file uploaded.",
-        UPLOAD_ERR_NO_TMP_DIR => "Missing temp folder.",
-        UPLOAD_ERR_CANT_WRITE => "Failed to write file.",
-        UPLOAD_ERR_EXTENSION  => "Upload blocked by extension.",
+        UPLOAD_ERR_INI_SIZE   => "File exceeds server upload_max_filesize limit.",
+        UPLOAD_ERR_FORM_SIZE  => "File exceeds form MAX_FILE_SIZE limit.",
+        UPLOAD_ERR_PARTIAL    => "File was only partially uploaded.",
+        UPLOAD_ERR_NO_FILE    => "No file was uploaded.",
+        UPLOAD_ERR_NO_TMP_DIR => "Missing temporary folder.",
+        UPLOAD_ERR_CANT_WRITE => "Failed to write file to disk.",
+        UPLOAD_ERR_EXTENSION  => "Upload stopped by PHP extension.",
     ];
-    $errCode = isset($_FILES['image']['error']) ? $_FILES['image']['error'] : UPLOAD_ERR_NO_FILE;
-    $errMsg  = isset($uploadErrors[$errCode]) ? $uploadErrors[$errCode] : "Unknown upload error.";
+    $errCode = isset($_FILES['image']['error']) ? (int)$_FILES['image']['error'] : UPLOAD_ERR_NO_FILE;
+    $errMsg  = isset($uploadErrors[$errCode]) ? $uploadErrors[$errCode] : "Unknown upload error (code $errCode).";
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => $errMsg]);
     exit;
@@ -64,9 +64,9 @@ $file     = $_FILES['image'];
 $mimeType = mime_content_type($file['tmp_name']);
 $allowed  = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
-if (!in_array($mimeType, $allowed)) {
+if (!in_array($mimeType, $allowed, true)) {
     http_response_code(400);
-    echo json_encode(["status" => "error", "message" => "Only JPG, PNG and WebP images are allowed."]);
+    echo json_encode(["status" => "error", "message" => "Only JPG, PNG and WebP images are allowed. Detected: $mimeType"]);
     exit;
 }
 
@@ -76,27 +76,30 @@ if ($file['size'] > 5 * 1024 * 1024) {
     exit;
 }
 
-// ── Resolve upload directory ──────────────────────────────────────────────────
-// Works for both local dev (public/ sibling of backend/) and
-// Hostinger live (backend/ and image folders are all inside public_html/)
+// ── Resolve upload directory using DOCUMENT_ROOT ──────────────────────────────
+// $_SERVER['DOCUMENT_ROOT'] always points to the web root (public_html/ on Hostinger).
+// This works correctly on both local dev and any live server.
 $folder = isset($_POST['folder']) ? preg_replace('/[^a-z0-9_-]/', '', strtolower($_POST['folder'])) : 'packages';
 
-// Try sibling public/ first (local dev structure)
-$siblingPublic = __DIR__ . '/../public/' . $folder . '/';
-// Fallback: same directory level as backend/ (Hostinger live structure)
-$sameLevel = __DIR__ . '/../' . $folder . '/';
+$docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/\\');
+$uploadDir = $docRoot . DIRECTORY_SEPARATOR . $folder . DIRECTORY_SEPARATOR;
 
-if (is_dir(__DIR__ . '/../public/')) {
-    $uploadDir = $siblingPublic;
-} else {
-    $uploadDir = $sameLevel;
-}
+// Debug: return the resolved path if something goes wrong later
+$debugInfo = [
+    'doc_root'   => $docRoot,
+    'upload_dir' => $uploadDir,
+    'folder'     => $folder,
+];
 
 // Create the directory if it doesn't exist
 if (!is_dir($uploadDir)) {
     if (!mkdir($uploadDir, 0755, true)) {
         http_response_code(500);
-        echo json_encode(["status" => "error", "message" => "Could not create upload directory."]);
+        echo json_encode([
+            "status"  => "error",
+            "message" => "Could not create upload directory.",
+            "debug"   => $debugInfo,
+        ]);
         exit;
     }
 }
@@ -111,10 +114,15 @@ $destPath = $uploadDir . $filename;
 
 if (!move_uploaded_file($file['tmp_name'], $destPath)) {
     http_response_code(500);
-    echo json_encode(["status" => "error", "message" => "Failed to save image. Check directory permissions."]);
+    echo json_encode([
+        "status"  => "error",
+        "message" => "Failed to save image. Check directory permissions.",
+        "debug"   => $debugInfo,
+    ]);
     exit;
 }
 
 // ── Return the public URL path ────────────────────────────────────────────────
+// The URL is always /{folder}/{filename} relative to the web root
 $publicPath = '/' . $folder . '/' . $filename;
 echo json_encode(["status" => "success", "path" => $publicPath]);
