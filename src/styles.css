@@ -179,27 +179,37 @@
 
 @utility card-float {
   position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(145deg, #1A0B0E 0%, #4C1D24 60%, #C8102E 100%);
   border-radius: var(--radius);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  box-shadow: 0 12px 35px -15px rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 40px -15px rgba(200, 16, 46, 0.3);
   transition: all .45s cubic-bezier(.2,.8,.2,1);
   overflow: hidden;
+  color: #ffffff;
 }
 @utility card-float {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+    transition: left .7s ease;
+  }
   &::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    opacity: 0;
+    background: linear-gradient(90deg, #F87171, #EF4444, #B91C1C);
+    opacity: 0.7;
     transition: opacity .45s ease;
   }
+  &:hover::before { left: 100%; }
   &:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow: var(--shadow-float);
-    border-color: rgba(10, 110, 189, 0.3);
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 25px 65px -15px rgba(200, 16, 46, 0.45);
+    border-color: rgba(239, 68, 68, 0.45);
   }
   &:hover::after {
     opacity: 1;
@@ -220,11 +230,11 @@
   font-size: 0.75rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #0A6EBD;
+  color: #C8102E;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
-  background: rgba(10, 110, 189, 0.08);
-  border: 1px solid rgba(10, 110, 189, 0.18);
+  background: rgba(200, 16, 46, 0.08);
+  border: 1px solid rgba(200, 16, 46, 0.18);
 }
 
 @utility fade-up {
@@ -248,23 +258,25 @@
 }
 
 @utility gradient-text {
-  background: linear-gradient(135deg, #0A6EBD 0%, #0F172A 100%);
+  background: linear-gradient(135deg, #C8102E 0%, #0F172A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 @utility glow-icon {
   position: relative;
-  background: linear-gradient(135deg, rgba(10, 110, 189, 0.1), rgba(10, 110, 189, 0.04));
-  border: 1px solid rgba(10, 110, 189, 0.18);
-  color: #0A6EBD;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #F87171;
   transition: all .35s ease;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 @utility glow-icon {
   &:hover {
-    background: linear-gradient(135deg, #0A6EBD, #085a9a);
-    color: white;
-    box-shadow: 0 10px 25px -8px rgba(10, 110, 189, 0.5);
+    background: #ffffff;
+    color: #C8102E;
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.5);
     border-color: transparent;
   }
 }

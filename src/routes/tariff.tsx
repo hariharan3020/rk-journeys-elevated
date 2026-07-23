@@ -50,28 +50,28 @@ function Tariff() {
             ]).map((tab) => (
               <button key={tab.id} id={tab.id} role="tab" aria-selected={category === tab.id}
                 onClick={() => selectCategory(tab.id)}
-                className={`rounded-2xl px-5 py-3.5 text-left transition-all duration-300 ${category === tab.id ? "bg-white text-primary shadow-md shadow-slate-200/80 border border-slate-200/60" : "text-slate-600 hover:text-slate-900 hover:bg-white/50"}`}>
-                <span className={`block font-display text-sm font-bold ${category === tab.id ? "text-primary" : "text-heading"}`}>{tab.label}</span>
-                <span className="mt-0.5 block text-xs text-paragraph">{tab.description}</span>
+                className={`rounded-2xl px-5 py-3.5 text-left transition-all duration-300 ${category === tab.id ? "bg-gradient-to-r from-red-600 to-red-800 text-white shadow-md shadow-red-200/80 border border-red-500/60" : "text-slate-600 hover:text-slate-900 hover:bg-white/50"}`}>
+                <span className={`block font-display text-sm font-bold ${category === tab.id ? "text-white" : "text-heading"}`}>{tab.label}</span>
+                <span className={`mt-0.5 block text-xs ${category === tab.id ? "text-red-100" : "text-paragraph"}`}>{tab.description}</span>
               </button>
             ))}
           </div>
 
           <div key={category} className="tariff-table-shell overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-soft">
-            <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-gradient-to-r from-blue-900 to-slate-900 px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-white md:grid">
+            <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-gradient-to-r from-red-950 to-slate-900 px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-red-300 md:grid">
               <span>Vehicle</span><span>Rent/Day</span><span>Free Km/Day</span><span>Fare/Km After Free</span><span>Driver Bata</span><span>Total</span><span>Action</span>
             </div>
             {activeRows.map((row, index) => (
-              <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-slate-100 px-5 py-4 text-sm transition-all duration-200 hover:bg-blue-50/50 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-6">
-                <div className="font-bold text-heading text-base"><span className="mr-2 text-[10px] text-primary md:hidden">VEHICLE</span>{row.vehicle}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">RENT/DAY</span>{row.rentPerDay ?? "—"}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FREE KM/DAY</span>{row.minKm}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FARE/KM AFTER FREE</span>{row.farePerKm}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">DRIVER BATA</span>{row.driverBata}</div>
-                <div className="font-bold text-primary text-base"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">TOTAL</span>{row.amount}</div>
+              <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-slate-100 px-5 py-4 text-sm transition-all duration-200 hover:bg-red-50/30 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-6">
+                <div className="font-bold text-heading text-base"><span className="mr-2 text-[10px] text-red-600 md:hidden">VEHICLE</span>{row.vehicle}</div>
+                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-red-600 md:hidden">RENT/DAY</span>{row.rentPerDay ?? "—"}</div>
+                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-red-600 md:hidden">FREE KM/DAY</span>{row.minKm}</div>
+                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-red-600 md:hidden">FARE/KM AFTER FREE</span>{row.farePerKm}</div>
+                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-red-600 md:hidden">DRIVER BATA</span>{row.driverBata}</div>
+                <div className="font-bold text-red-600 text-base"><span className="mr-2 text-[10px] font-bold uppercase text-red-600 md:hidden">TOTAL</span>{row.amount}</div>
                 <a href={`https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(`Hi, I want to enquire about ${row.vehicle} ${category} tariff`)}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="inline-flex w-fit items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30">
+                  className="inline-flex w-fit items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-red-600 to-red-800 px-4 py-2 text-xs font-bold text-white shadow-md shadow-red-500/20 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/30">
                   {row.actionLabel ?? "Book Now"}
                 </a>
               </div>
@@ -79,14 +79,14 @@ function Tariff() {
           </div>
 
           {note && (
-            <div className="rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-7 md:p-9 shadow-soft">
-              <h2 className="flex items-center gap-2.5 font-display text-lg font-bold text-primary"><CircleHelp className="size-5" /> Terms & Conditions</h2>
+            <div className="rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-red-50/10 p-7 md:p-9 shadow-soft">
+              <h2 className="flex items-center gap-2.5 font-display text-lg font-bold text-red-600"><CircleHelp className="size-5" /> Terms & Conditions</h2>
               <p className="mt-4 text-sm leading-relaxed text-paragraph"><strong className="text-heading font-display">Note: </strong>{note}</p>
               <ul className="mt-4 grid gap-2.5 text-sm text-paragraph md:grid-cols-2">
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Parking and toll charges are extra.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Night driving charges may apply.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Kilometre calculation is based on the agreed route.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Air conditioning is unavailable while parked.</li>
+                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-600" /> Parking and toll charges are extra.</li>
+                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-600" /> Night driving charges may apply.</li>
+                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-600" /> Kilometre calculation is based on the agreed route.</li>
+                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-600" /> Air conditioning is unavailable while parked.</li>
               </ul>
             </div>
           )}

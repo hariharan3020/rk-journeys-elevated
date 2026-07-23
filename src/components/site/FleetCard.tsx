@@ -47,32 +47,32 @@ export function FleetCard({
         )}
       </div>
       <div className="p-6">
-        <h3 className="font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{name}</h3>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-medium text-slate-600">
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
-            <Users className="size-3.5 text-primary shrink-0" />
+        <h3 className="font-display font-bold text-xl text-white group-hover:text-red-300 transition-colors">{name}</h3>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-medium text-slate-200">
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-red-400/40 group-hover:text-white">
+            <Users className="size-3.5 text-red-400 shrink-0" />
             <span>{passengers} Seats</span>
           </div>
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
-            <Luggage className="size-3.5 text-primary shrink-0" />
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-red-400/40 group-hover:text-white">
+            <Luggage className="size-3.5 text-red-400 shrink-0" />
             <span>{luggage} Bags</span>
           </div>
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
-            <Snowflake className="size-3.5 text-primary shrink-0" />
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-red-400/40 group-hover:text-white">
+            <Snowflake className="size-3.5 text-red-400 shrink-0" />
             <span>{ac ? "AC" : "Non-AC"}</span>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
-          <div className="flex items-center gap-1 text-amber-500">
+        <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3.5 text-xs text-slate-300">
+          <div className="flex items-center gap-1 text-amber-400">
             {[...Array(5)].map((_, i) => <Star key={i} className="size-3.5 fill-current" />)}
-            <span className="ml-1.5 font-semibold text-slate-700">5.0</span>
+            <span className="ml-1.5 font-semibold text-white">5.0</span>
           </div>
-          <span className="font-medium text-slate-400">Comfort Rated</span>
+          <span className="font-medium text-slate-300">Comfort Rated</span>
         </div>
         <div className="mt-5">
           <BookNowButton
             label="Enquire Now"
-            className="w-full !py-2.5 text-sm"
+            className="w-full !py-2.5 text-sm !bg-gradient-to-r !from-red-600 !to-red-800 hover:!from-red-500 hover:!to-red-700 !text-white !shadow-lg !shadow-red-900/40"
             message={`Hi, I want to book a ${name}`}
           />
         </div>

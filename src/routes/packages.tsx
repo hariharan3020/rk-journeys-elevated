@@ -44,17 +44,17 @@ function Packages() {
                   <img src={resolvePackageImage(p.image)} alt={p.name} loading="lazy" width={1024} height={768}
                     className="size-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-95 group-hover:opacity-100" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20" />
-                  <span className="absolute left-4 top-4 rounded-full bg-white/90 backdrop-blur-md border border-white/60 px-3.5 py-1 text-xs font-bold text-primary shadow-sm">
+                  <span className="absolute left-4 top-4 rounded-full bg-gradient-to-r from-red-500 to-red-700 border border-red-400/30 px-3.5 py-1 text-xs font-bold text-white shadow-sm">
                     {p.days}
                   </span>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{p.name}</h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-paragraph">{p.desc}</p>
+                  <h3 className="font-display font-bold text-xl text-white group-hover:text-red-300 transition-colors">{p.name}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-200/90">{p.desc}</p>
                 </div>
               </div>
               <div className="px-6 pb-6">
-                <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs"
+                <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs !bg-gradient-to-r !from-red-600 !to-red-800 hover:!from-red-500 hover:!to-red-700 !text-white"
                   message={`Hi, I want to enquire about the ${p.name} package`} />
               </div>
             </article>
