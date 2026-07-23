@@ -188,6 +188,12 @@
   color: #ffffff;
 }
 @utility card-float {
+  h1, h2, h3, h4, h5, h6, .text-heading, summary {
+    color: #ffffff !important;
+  }
+  p, .text-paragraph {
+    color: #cbd5e1 !important;
+  }
   &::before {
     content: '';
     position: absolute;
