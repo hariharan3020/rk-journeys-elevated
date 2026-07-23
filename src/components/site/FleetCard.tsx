@@ -15,6 +15,7 @@ function resolveFleetImage(image: string): string {
 
 export function FleetCard({
   name, image, passengers, luggage, ac, tag, rate, rateVisible = true,
+  showSpecs = true, showSeats = true, showLuggage = true, showAc = true,
 }: {
   name: string;
   image: string;
@@ -24,7 +25,14 @@ export function FleetCard({
   tag: string;
   rate: string;
   rateVisible?: boolean;
+  showSpecs?: boolean;
+  showSeats?: boolean;
+  showLuggage?: boolean;
+  showAc?: boolean;
 }) {
+  const visibleBadgesCount = [showSeats !== false, showLuggage !== false, showAc !== false].filter(Boolean).length;
+  const isSpecsVisible = showSpecs !== false && visibleBadgesCount > 0;
+
   return (
     <article className="card-float overflow-hidden group">
       <div className="relative overflow-hidden bg-gradient-to-b from-slate-100/90 via-slate-50 to-white aspect-[4/3] flex items-center justify-center p-4">
@@ -48,20 +56,31 @@ export function FleetCard({
       </div>
       <div className="p-6">
         <h3 className="font-display font-bold text-xl text-white group-hover:text-cyan-300 transition-colors">{name}</h3>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-medium text-slate-200">
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
-            <Users className="size-3.5 text-cyan-400 shrink-0" />
-            <span>{passengers} Seats</span>
+
+        {isSpecsVisible && (
+          <div className={`mt-4 grid gap-2 text-xs font-medium text-slate-200 ${
+            visibleBadgesCount === 3 ? "grid-cols-3" : visibleBadgesCount === 2 ? "grid-cols-2" : "grid-cols-1"
+          }`}>
+            {showSeats !== false && (
+              <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
+                <Users className="size-3.5 text-cyan-400 shrink-0" />
+                <span>{passengers} Seats</span>
+              </div>
+            )}
+            {showLuggage !== false && (
+              <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
+                <Luggage className="size-3.5 text-cyan-400 shrink-0" />
+                <span>{luggage} Bags</span>
+              </div>
+            )}
+            {showAc !== false && (
+              <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
+                <Snowflake className="size-3.5 text-cyan-400 shrink-0" />
+                <span>{ac ? "AC" : "Non-AC"}</span>
+              </div>
+            )}
           </div>
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
-            <Luggage className="size-3.5 text-cyan-400 shrink-0" />
-            <span>{luggage} Bags</span>
-          </div>
-          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/15 py-2 px-2 transition-all group-hover:bg-white/20 group-hover:border-cyan-400/40 group-hover:text-white">
-            <Snowflake className="size-3.5 text-cyan-400 shrink-0" />
-            <span>{ac ? "AC" : "Non-AC"}</span>
-          </div>
-        </div>
+        )}
         <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3.5 text-xs text-slate-300">
           <div className="flex items-center gap-1 text-amber-400">
             {[...Array(5)].map((_, i) => <Star key={i} className="size-3.5 fill-current" />)}

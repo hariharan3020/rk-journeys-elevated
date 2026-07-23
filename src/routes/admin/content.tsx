@@ -603,23 +603,72 @@ function FleetCardEditor({
             onChange={(e) => onUpdate("luggage", parseInt(e.target.value) || 0)} />
         </Field>
       </div>
-      <Field label="Rate badge visibility">
-        <label className="inline-flex items-center gap-2 text-sm text-paragraph">
-          <input
-            type="checkbox"
-            checked={item.rateVisible !== false}
-            onChange={(e) => onUpdate("rateVisible", e.target.checked)}
-            className="form-checkbox rounded border-border text-primary"
-          />
-          <span>{item.rateVisible === false ? "Hidden on fleet card" : "Shown on fleet card"}</span>
-        </label>
-      </Field>
-      <Field label="Air Conditioning">
-        <label className="inline-flex items-center gap-2 text-sm text-paragraph">
-          <input type="checkbox" checked={item.ac} onChange={(e) => onUpdate("ac", e.target.checked)} className="form-checkbox rounded border-border text-primary" />
-          <span>{item.ac ? "AC enabled" : "No AC"}</span>
-        </label>
-      </Field>
+      <div className="pt-3 border-t border-border/80 space-y-3">
+        <p className="text-xs font-bold text-heading uppercase tracking-wider">Badge & Spec Visibility Controls</p>
+
+        <div className="grid sm:grid-cols-2 gap-3">
+          <label className="flex items-center gap-2.5 p-3 rounded-xl border border-border bg-background hover:bg-surface transition cursor-pointer text-xs font-semibold text-heading">
+            <input
+              type="checkbox"
+              checked={item.rateVisible !== false}
+              onChange={(e) => onUpdate("rateVisible", e.target.checked)}
+              className="form-checkbox size-4 rounded border-border text-primary"
+            />
+            <span>Show Rate Badge ({item.rate})</span>
+          </label>
+
+          <label className="flex items-center gap-2.5 p-3 rounded-xl border border-border bg-background hover:bg-surface transition cursor-pointer text-xs font-semibold text-heading">
+            <input
+              type="checkbox"
+              checked={item.showSpecs !== false}
+              onChange={(e) => onUpdate("showSpecs", e.target.checked)}
+              className="form-checkbox size-4 rounded border-border text-primary"
+            />
+            <span>Show Specification Badges Section</span>
+          </label>
+        </div>
+
+        {item.showSpecs !== false && (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-xl border border-border/60 bg-surface/50">
+            <label className="flex items-center gap-2 text-xs font-medium text-heading cursor-pointer">
+              <input
+                type="checkbox"
+                checked={item.showSeats !== false}
+                onChange={(e) => onUpdate("showSeats", e.target.checked)}
+                className="form-checkbox size-4 rounded border-border text-primary"
+              />
+              <span>Show Seats ({item.passengers})</span>
+            </label>
+
+            <label className="flex items-center gap-2 text-xs font-medium text-heading cursor-pointer">
+              <input
+                type="checkbox"
+                checked={item.showLuggage !== false}
+                onChange={(e) => onUpdate("showLuggage", e.target.checked)}
+                className="form-checkbox size-4 rounded border-border text-primary"
+              />
+              <span>Show Bags ({item.luggage})</span>
+            </label>
+
+            <label className="flex items-center gap-2 text-xs font-medium text-heading cursor-pointer">
+              <input
+                type="checkbox"
+                checked={item.showAc !== false}
+                onChange={(e) => onUpdate("showAc", e.target.checked)}
+                className="form-checkbox size-4 rounded border-border text-primary"
+              />
+              <span>Show AC / Non-AC</span>
+            </label>
+          </div>
+        )}
+
+        <Field label="Air Conditioning Status">
+          <label className="inline-flex items-center gap-2 text-xs text-paragraph cursor-pointer">
+            <input type="checkbox" checked={item.ac} onChange={(e) => onUpdate("ac", e.target.checked)} className="form-checkbox rounded border-border text-primary" />
+            <span>{item.ac ? "Vehicle has AC" : "Vehicle is Non-AC"}</span>
+          </label>
+        </Field>
+      </div>
     </div>
   );
 }

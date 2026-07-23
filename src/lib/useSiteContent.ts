@@ -39,6 +39,10 @@ export interface FleetItem {
   tag: string;
   rate: string;
   rateVisible?: boolean;
+  showSpecs?: boolean;
+  showSeats?: boolean;
+  showLuggage?: boolean;
+  showAc?: boolean;
 }
 
 export interface PackageItem {

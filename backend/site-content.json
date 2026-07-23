@@ -470,21 +470,21 @@
                 {
                     "vehicle": "Swift",
                     "minKm": "300",
-                    "farePerKm": "₹13",
+                    "farePerKm": "₹14",
                     "driverBata": "₹400",
                     "amount": "₹4300"
                 },
                 {
                     "vehicle": "Etios",
                     "minKm": "300",
-                    "farePerKm": "₹13",
+                    "farePerKm": "₹14",
                     "driverBata": "₹400",
                     "amount": "₹4300"
                 },
                 {
                     "vehicle": "Ciaz or Amaze",
                     "minKm": "300",
-                    "farePerKm": "₹14",
+                    "farePerKm": "₹15",
                     "driverBata": "₹400",
                     "amount": "₹4600"
                 },
