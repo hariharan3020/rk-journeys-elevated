@@ -287,8 +287,8 @@ function getSiteContentUrl() {
   if (custom) return `${custom.replace(/\/$/, "")}/site-content.php`;
   const configuredUrl = import.meta.env.VITE_BACKEND_URL;
   if (configuredUrl) return `${configuredUrl.replace(/\/$/, "")}/site-content.php`;
-  // Always fall back to the production backend on the live domain
-  return "https://rktoursandtravels.in/backend/site-content.php";
+  // Fall back to relative /backend path
+  return "/backend/site-content.php";
 }
 
 // ── Module-level cache & subscriber registry ──────────────────────────────────

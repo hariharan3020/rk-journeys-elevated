@@ -1,12 +1,12 @@
 <?php
 // ── Database configuration ─────────────────────────────────────────────────
-$isLocalDevelopment = in_array(
-    $_SERVER['HTTP_HOST'] ?? '',
-    ['localhost', '127.0.0.1', '127.0.0.1:8000', 'localhost:8000', '127.0.0.1:8080', 'localhost:8080'],
-    true
-);
+$httpHost = $_SERVER['HTTP_HOST'] ?? '';
+$isLocalDevelopment = (php_sapi_name() === 'cli')
+    || strpos($httpHost, 'localhost') !== false
+    || strpos($httpHost, '127.0.0.1') !== false
+    || strpos($httpHost, '::1') !== false;
 
-define('DB_HOST', '127.0.0.1');
+define('DB_HOST', $isLocalDevelopment ? '127.0.0.1' : 'localhost');
 define('DB_USER', $isLocalDevelopment ? 'root' : 'u910074219_rk_tours');
 define('DB_PASS', $isLocalDevelopment ? '' : 'Techinta@2026');
 define('DB_NAME', $isLocalDevelopment ? 'rk_tours_and_travels' : 'u910074219_rk_tours');

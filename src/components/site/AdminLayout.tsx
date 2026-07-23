@@ -16,8 +16,8 @@ function getBackendUrl(endpoint: string) {
   if (custom) return `${custom.replace(/\/$/, "")}/${endpoint}`;
   const configuredUrl = import.meta.env.VITE_BACKEND_URL;
   if (configuredUrl) return `${configuredUrl.replace(/\/$/, "")}/${endpoint}`;
-  // Always fall back to the production backend on the live domain
-  return `https://rktoursandtravels.in/backend/${endpoint}`;
+  // Fall back to relative /backend path
+  return `/backend/${endpoint}`;
 }
 
 export { getBackendUrl };

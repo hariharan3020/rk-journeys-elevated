@@ -9,6 +9,18 @@ Options +FollowSymLinks
 # Set index file
 DirectoryIndex index.html
 
+# ── Ensure PHP files are handled by PHP engine ────────────────────────────────
+<IfModule mod_mime.c>
+  AddType application/x-httpd-php .php
+</IfModule>
+
+# ── Allow PHP execution inside backend/ ───────────────────────────────────────
+<FilesMatch "\.php$">
+  <IfModule mod_mime.c>
+    AddType application/x-httpd-php .php
+  </IfModule>
+</FilesMatch>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
