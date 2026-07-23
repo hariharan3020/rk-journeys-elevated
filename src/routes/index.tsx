@@ -394,7 +394,7 @@ function Home() {
       {/* CTA */}
       <section className="section pt-0">
         <div className="container-x">
-          <div className="relative overflow-hidden rounded-[28px] bg-primary text-white p-10 md:p-16">
+          <div className="relative overflow-hidden rounded-[28px] bg-[#0B192C] border border-white/10 text-white p-10 md:p-16 shadow-2xl">
             <div aria-hidden className="absolute -right-20 -top-20 size-80 rounded-full bg-white/20 blur-3xl" />
             <div aria-hidden className="absolute -left-16 bottom-0 size-72 rounded-full bg-white/10 blur-3xl" />
             <div className="relative max-w-2xl">
