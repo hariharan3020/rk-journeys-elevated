@@ -361,8 +361,8 @@ function Home() {
             ].map((s) => (
               <div key={s.n} className="card-float p-8">
                 <p className="font-display font-bold text-5xl text-primary/20">{s.n}</p>
-                <h3 className="mt-3 font-display font-bold text-xl text-heading">{s.t}</h3>
-                <p className="mt-2 text-sm text-paragraph">{s.d}</p>
+                <h3 className="mt-3 font-display font-bold text-xl text-white">{s.t}</h3>
+                <p className="mt-2 text-sm text-slate-200">{s.d}</p>
               </div>
             ))}
           </div>
@@ -380,11 +380,11 @@ function Home() {
           <div className="space-y-3 max-w-3xl mx-auto">
             {content.faqs.map((f, i) => (
               <details key={i} className="group card-float p-5 open:shadow-[var(--shadow-float)]">
-                <summary className="cursor-pointer list-none flex items-center justify-between font-display font-semibold text-heading">
+                <summary className="cursor-pointer list-none flex items-center justify-between font-display font-semibold text-white">
                   {f.q}
                   <span className="text-primary transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <p className="mt-3 text-sm text-paragraph">{f.a}</p>
+                <p className="mt-3 text-sm text-slate-200">{f.a}</p>
               </details>
             ))}
           </div>

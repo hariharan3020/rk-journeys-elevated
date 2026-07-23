@@ -49,12 +49,12 @@ function Packages() {
                   </span>
                 </div>
                 <div className="p-6">
-                  <h3 className="font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{p.name}</h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-paragraph">{p.desc}</p>
+                  <h3 className="font-display font-bold text-xl text-white group-hover:text-cyan-300 transition-colors">{p.name}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-200">{p.desc}</p>
                 </div>
               </div>
               <div className="px-6 pb-6">
-                <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs"
+                <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs !bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-400 hover:!to-blue-500 !text-white"
                   message={`Hi, I want to enquire about the ${p.name} package`} />
               </div>
             </article>
