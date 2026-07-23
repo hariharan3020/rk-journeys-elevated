@@ -43,11 +43,11 @@ function Services() {
                   <div className="glow-icon grid size-14 place-items-center rounded-2xl group-hover:scale-110">
                     <Icon className="size-6 transition-transform group-hover:scale-110" />
                   </div>
-                  <h3 className="mt-6 font-display font-bold text-xl text-white group-hover:text-red-300 transition-colors">{s.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-200/90">{s.desc}</p>
+                  <h3 className="mt-6 font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{s.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-paragraph">{s.desc}</p>
                 </div>
-                <div className="mt-6 border-t border-white/10 pt-5">
-                  <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs !bg-gradient-to-r !from-red-600 !to-red-800 hover:!from-red-500 hover:!to-red-700 !text-white" message={`Hi, I want to book ${s.title}`} />
+                <div className="mt-6 border-t border-slate-100 pt-5">
+                  <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs" message={`Hi, I want to book ${s.title}`} />
                 </div>
               </article>
             );

@@ -158,7 +158,7 @@ function Home() {
                   <div className="glow-icon grid size-13 place-items-center rounded-2xl group-hover:scale-110">
                     <Icon className="size-6 transition-transform group-hover:scale-110" />
                   </div>
-                  <h3 className="mt-6 font-display font-bold text-xl text-white group-hover:text-red-300 transition-colors">{f.title}</h3>
+                  <h3 className="mt-6 font-display font-bold text-xl text-white group-hover:text-cyan-300 transition-colors">{f.title}</h3>
                   <p className="mt-2.5 text-sm leading-relaxed text-slate-200/90">{f.desc}</p>
                 </div>
               );
@@ -219,7 +219,7 @@ function Home() {
                 <div key={s.title} data-reveal-item className="card-float p-6 flex gap-4 items-start group">
                   <div className="glow-icon grid size-12 shrink-0 place-items-center rounded-2xl group-hover:scale-110"><Icon className="size-5" /></div>
                   <div>
-                    <h3 className="font-display font-bold text-white text-lg group-hover:text-red-300 transition-colors">{s.title}</h3>
+                    <h3 className="font-display font-bold text-white text-lg group-hover:text-cyan-300 transition-colors">{s.title}</h3>
                     <p className="mt-1.5 text-sm leading-relaxed text-slate-200/90">{s.desc}</p>
                   </div>
                 </div>
@@ -238,18 +238,18 @@ function Home() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal-group>
             {content.fleet.slice(0, 3).map((f, i) => (
-              <div key={f.name} data-reveal-item className={`rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${i === 1 ? "bg-gradient-to-br from-slate-900 via-slate-950 to-red-950 text-white shadow-2xl shadow-slate-900/30 border border-red-500/40" : "card-float"}`}>
-                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${i === 1 ? "bg-red-500/20 text-red-300 border border-red-400/30" : "bg-red-500/20 text-red-300 border border-red-400/30"}`}>{f.tag}</span>
+              <div key={f.name} data-reveal-item className={`rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${i === 1 ? "bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white shadow-2xl shadow-slate-900/30 border border-cyan-500/40" : "card-float"}`}>
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${i === 1 ? "bg-blue-500/20 text-blue-300 border border-blue-400/30" : "bg-cyan-500/20 text-cyan-300 border border-cyan-400/30"}`}>{f.tag}</span>
                 <h3 className="mt-3 font-display font-bold text-2xl text-white">{f.name}</h3>
-                <p className="mt-6 font-display font-bold text-5xl text-red-400">{f.rate}</p>
+                <p className="mt-6 font-display font-bold text-5xl text-cyan-400">{f.rate}</p>
                 <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-300">Outstation • per km</p>
                 <ul className="mt-6 space-y-2.5 text-sm font-medium text-slate-200">
-                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-400" /> {f.passengers} passengers · {f.luggage} bags</li>
-                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-400" /> Air-conditioned</li>
-                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-red-400" /> Experienced driver</li>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-cyan-400" /> {f.passengers} passengers · {f.luggage} bags</li>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-cyan-400" /> Air-conditioned</li>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-cyan-400" /> Experienced driver</li>
                 </ul>
                 <div className="mt-7">
-                  <BookNowButton className="w-full justify-center !py-3 !bg-gradient-to-r !from-red-500 !to-red-700 hover:!from-red-400 hover:!to-red-600 !text-white" message={`Hi, I want to book a ${f.name}`} />
+                  <BookNowButton className="w-full justify-center !py-3 !bg-gradient-to-r !from-cyan-500 !to-blue-600 hover:!from-cyan-400 hover:!to-blue-500 !text-white" message={`Hi, I want to book a ${f.name}`} />
                 </div>
               </div>
             ))}
@@ -280,10 +280,10 @@ function Home() {
                   <p className="mt-4 text-sm text-slate-200 leading-relaxed italic">"{t.text}"</p>
                 </div>
                 <div className="mt-6 border-t border-white/10 pt-4 flex items-center gap-3">
-                  <div className="grid size-10 place-items-center rounded-full bg-gradient-to-tr from-red-500 to-red-700 text-white font-display font-bold shadow-md shadow-red-500/20">{t.name[0]}</div>
+                  <div className="grid size-10 place-items-center rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-white font-display font-bold shadow-md shadow-blue-500/20">{t.name[0]}</div>
                   <div>
                     <p className="font-display font-bold text-white text-sm">{t.name}</p>
-                    <p className="text-xs font-medium text-red-300">{t.role}</p>
+                    <p className="text-xs font-medium text-cyan-300">{t.role}</p>
                   </div>
                 </div>
               </div>
