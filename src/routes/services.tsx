@@ -34,18 +34,20 @@ function Services() {
       </PageHero>
 
       <section className="section pt-0">
-        <div className="container-x grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="container-x grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {content.services.map((s) => {
             const Icon = iconMap[s.icon] ?? MapPinned;
             return (
-              <article key={s.title} className="card-float p-7 group">
-                <div className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                  <Icon className="size-6" />
+              <article key={s.title} className="card-float p-8 group flex flex-col justify-between">
+                <div>
+                  <div className="glow-icon grid size-14 place-items-center rounded-2xl group-hover:scale-110">
+                    <Icon className="size-6 transition-transform group-hover:scale-110" />
+                  </div>
+                  <h3 className="mt-6 font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{s.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-paragraph">{s.desc}</p>
                 </div>
-                <h3 className="mt-5 font-display font-bold text-xl text-heading">{s.title}</h3>
-                <p className="mt-2 text-sm text-paragraph">{s.desc}</p>
-                <div className="mt-5">
-                  <BookNowButton label="Enquire" className="!py-2 !px-4 text-xs" message={`Hi, I want to book ${s.title}`} />
+                <div className="mt-6 border-t border-slate-100 pt-5">
+                  <BookNowButton label="Enquire Now" className="w-full justify-center !py-2.5 text-xs" message={`Hi, I want to book ${s.title}`} />
                 </div>
               </article>
             );

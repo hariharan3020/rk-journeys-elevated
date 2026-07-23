@@ -27,36 +27,49 @@ export function FleetCard({
 }) {
   return (
     <article className="card-float overflow-hidden group">
-      <div className="relative overflow-hidden bg-surface aspect-[4/3]">
+      <div className="relative overflow-hidden bg-gradient-to-b from-slate-100/90 via-slate-50 to-white aspect-[4/3] flex items-center justify-center p-4">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(10,110,189,0.08)_0%,transparent_75%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         <img
           src={resolveFleetImage(image)}
           alt={name}
           loading="lazy"
           width={1024}
           height={720}
-          className="size-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+          className="size-full object-contain p-4 drop-shadow-md transition-all duration-700 group-hover:scale-108 group-hover:-translate-y-1"
         />
-        <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-secondary shadow-sm">
+        <span className="absolute left-4 top-4 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/80 px-3.5 py-1 text-xs font-bold text-slate-800 shadow-sm">
           {tag}
         </span>
         {rateVisible && rate.trim() && (
-          <span className="absolute right-4 top-4 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white">
+          <span className="absolute right-4 top-4 rounded-full bg-gradient-to-r from-primary to-blue-700 px-3.5 py-1 text-xs font-bold text-white shadow-md shadow-blue-500/20">
             {rate}
           </span>
         )}
       </div>
       <div className="p-6">
-        <h3 className="font-display font-bold text-xl text-heading">{name}</h3>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-xs text-paragraph">
-          <div className="flex items-center gap-1.5"><Users className="size-4 text-primary" />{passengers} Seats</div>
-          <div className="flex items-center gap-1.5"><Luggage className="size-4 text-primary" />{luggage} Bags</div>
-          <div className="flex items-center gap-1.5"><Snowflake className="size-4 text-primary" />{ac ? "AC" : "Non-AC"}</div>
+        <h3 className="font-display font-bold text-xl text-heading group-hover:text-primary transition-colors">{name}</h3>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-medium text-slate-600">
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
+            <Users className="size-3.5 text-primary shrink-0" />
+            <span>{passengers} Seats</span>
+          </div>
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
+            <Luggage className="size-3.5 text-primary shrink-0" />
+            <span>{luggage} Bags</span>
+          </div>
+          <div className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-100/80 border border-slate-200/60 py-2 px-2 transition-colors group-hover:bg-blue-50/80 group-hover:border-blue-200/60 group-hover:text-primary">
+            <Snowflake className="size-3.5 text-primary shrink-0" />
+            <span>{ac ? "AC" : "Non-AC"}</span>
+          </div>
         </div>
-        <div className="mt-4 flex items-center gap-1 text-amber-500">
-          {[...Array(5)].map((_, i) => <Star key={i} className="size-4 fill-current" />)}
-          <span className="ml-2 text-xs text-paragraph">Comfort Rated</span>
+        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-500">
+          <div className="flex items-center gap-1 text-amber-500">
+            {[...Array(5)].map((_, i) => <Star key={i} className="size-3.5 fill-current" />)}
+            <span className="ml-1.5 font-semibold text-slate-700">5.0</span>
+          </div>
+          <span className="font-medium text-slate-400">Comfort Rated</span>
         </div>
-        <div className="mt-6">
+        <div className="mt-5">
           <BookNowButton
             label="Enquire Now"
             className="w-full !py-2.5 text-sm"

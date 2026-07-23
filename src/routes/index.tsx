@@ -150,14 +150,16 @@ function Home() {
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Rides built on trust, not shortcuts.</h2>
             <p className="mt-4 text-paragraph">Every journey with RK is measured against the same standard — the comfort of family.</p>
           </PremiumReveal>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4" data-reveal-group>
             {content.whyUs.map((f) => {
               const Icon = iconMap[f.icon] ?? ShieldCheck;
               return (
-                <div key={f.title} data-reveal-item className="card-float p-6">
-                  <div className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary"><Icon className="size-6" /></div>
-                  <h3 className="mt-5 font-display font-bold text-lg text-heading">{f.title}</h3>
-                  <p className="mt-2 text-sm text-paragraph">{f.desc}</p>
+                <div key={f.title} data-reveal-item className="card-float p-7 group">
+                  <div className="glow-icon grid size-13 place-items-center rounded-2xl group-hover:scale-110">
+                    <Icon className="size-6 transition-transform group-hover:scale-110" />
+                  </div>
+                  <h3 className="mt-6 font-display font-bold text-lg text-heading group-hover:text-primary transition-colors">{f.title}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-paragraph">{f.desc}</p>
                 </div>
               );
             })}
@@ -166,7 +168,7 @@ function Home() {
       </section>
 
       {/* FLEET */}
-      <section className="section bg-surface premium-section">
+      <section className="section bg-slate-100/60 premium-section">
         <div className="container-x">
           <div className="flex flex-wrap items-end justify-between gap-4" data-reveal>
             <div className="max-w-xl">
@@ -190,14 +192,14 @@ function Home() {
             <p className="mt-4 text-paragraph">Discover our newest vehicles and fleet updates through images and videos.</p>
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal-group>
-            <div data-reveal-item className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-black">
-              <video src={newLaunchVideo} autoPlay loop muted playsInline controls className="w-full h-full object-cover" />
+            <div data-reveal-item className="relative rounded-3xl overflow-hidden shadow-premium aspect-video bg-black ring-1 ring-white/10 group">
+              <video src={newLaunchVideo} autoPlay loop muted playsInline controls className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             </div>
-            <div data-reveal-item className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
-              <img src={content.gallery.images[0]?.src ?? galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+            <div data-reveal-item className="relative rounded-3xl overflow-hidden shadow-premium aspect-video bg-surface ring-1 ring-slate-200 group">
+              <img src={content.gallery.images[0]?.src ?? galleryImages[0]} alt="Gallery" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
-            <div data-reveal-item data-depth className="relative rounded-2xl overflow-hidden shadow-premium aspect-video bg-surface">
-              <img src={content.gallery.images[1]?.src ?? galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover" />
+            <div data-reveal-item data-depth className="relative rounded-3xl overflow-hidden shadow-premium aspect-video bg-surface ring-1 ring-slate-200 group">
+              <img src={content.gallery.images[1]?.src ?? galleryImages[1]} alt="Gallery" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             </div>
           </div>
         </div>
@@ -210,15 +212,15 @@ function Home() {
             <span className="eyebrow">Services</span>
             <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-heading">Every kind of trip. Handled.</h2>
           </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
             {content.services.map((s) => {
               const Icon = iconMap[s.icon] ?? MapPinned;
               return (
-                <div key={s.title} data-reveal-item className="card-float p-6 flex gap-4">
-                  <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary"><Icon className="size-5" /></div>
+                <div key={s.title} data-reveal-item className="card-float p-6 flex gap-4 items-start group">
+                  <div className="glow-icon grid size-12 shrink-0 place-items-center rounded-2xl group-hover:scale-110"><Icon className="size-5" /></div>
                   <div>
-                    <h3 className="font-display font-semibold text-heading">{s.title}</h3>
-                    <p className="mt-1 text-sm text-paragraph">{s.desc}</p>
+                    <h3 className="font-display font-bold text-heading text-lg group-hover:text-primary transition-colors">{s.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-paragraph">{s.desc}</p>
                   </div>
                 </div>
               );
@@ -236,31 +238,31 @@ function Home() {
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3" data-reveal-group>
             {content.fleet.slice(0, 3).map((f, i) => (
-              <div key={f.name} data-reveal-item className={`rounded-3xl p-8 ${i === 1 ? "bg-heading text-white" : "card-float"}`}>
-                <p className="text-sm font-semibold text-primary">{f.tag}</p>
-                <h3 className={`mt-2 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
-                <p className={`mt-6 font-display font-bold text-5xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.rate}</p>
-                <p className={`text-sm ${i === 1 ? "text-white/70" : "text-paragraph"}`}>Outstation • per km</p>
-                <ul className={`mt-6 space-y-2 text-sm ${i === 1 ? "text-white/85" : "text-paragraph"}`}>
-                  <li>• {f.passengers} passengers · {f.luggage} bags</li>
-                  <li>• Air-conditioned</li>
-                  <li>• Experienced driver</li>
+              <div key={f.name} data-reveal-item className={`rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 ${i === 1 ? "bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white shadow-2xl shadow-slate-900/30 border border-slate-800" : "card-float"}`}>
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${i === 1 ? "bg-blue-500/20 text-blue-300 border border-blue-400/30" : "bg-primary/10 text-primary border border-primary/20"}`}>{f.tag}</span>
+                <h3 className={`mt-3 font-display font-bold text-2xl ${i === 1 ? "text-white" : "text-heading"}`}>{f.name}</h3>
+                <p className={`mt-6 font-display font-bold text-5xl ${i === 1 ? "text-blue-400" : "text-primary"}`}>{f.rate}</p>
+                <p className={`mt-1 text-xs font-semibold uppercase tracking-wider ${i === 1 ? "text-slate-400" : "text-slate-500"}`}>Outstation • per km</p>
+                <ul className={`mt-6 space-y-2.5 text-sm font-medium ${i === 1 ? "text-slate-300" : "text-paragraph"}`}>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary" /> {f.passengers} passengers · {f.luggage} bags</li>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary" /> Air-conditioned</li>
+                  <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary" /> Experienced driver</li>
                 </ul>
-                <div className="mt-6">
-                  <BookNowButton className="w-full" message={`Hi, I want to book a ${f.name}`} />
+                <div className="mt-7">
+                  <BookNowButton className="w-full justify-center !py-3" message={`Hi, I want to book a ${f.name}`} />
                 </div>
               </div>
             ))}
           </div>
-          <div className="mt-8 flex flex-col items-center gap-4">
-            <p className="text-sm text-paragraph text-center">Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.</p>
+          <div className="mt-10 flex flex-col items-center gap-4">
+            <p className="text-sm text-paragraph text-center max-w-xl">Note: Other state permits, border taxes, toll gate charges, and parking fees are extra.</p>
             <Link to="/tariff" className="btn-primary">All Tariff</Link>
           </div>
         </div>
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="section bg-surface overflow-hidden">
+      <section className="section bg-slate-100/60 overflow-hidden">
         <div className="container-x">
           <div className="max-w-2xl">
             <span className="eyebrow">Customer reviews</span>
@@ -270,16 +272,18 @@ function Home() {
         <div className="mt-12 relative">
           <div className="flex gap-6 marquee w-max px-6">
             {marqueeItems.map((t, i) => (
-              <div key={i} className="w-[340px] shrink-0 card-float p-6">
-                <div className="flex items-center gap-1 text-amber-500">
-                  {[...Array(t.rating)].map((_, k) => <Star key={k} className="size-4 fill-current" />)}
+              <div key={i} className="w-[350px] shrink-0 card-float p-7 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-1 text-amber-500">
+                    {[...Array(t.rating)].map((_, k) => <Star key={k} className="size-4 fill-current" />)}
+                  </div>
+                  <p className="mt-4 text-sm text-paragraph leading-relaxed italic">"{t.text}"</p>
                 </div>
-                <p className="mt-4 text-sm text-paragraph leading-relaxed">"{t.text}"</p>
-                <div className="mt-5 flex items-center gap-3">
-                  <div className="grid size-10 place-items-center rounded-full bg-primary/10 text-primary font-display font-bold">{t.name[0]}</div>
+                <div className="mt-6 border-t border-slate-100 pt-4 flex items-center gap-3">
+                  <div className="grid size-10 place-items-center rounded-full bg-gradient-to-tr from-primary to-blue-700 text-white font-display font-bold shadow-md shadow-blue-500/20">{t.name[0]}</div>
                   <div>
-                    <p className="font-display font-semibold text-heading text-sm">{t.name}</p>
-                    <p className="text-xs text-paragraph">{t.role}</p>
+                    <p className="font-display font-bold text-heading text-sm">{t.name}</p>
+                    <p className="text-xs font-medium text-slate-500">{t.role}</p>
                   </div>
                 </div>
               </div>
@@ -287,7 +291,7 @@ function Home() {
           </div>
         </div>
         <div className="mt-16 container-x">
-          <div className="max-w-2xl mx-auto card-float p-8 rounded-3xl">
+          <div className="max-w-2xl mx-auto card-float p-8 md:p-10 rounded-3xl">
             <h3 className="font-display font-bold text-2xl text-heading mb-6">Share your experience</h3>
             {formSuccess && (
               <div className="mb-5 flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
