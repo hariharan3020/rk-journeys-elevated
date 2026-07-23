@@ -58,23 +58,48 @@ function Tariff() {
           </div>
 
           <div key={category} className="tariff-table-shell overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-soft">
-            <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-gradient-to-r from-blue-900 to-slate-900 px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-white md:grid">
-              <span>Vehicle</span><span>Rent/Day</span><span>Free Km/Day</span><span>Fare/Km After Free</span><span>Driver Bata</span><span>Total</span><span>Action</span>
-            </div>
-            {activeRows.map((row, index) => (
-              <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-slate-100 px-5 py-4 text-sm transition-all duration-200 hover:bg-blue-50/50 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-6">
-                <div className="font-bold text-heading text-base"><span className="mr-2 text-[10px] text-primary md:hidden">VEHICLE</span>{row.vehicle}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">RENT/DAY</span>{row.rentPerDay ?? "—"}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FREE KM/DAY</span>{row.minKm}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FARE/KM AFTER FREE</span>{row.farePerKm}</div>
-                <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">DRIVER BATA</span>{row.driverBata}</div>
-                <div className="font-bold text-primary text-base"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">TOTAL</span>{row.amount}</div>
-                <a href={`https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(`Hi, I want to enquire about ${row.vehicle} ${category} tariff`)}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="inline-flex w-fit items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30">
-                  {row.actionLabel ?? "Book Now"}
-                </a>
+            {/* Day Basis header */}
+            {category === "outstation" && (
+              <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-gradient-to-r from-blue-900 to-slate-900 px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-white md:grid">
+                <span>Vehicle</span><span>Rent/Day</span><span>Free Km/Day</span><span>Fare/Km After Free</span><span>Driver Bata</span><span>Total</span><span>Action</span>
               </div>
+            )}
+            {/* Kilometre Basis header */}
+            {category === "local" && (
+              <div className="hidden grid-cols-[1.5fr_1fr_1fr_1fr_1fr_auto] gap-4 bg-gradient-to-r from-blue-900 to-slate-900 px-6 py-4.5 text-[11px] font-bold uppercase tracking-wider text-white md:grid">
+                <span>Vehicle</span><span>Min Km/Day</span><span>Fare/Km (₹)</span><span>Driver Bata/Day</span><span>Amount (₹)</span><span>Action</span>
+              </div>
+            )}
+
+            {activeRows.map((row, index) => (
+              category === "outstation" ? (
+                <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-slate-100 px-5 py-4 text-sm transition-all duration-200 hover:bg-blue-50/50 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-6">
+                  <div className="font-bold text-heading text-base"><span className="mr-2 text-[10px] text-primary md:hidden">VEHICLE</span>{row.vehicle}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">RENT/DAY</span>{row.rentPerDay ?? "—"}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FREE KM/DAY</span>{row.minKm}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FARE/KM AFTER FREE</span>{row.farePerKm}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">DRIVER BATA</span>{row.driverBata}</div>
+                  <div className="font-bold text-primary text-base"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">TOTAL</span>{row.amount}</div>
+                  <a href={`https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(`Hi, I want to enquire about ${row.vehicle} outstation day basis tariff`)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex w-fit items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30">
+                    {row.actionLabel ?? "Book Now"}
+                  </a>
+                </div>
+              ) : (
+                <div key={`${row.vehicle}-${index}`} className="grid gap-3 border-t border-slate-100 px-5 py-4 text-sm transition-all duration-200 hover:bg-blue-50/50 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 md:px-6">
+                  <div className="font-bold text-heading text-base"><span className="mr-2 text-[10px] text-primary md:hidden">VEHICLE</span>{row.vehicle}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">MIN KM/DAY</span>{row.minKm}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">FARE/KM</span>{row.farePerKm}</div>
+                  <div className="text-slate-700 font-medium"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">DRIVER BATA/DAY</span>{row.driverBata}</div>
+                  <div className="font-bold text-primary text-base"><span className="mr-2 text-[10px] font-bold uppercase text-primary md:hidden">AMOUNT</span>{row.amount}</div>
+                  <a href={`https://wa.me/${content.siteInfo.phoneRaw}?text=${encodeURIComponent(`Hi, I want to enquire about ${row.vehicle} outstation kilometre basis tariff`)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex w-fit items-center justify-center gap-1.5 rounded-full bg-gradient-to-r from-primary to-blue-700 px-4 py-2 text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-500/30">
+                    {row.actionLabel ?? "Book Now"}
+                  </a>
+                </div>
+              )
             ))}
           </div>
 

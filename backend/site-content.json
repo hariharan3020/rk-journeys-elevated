@@ -338,8 +338,8 @@
                 "description": "Transparent pricing for outstation trips charged per day with included free kilometres."
             },
             "local": {
-                "label": "Local Tariff",
-                "description": "City & airport packages"
+                "label": "Outstation Tariff — Kilometre Basis",
+                "description": "Pay per kilometre pricing for outstation trips with minimum daily kilometre requirements."
             }
         },
         "rows": {
@@ -469,38 +469,109 @@
             "local": [
                 {
                     "vehicle": "Swift",
-                    "minKm": "80",
-                    "farePerKm": "₹1,200 / 8 hrs",
-                    "driverBata": "Included",
-                    "amount": "₹1,200"
+                    "minKm": "300",
+                    "farePerKm": "₹13",
+                    "driverBata": "₹400",
+                    "amount": "₹4300"
                 },
                 {
                     "vehicle": "Etios",
-                    "minKm": "80",
-                    "farePerKm": "₹1,200 / 8 hrs",
-                    "driverBata": "Included",
-                    "amount": "₹1,200"
+                    "minKm": "300",
+                    "farePerKm": "₹13",
+                    "driverBata": "₹400",
+                    "amount": "₹4300"
                 },
                 {
                     "vehicle": "Ciaz or Amaze",
-                    "minKm": "80",
-                    "farePerKm": "₹1,400 / 8 hrs",
-                    "driverBata": "Included",
-                    "amount": "₹1,400"
+                    "minKm": "300",
+                    "farePerKm": "₹14",
+                    "driverBata": "₹400",
+                    "amount": "₹4600"
                 },
                 {
-                    "vehicle": "Innova Crysta",
-                    "minKm": "80",
-                    "farePerKm": "₹1,800 / 8 hrs",
-                    "driverBata": "Included",
-                    "amount": "₹1,800"
+                    "vehicle": "Ertiga",
+                    "minKm": "350",
+                    "farePerKm": "₹17",
+                    "driverBata": "₹400",
+                    "amount": "₹5500"
                 },
                 {
-                    "vehicle": "Force Traveller",
-                    "minKm": "80",
-                    "farePerKm": "₹2,500 / 8 hrs",
-                    "driverBata": "Included",
-                    "amount": "₹2,500"
+                    "vehicle": "Innova",
+                    "minKm": "350",
+                    "farePerKm": "₹18",
+                    "driverBata": "₹500",
+                    "amount": "₹6800"
+                },
+                {
+                    "vehicle": "Crysta",
+                    "minKm": "400",
+                    "farePerKm": "₹20",
+                    "driverBata": "₹500",
+                    "amount": "₹8500"
+                },
+                {
+                    "vehicle": "Hycross",
+                    "minKm": "400",
+                    "farePerKm": "₹22",
+                    "driverBata": "₹500",
+                    "amount": "₹9300"
+                },
+                {
+                    "vehicle": "Audi (Premium Sedan)",
+                    "minKm": "350",
+                    "farePerKm": "₹85",
+                    "driverBata": "₹900",
+                    "amount": "₹30850"
+                },
+                {
+                    "vehicle": "Benz (Premium Sedan)",
+                    "minKm": "350",
+                    "farePerKm": "₹85",
+                    "driverBata": "₹900",
+                    "amount": "₹30850"
+                },
+                {
+                    "vehicle": "BMW (Premium Sedan)",
+                    "minKm": "350",
+                    "farePerKm": "₹85",
+                    "driverBata": "₹900",
+                    "amount": "₹30850"
+                },
+                {
+                    "vehicle": "Jaguar (Premium Sedan)",
+                    "minKm": "350",
+                    "farePerKm": "₹85",
+                    "driverBata": "₹900",
+                    "amount": "₹30850"
+                },
+                {
+                    "vehicle": "Tempo Traveller",
+                    "minKm": "400",
+                    "farePerKm": "₹30",
+                    "driverBata": "₹600",
+                    "amount": "₹12600"
+                },
+                {
+                    "vehicle": "Urbania",
+                    "minKm": "400",
+                    "farePerKm": "₹38",
+                    "driverBata": "₹600",
+                    "amount": "₹15800"
+                },
+                {
+                    "vehicle": "Coach Van",
+                    "minKm": "400",
+                    "farePerKm": "₹45",
+                    "driverBata": "₹800",
+                    "amount": "₹18800"
+                },
+                {
+                    "vehicle": "Bus",
+                    "minKm": "400",
+                    "farePerKm": "Call for details",
+                    "driverBata": "Call for details",
+                    "amount": "Call for details",
+                    "actionLabel": "Contact Us"
                 }
             ]
         },
