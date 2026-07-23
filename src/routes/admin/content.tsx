@@ -862,6 +862,36 @@ function PackageCard({
   );
 }
 
+function parseNumeric(val?: string): number {
+  if (!val) return 0;
+  if (val.toLowerCase().includes("included") || val.toLowerCase().includes("call")) return 0;
+  const numStr = val.replace(/[^0-9.]/g, "");
+  return parseFloat(numStr) || 0;
+}
+
+function calculateRowTotal(category: "outstation" | "local", row: TariffTableRow): string {
+  if (row.vehicle?.toLowerCase().includes("bus") || row.amount?.toLowerCase().includes("call")) {
+    return "Call for details";
+  }
+
+  if (category === "outstation") {
+    // Day Basis: Rent/Day + Driver Bata
+    const rent = parseNumeric(row.rentPerDay);
+    const bata = parseNumeric(row.driverBata);
+    if (rent === 0) return row.amount || "₹0";
+    const total = rent + bata;
+    return `₹${total}`;
+  } else {
+    // Kilometre Basis: (Min Km * Fare/Km) + Driver Bata
+    const minKm = parseNumeric(row.minKm);
+    const farePerKm = parseNumeric(row.farePerKm);
+    const bata = parseNumeric(row.driverBata);
+    if (minKm === 0 || farePerKm === 0) return row.amount || "₹0";
+    const total = (minKm * farePerKm) + bata;
+    return `₹${total}`;
+  }
+}
+
 // ── Tariff Editor ─────────────────────────────────────────────────────────────
 function TariffEditor({
   tariff, setTariff,
@@ -869,14 +899,30 @@ function TariffEditor({
   tariff: SiteContent["tariff"];
   setTariff: (v: SiteContent["tariff"]) => void;
 }) {
-  const [activeTab, setActiveTab] = useState<"outstation" | "local">("outstation");
-
   const setItems = (items: TariffItem[]) => setTariff({ ...tariff, items });
   const setNote  = (note: string)        => setTariff({ ...tariff, note });
 
   const updateTableRow = (category: "outstation" | "local", index: number, field: keyof TariffTableRow, value: string) => {
     const rows = [...(tariff.rows?.[category] ?? [])];
-    rows[index] = { ...rows[index], [field]: value };
+    const updatedRow = { ...rows[index], [field]: value };
+
+    // Real-time auto-calculation of Total Amount when other fields are edited
+    if (field !== "amount") {
+      const calculated = calculateRowTotal(category, updatedRow);
+      if (calculated && calculated !== "₹0") {
+        updatedRow.amount = calculated;
+      }
+    }
+
+    rows[index] = updatedRow;
+    setTariff({ ...tariff, rows: { ...tariff.rows, [category]: rows } });
+  };
+
+  const recalculateCategoryTotals = (category: "outstation" | "local") => {
+    const rows = (tariff.rows?.[category] ?? []).map((row) => {
+      const calc = calculateRowTotal(category, row);
+      return calc && calc !== "₹0" ? { ...row, amount: calc } : row;
+    });
     setTariff({ ...tariff, rows: { ...tariff.rows, [category]: rows } });
   };
 
@@ -1003,12 +1049,21 @@ function TariffEditor({
                   Edit rates, minimum kms, driver bata, and vehicle names directly in the live table below.
                 </p>
               </div>
-              <button
-                onClick={() => addTableRow(category)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 hover:shadow-lg transition-all"
-              >
-                <Plus className="size-4" /> Add Vehicle Row
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => recalculateCategoryTotals(category)}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface border border-border text-xs font-semibold text-primary hover:bg-background transition shadow-xs"
+                >
+                  ⚡ Recalculate All Totals
+                </button>
+                <button
+                  onClick={() => addTableRow(category)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 hover:shadow-lg transition-all"
+                >
+                  <Plus className="size-4" /> Add Vehicle Row
+                </button>
+              </div>
             </div>
 
             <div className="overflow-x-auto">
