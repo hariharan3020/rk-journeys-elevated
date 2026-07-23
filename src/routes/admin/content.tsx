@@ -950,169 +950,159 @@ function TariffEditor({
         </div>
       </div>
 
-      {/* Category Tab Switcher */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-surface border border-border">
-        {(["outstation", "local"] as const).map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveTab(cat)}
-            className={`flex-1 min-w-[200px] px-4 py-3 rounded-xl font-display text-xs font-bold transition-all duration-200 text-center ${
-              activeTab === cat
-                ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-paragraph hover:text-heading hover:bg-background"
-            }`}
-          >
-            {cat === "outstation" ? "Outstation Tariff — Day Basis Table" : "Outstation Tariff — Kilometre Basis Table"}
-          </button>
-        ))}
-      </div>
-
-      {/* Category Header Info Editor */}
-      <div className="p-4 rounded-2xl border border-border bg-surface space-y-3">
-        <p className="text-xs font-bold uppercase tracking-wider text-primary">
-          {activeTab === "outstation" ? "Day Basis Tab Info" : "Kilometre Basis Tab Info"}
-        </p>
-        <div className="grid sm:grid-cols-2 gap-3">
-          <Field label="Table Title">
-            <input
-              className={inputCls}
-              value={tariff.categories?.[activeTab]?.label ?? ""}
-              onChange={(e) => setTariff({
-                ...tariff,
-                categories: {
-                  ...tariff.categories,
-                  [activeTab]: { ...tariff.categories[activeTab], label: e.target.value }
-                }
-              })}
-              placeholder={activeTab === "outstation" ? "Outstation Tariff — Day Basis" : "Outstation Tariff — Kilometre Basis"}
-            />
-          </Field>
-          <Field label="Table Subtitle / Description">
-            <input
-              className={inputCls}
-              value={tariff.categories?.[activeTab]?.description ?? ""}
-              onChange={(e) => setTariff({
-                ...tariff,
-                categories: {
-                  ...tariff.categories,
-                  [activeTab]: { ...tariff.categories[activeTab], description: e.target.value }
-                }
-              })}
-              placeholder="Description shown under the title"
-            />
-          </Field>
-        </div>
-      </div>
-
-      {/* Premium Spreadsheet-Style Data Table */}
-      <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-soft">
-        <div className="p-4 bg-background border-b border-border flex items-center justify-between gap-3">
-          <div>
-            <h3 className="font-display font-bold text-base text-heading">
-              {activeTab === "outstation" ? "Day Basis Rates Table" : "Kilometre Basis Rates Table"}
-            </h3>
-            <p className="text-xs text-paragraph mt-0.5">
-              Edit numbers, rates, and vehicles line by line in the live table.
-            </p>
+      {/* Render BOTH tariff tables simultaneously: Day Basis & Kilometre Basis */}
+      {(["outstation", "local"] as const).map((category) => (
+        <div key={category} className="space-y-4 pt-2 border-t border-border/60 first:border-t-0 first:pt-0">
+          {/* Category Header Info Editor */}
+          <div className="p-4 rounded-2xl border border-border bg-surface space-y-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {category === "outstation" ? "Table 1 — Outstation Tariff (Day Basis)" : "Table 2 — Outstation Tariff (Kilometre Basis)"}
+              </span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <Field label="Table Title">
+                <input
+                  className={inputCls}
+                  value={tariff.categories?.[category]?.label ?? ""}
+                  onChange={(e) => setTariff({
+                    ...tariff,
+                    categories: {
+                      ...tariff.categories,
+                      [category]: { ...tariff.categories[category], label: e.target.value }
+                    }
+                  })}
+                  placeholder={category === "outstation" ? "Outstation Tariff — Day Basis" : "Outstation Tariff — Kilometre Basis"}
+                />
+              </Field>
+              <Field label="Table Subtitle / Description">
+                <input
+                  className={inputCls}
+                  value={tariff.categories?.[category]?.description ?? ""}
+                  onChange={(e) => setTariff({
+                    ...tariff,
+                    categories: {
+                      ...tariff.categories,
+                      [category]: { ...tariff.categories[category], description: e.target.value }
+                    }
+                  })}
+                  placeholder="Description shown under the title"
+                />
+              </Field>
+            </div>
           </div>
-          <button
-            onClick={() => addTableRow(activeTab)}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 hover:shadow-lg transition-all"
-          >
-            <Plus className="size-4" /> Add Vehicle Row
-          </button>
-        </div>
 
-        <div className="overflow-x-auto">
-          {activeTab === "outstation" ? (
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="bg-slate-900 text-white font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
-                  <th className="p-3.5 w-12 text-center">#</th>
-                  <th className="p-3.5 min-w-[150px]">Vehicle</th>
-                  <th className="p-3.5 min-w-[120px]">Rent / Day</th>
-                  <th className="p-3.5 min-w-[120px]">Free Km / Day</th>
-                  <th className="p-3.5 min-w-[140px]">Fare/Km After Free</th>
-                  <th className="p-3.5 min-w-[120px]">Driver Bata</th>
-                  <th className="p-3.5 min-w-[130px]">Total Amount</th>
-                  <th className="p-3.5 w-16 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60 bg-background">
-                {(tariff.rows?.outstation ?? []).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-blue-50/40 transition">
-                    <td className="p-3 text-center font-bold text-paragraph">{idx + 1}</td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-bold text-slate-900"} value={row.vehicle} onChange={(e) => updateTableRow("outstation", idx, "vehicle", e.target.value)} placeholder="Swift" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.rentPerDay ?? ""} onChange={(e) => updateTableRow("outstation", idx, "rentPerDay", e.target.value)} placeholder="₹2600" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.minKm} onChange={(e) => updateTableRow("outstation", idx, "minKm", e.target.value)} placeholder="100 km" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.farePerKm} onChange={(e) => updateTableRow("outstation", idx, "farePerKm", e.target.value)} placeholder="₹12" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.driverBata} onChange={(e) => updateTableRow("outstation", idx, "driverBata", e.target.value)} placeholder="₹400" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-bold !text-primary"} value={row.amount} onChange={(e) => updateTableRow("outstation", idx, "amount", e.target.value)} placeholder="₹3000" />
-                    </td>
-                    <td className="p-2 text-center">
-                      <button onClick={() => removeTableRow("outstation", idx)} title="Delete row" className="p-2 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition">
-                        <Trash2 className="size-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="bg-slate-900 text-white font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
-                  <th className="p-3.5 w-12 text-center">#</th>
-                  <th className="p-3.5 min-w-[160px]">Vehicle</th>
-                  <th className="p-3.5 min-w-[130px]">Min Km / Day</th>
-                  <th className="p-3.5 min-w-[130px]">Fare / Km (₹)</th>
-                  <th className="p-3.5 min-w-[140px]">Driver Bata / Day</th>
-                  <th className="p-3.5 min-w-[140px]">Total Amount (₹)</th>
-                  <th className="p-3.5 w-16 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60 bg-background">
-                {(tariff.rows?.local ?? []).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-blue-50/40 transition">
-                    <td className="p-3 text-center font-bold text-paragraph">{idx + 1}</td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-bold text-slate-900"} value={row.vehicle} onChange={(e) => updateTableRow("local", idx, "vehicle", e.target.value)} placeholder="Swift" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.minKm} onChange={(e) => updateTableRow("local", idx, "minKm", e.target.value)} placeholder="300" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.farePerKm} onChange={(e) => updateTableRow("local", idx, "farePerKm", e.target.value)} placeholder="₹13" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.driverBata} onChange={(e) => updateTableRow("local", idx, "driverBata", e.target.value)} placeholder="₹400" />
-                    </td>
-                    <td className="p-2">
-                      <input className={inputCls + " !py-2 !px-3 !text-xs font-bold !text-primary"} value={row.amount} onChange={(e) => updateTableRow("local", idx, "amount", e.target.value)} placeholder="₹4300" />
-                    </td>
-                    <td className="p-2 text-center">
-                      <button onClick={() => removeTableRow("local", idx)} title="Delete row" className="p-2 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition">
-                        <Trash2 className="size-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+          {/* Premium Data Table */}
+          <div className="rounded-2xl border border-border bg-surface overflow-hidden shadow-soft">
+            <div className="p-4 bg-background border-b border-border flex items-center justify-between gap-3">
+              <div>
+                <h3 className="font-display font-bold text-base text-heading">
+                  {category === "outstation" ? "Day Basis Rates Table" : "Kilometre Basis Rates Table"}
+                </h3>
+                <p className="text-xs text-paragraph mt-0.5">
+                  Edit rates, minimum kms, driver bata, and vehicle names directly in the live table below.
+                </p>
+              </div>
+              <button
+                onClick={() => addTableRow(category)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-blue-700 text-white text-xs font-bold shadow-md shadow-blue-500/20 hover:shadow-lg transition-all"
+              >
+                <Plus className="size-4" /> Add Vehicle Row
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              {category === "outstation" ? (
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-slate-900 text-white font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
+                      <th className="p-3.5 w-12 text-center">#</th>
+                      <th className="p-3.5 min-w-[150px]">Vehicle</th>
+                      <th className="p-3.5 min-w-[120px]">Rent / Day</th>
+                      <th className="p-3.5 min-w-[120px]">Free Km / Day</th>
+                      <th className="p-3.5 min-w-[140px]">Fare/Km After Free</th>
+                      <th className="p-3.5 min-w-[120px]">Driver Bata</th>
+                      <th className="p-3.5 min-w-[130px]">Total Amount</th>
+                      <th className="p-3.5 w-16 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60 bg-background">
+                    {(tariff.rows?.outstation ?? []).map((row, idx) => (
+                      <tr key={idx} className="hover:bg-blue-50/40 transition">
+                        <td className="p-3 text-center font-bold text-paragraph">{idx + 1}</td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-bold text-slate-900"} value={row.vehicle} onChange={(e) => updateTableRow("outstation", idx, "vehicle", e.target.value)} placeholder="Swift" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.rentPerDay ?? ""} onChange={(e) => updateTableRow("outstation", idx, "rentPerDay", e.target.value)} placeholder="₹2600" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.minKm} onChange={(e) => updateTableRow("outstation", idx, "minKm", e.target.value)} placeholder="100 km" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.farePerKm} onChange={(e) => updateTableRow("outstation", idx, "farePerKm", e.target.value)} placeholder="₹12" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.driverBata} onChange={(e) => updateTableRow("outstation", idx, "driverBata", e.target.value)} placeholder="₹400" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-bold !text-primary"} value={row.amount} onChange={(e) => updateTableRow("outstation", idx, "amount", e.target.value)} placeholder="₹3000" />
+                        </td>
+                        <td className="p-2 text-center">
+                          <button onClick={() => removeTableRow("outstation", idx)} title="Delete row" className="p-2 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition">
+                            <Trash2 className="size-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="bg-slate-900 text-white font-bold uppercase text-[10px] tracking-wider border-b border-slate-800">
+                      <th className="p-3.5 w-12 text-center">#</th>
+                      <th className="p-3.5 min-w-[160px]">Vehicle</th>
+                      <th className="p-3.5 min-w-[130px]">Min Km / Day</th>
+                      <th className="p-3.5 min-w-[130px]">Fare / Km (₹)</th>
+                      <th className="p-3.5 min-w-[140px]">Driver Bata / Day</th>
+                      <th className="p-3.5 min-w-[140px]">Total Amount (₹)</th>
+                      <th className="p-3.5 w-16 text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60 bg-background">
+                    {(tariff.rows?.local ?? []).map((row, idx) => (
+                      <tr key={idx} className="hover:bg-blue-50/40 transition">
+                        <td className="p-3 text-center font-bold text-paragraph">{idx + 1}</td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-bold text-slate-900"} value={row.vehicle} onChange={(e) => updateTableRow("local", idx, "vehicle", e.target.value)} placeholder="Swift" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.minKm} onChange={(e) => updateTableRow("local", idx, "minKm", e.target.value)} placeholder="300" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.farePerKm} onChange={(e) => updateTableRow("local", idx, "farePerKm", e.target.value)} placeholder="₹13" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-semibold"} value={row.driverBata} onChange={(e) => updateTableRow("local", idx, "driverBata", e.target.value)} placeholder="₹400" />
+                        </td>
+                        <td className="p-2">
+                          <input className={inputCls + " !py-2 !px-3 !text-xs font-bold !text-primary"} value={row.amount} onChange={(e) => updateTableRow("local", idx, "amount", e.target.value)} placeholder="₹4300" />
+                        </td>
+                        <td className="p-2 text-center">
+                          <button onClick={() => removeTableRow("local", idx)} title="Delete row" className="p-2 rounded-lg text-red-500 hover:bg-red-50 hover:text-red-700 transition">
+                            <Trash2 className="size-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      ))}
 
       <div className="space-y-4">
         {tariff.items.map((item, i) => (
