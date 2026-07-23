@@ -111,36 +111,36 @@ function AdminIndex() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-heading mb-2">Username</label>
+              <label className="block text-sm font-semibold text-white mb-2">Username</label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-paragraph" />
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 size-5 text-cyan-400" />
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter username"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:bg-white/15 transition font-medium"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-heading mb-2">Password</label>
+              <label className="block text-sm font-semibold text-white mb-2">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-paragraph" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 size-5 text-cyan-400" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full pl-11 pr-12 py-3 rounded-xl border border-white/20 bg-white/10 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:bg-white/15 transition font-medium"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-paragraph hover:text-primary transition"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
                 >
                   {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
                 </button>
@@ -148,13 +148,13 @@ function AdminIndex() {
             </div>
 
             {error && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
+              <div className="p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-200 text-sm font-medium">
                 {error}
               </div>
             )}
 
             {successMessage && (
-              <div className="p-3 rounded-xl bg-green-50 border border-green-200 text-green-600 text-sm">
+              <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-200 text-sm font-medium">
                 {successMessage}
               </div>
             )}
@@ -162,7 +162,7 @@ function AdminIndex() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-base shadow-lg shadow-blue-900/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (isRegistering ? "Registering..." : "Logging in...") : (isRegistering ? "Register" : "Login")}
             </button>

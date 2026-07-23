@@ -194,6 +194,13 @@
   p, .text-paragraph {
     color: #cbd5e1 !important;
   }
+  input, select, textarea {
+    color: #ffffff;
+  }
+  input.bg-white, select.bg-white, textarea.bg-white,
+  .bg-white input, .bg-white select, .bg-white textarea {
+    color: #0f172a !important;
+  }
   &::before {
     content: '';
     position: absolute;
