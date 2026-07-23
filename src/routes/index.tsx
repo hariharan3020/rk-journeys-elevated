@@ -398,9 +398,9 @@ function Home() {
             <div aria-hidden className="absolute -right-20 -top-20 size-80 rounded-full bg-white/20 blur-3xl" />
             <div aria-hidden className="absolute -left-16 bottom-0 size-72 rounded-full bg-white/10 blur-3xl" />
             <div className="relative max-w-2xl">
-              <span className="eyebrow" style={{ color: "#ffeb3b" }}>Ready when you are</span>
-              <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl">Your next journey starts with a message.</h2>
-              <p className="mt-4 text-white/90">Reach us on WhatsApp for instant booking. We'll confirm within minutes.</p>
+              <span className="eyebrow !text-white !bg-white/10 !border-white/20">Ready when you are</span>
+              <h2 className="mt-3 font-display font-bold text-4xl md:text-5xl text-white">Your next journey starts with a message.</h2>
+              <p className="mt-4 text-slate-200">Reach us on WhatsApp for instant booking. We'll confirm within minutes.</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <BookNowButton />
                 <a href="tel:+918754271868" className="btn-ghost !bg-white/10 !border-white/30 !text-white hover:!bg-white/20 hover:!border-white/50">
