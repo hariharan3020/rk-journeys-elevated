@@ -80,13 +80,15 @@ function Tariff() {
 
           {note && (
             <div className="rounded-3xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-7 md:p-9 shadow-soft">
-              <h2 className="flex items-center gap-2.5 font-display text-lg font-bold text-primary"><CircleHelp className="size-5" /> Terms & Conditions</h2>
-              <p className="mt-4 text-sm leading-relaxed text-paragraph"><strong className="text-heading font-display">Note: </strong>{note}</p>
-              <ul className="mt-4 grid gap-2.5 text-sm text-paragraph md:grid-cols-2">
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Parking and toll charges are extra.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Night driving charges may apply.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Kilometre calculation is based on the agreed route.</li>
-                <li className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary shrink-0" /> Air conditioning is unavailable while parked.</li>
+              <h2 className="flex items-center gap-2.5 font-display text-lg font-bold text-primary"><CircleHelp className="size-5" /> Terms &amp; Conditions</h2>
+              <p className="mt-4 text-sm leading-relaxed text-paragraph">Welcome to RK Tours and Travels! Please read the following terms for our services:</p>
+              <ul className="mt-4 space-y-3 text-sm text-paragraph">
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">Parking &amp; Toll Charges:</strong> Parking fees and toll charges are not included in the travel fare and must be paid separately.</span></li>
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">Night Driving Charges:</strong> Extra charges will apply if the driver travels between 10:00 PM and 6:00 AM.</span></li>
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">Kilometer Calculation:</strong> Trip distance is calculated from our office to the pickup location and back to the office. For outstation trips, if the travel exceeds 300 km per day, charges may apply based on kilometers traveled.</span></li>
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">Air Conditioning Usage:</strong> AC will not be available during hills/uphill travel or while the vehicle is parked.</span></li>
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">Hill Station Trips:</strong> Extra charges may apply for night stay and special permits required for hill stations.</span></li>
+                <li className="flex items-start gap-2.5"><span className="size-1.5 rounded-full bg-primary shrink-0 mt-1.5" /> <span><strong className="text-heading">One Calendar Day:</strong> One day is counted from 12:00 AM to 12:00 AM.</span></li>
               </ul>
             </div>
           )}

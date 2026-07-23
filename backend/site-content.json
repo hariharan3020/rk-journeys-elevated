@@ -334,8 +334,8 @@
     "tariff": {
         "categories": {
             "outstation": {
-                "label": "Outstation Tariff",
-                "description": "Per kilometre journeys"
+                "label": "Outstation Tariff — Day Basis",
+                "description": "Transparent pricing for outstation trips charged per day with included free kilometres."
             },
             "local": {
                 "label": "Local Tariff",
@@ -346,56 +346,120 @@
             "outstation": [
                 {
                     "vehicle": "Swift",
-                    "minKm": "300",
-                    "farePerKm": "₹14",
+                    "rentPerDay": "₹2600",
+                    "minKm": "100 km",
+                    "farePerKm": "₹12",
                     "driverBata": "₹400",
-                    "amount": "₹4300"
+                    "amount": "₹3000"
                 },
                 {
                     "vehicle": "Etios",
-                    "minKm": "300",
-                    "farePerKm": "₹14",
+                    "rentPerDay": "₹2600",
+                    "minKm": "100 km",
+                    "farePerKm": "₹12",
                     "driverBata": "₹400",
-                    "amount": "₹4300"
+                    "amount": "₹3000"
                 },
                 {
-                    "vehicle": "Ciaz",
-                    "minKm": "300",
-                    "farePerKm": "₹14",
+                    "vehicle": "Ciaz or Amaze",
+                    "rentPerDay": "₹3000",
+                    "minKm": "100 km",
+                    "farePerKm": "₹13",
                     "driverBata": "₹400",
-                    "amount": "₹4600"
+                    "amount": "₹3400"
                 },
                 {
                     "vehicle": "Ertiga",
-                    "minKm": "350",
+                    "rentPerDay": "₹3200",
+                    "minKm": "100 km",
+                    "farePerKm": "₹14",
+                    "driverBata": "₹400",
+                    "amount": "₹3600"
+                },
+                {
+                    "vehicle": "Innova",
+                    "rentPerDay": "₹3400",
+                    "minKm": "100 km",
+                    "farePerKm": "₹16",
+                    "driverBata": "₹400",
+                    "amount": "₹3800"
+                },
+                {
+                    "vehicle": "Crysta",
+                    "rentPerDay": "₹4600",
+                    "minKm": "100 km",
                     "farePerKm": "₹17",
+                    "driverBata": "₹400",
+                    "amount": "₹5000"
+                },
+                {
+                    "vehicle": "Hycross",
+                    "rentPerDay": "₹5100",
+                    "minKm": "100 km",
+                    "farePerKm": "₹18",
                     "driverBata": "₹400",
                     "amount": "₹5500"
                 },
                 {
-                    "vehicle": "Innova",
-                    "minKm": "350",
-                    "farePerKm": "₹18",
-                    "driverBata": "₹500",
-                    "amount": "₹6800"
+                    "vehicle": "Audi (Luxury Sedan)",
+                    "rentPerDay": "₹13000",
+                    "minKm": "100 km",
+                    "farePerKm": "₹75",
+                    "driverBata": "Included",
+                    "amount": "₹13000"
                 },
                 {
-                    "vehicle": "Crysta",
-                    "minKm": "400",
+                    "vehicle": "Benz (Luxury Sedan)",
+                    "rentPerDay": "₹13000",
+                    "minKm": "100 km",
+                    "farePerKm": "₹75",
+                    "driverBata": "Included",
+                    "amount": "₹13000"
+                },
+                {
+                    "vehicle": "BMW (Luxury Sedan)",
+                    "rentPerDay": "₹13000",
+                    "minKm": "100 km",
+                    "farePerKm": "₹75",
+                    "driverBata": "Included",
+                    "amount": "₹13000"
+                },
+                {
+                    "vehicle": "Jaguar (Luxury Sedan)",
+                    "rentPerDay": "₹13000",
+                    "minKm": "100 km",
+                    "farePerKm": "₹75",
+                    "driverBata": "Included",
+                    "amount": "₹13000"
+                },
+                {
+                    "vehicle": "Tempo Traveller",
+                    "rentPerDay": "₹5000",
+                    "minKm": "100 km",
                     "farePerKm": "₹20",
+                    "driverBata": "₹400",
+                    "amount": "₹5400"
+                },
+                {
+                    "vehicle": "Urbania",
+                    "rentPerDay": "₹6500",
+                    "minKm": "100 km",
+                    "farePerKm": "₹30",
                     "driverBata": "₹500",
-                    "amount": "₹8500"
+                    "amount": "₹7000"
                 },
                 {
                     "vehicle": "Coach Van",
-                    "minKm": "400",
-                    "farePerKm": "₹45",
-                    "driverBata": "₹800",
-                    "amount": "₹18800"
+                    "rentPerDay": "₹5500",
+                    "minKm": "100 km",
+                    "farePerKm": "₹40",
+                    "driverBata": "₹500",
+                    "amount": "₹6000"
                 },
                 {
                     "vehicle": "Bus",
-                    "minKm": "400",
+                    "rentPerDay": "Call for details",
+                    "minKm": "Call for details",
                     "farePerKm": "Call for details",
                     "driverBata": "Call for details",
                     "amount": "Call for details",
