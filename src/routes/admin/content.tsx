@@ -70,7 +70,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
   );
 }
 
-const inputCls = "w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm text-heading focus:outline-none focus:ring-2 focus:ring-primary transition";
+const inputCls = "w-full px-3 py-2.5 rounded-xl border border-slate-300 !bg-white !text-slate-900 placeholder:!text-slate-400 font-medium text-sm focus:outline-none focus:ring-2 focus:ring-primary transition shadow-sm";
 const textareaCls = `${inputCls} resize-none`;
 
 function SaveBar({ state, onSave, hasDirty }: { state: SaveState; onSave: () => void; hasDirty: boolean }) {
@@ -591,16 +591,16 @@ function FleetCardEditor({
         </Field>
       </div>
       <div className="grid sm:grid-cols-3 gap-3">
-        <Field label="Rate">
-          <input className={inputCls} value={item.rate} onChange={(e) => onUpdate("rate", e.target.value)} placeholder="₹14/km" />
+        <Field label="Rate / Fare">
+          <input className={inputCls} value={item.rate} onChange={(e) => onUpdate("rate", e.target.value)} placeholder="e.g. 14/km or ₹14/km" />
         </Field>
-        <Field label="Passengers">
+        <Field label="Seats (Passengers)">
           <input className={inputCls} type="number" min={1} max={50} value={item.passengers}
-            onChange={(e) => onUpdate("passengers", parseInt(e.target.value) || 1)} />
+            onChange={(e) => onUpdate("passengers", parseInt(e.target.value) || 1)} placeholder="4" />
         </Field>
-        <Field label="Luggage">
+        <Field label="Bags (Luggage)">
           <input className={inputCls} type="number" min={0} max={20} value={item.luggage}
-            onChange={(e) => onUpdate("luggage", parseInt(e.target.value) || 0)} />
+            onChange={(e) => onUpdate("luggage", parseInt(e.target.value) || 0)} placeholder="4" />
         </Field>
       </div>
       <div className="pt-3 border-t border-border/80 space-y-3">

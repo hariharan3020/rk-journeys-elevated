@@ -102,7 +102,9 @@
             "ac": true,
             "tag": "Comfort Sedan",
             "rate": "14/km",
-            "rateVisible": false
+            "rateVisible": false,
+            "showLuggage": false,
+            "showSeats": false
         },
         {
             "name": "Swift Dzire",
@@ -112,7 +114,9 @@
             "ac": true,
             "tag": "City Favorite",
             "rate": "₹14/km",
-            "rateVisible": false
+            "rateVisible": false,
+            "showLuggage": false,
+            "showSeats": false
         },
         {
             "name": "Maruti Ciaz",
@@ -122,7 +126,9 @@
             "ac": true,
             "tag": "Premium Sedan",
             "rate": "₹15/km",
-            "rateVisible": false
+            "rateVisible": false,
+            "showSeats": false,
+            "showLuggage": false
         },
         {
             "name": "Toyota Innova Crysta",
@@ -132,7 +138,9 @@
             "ac": true,
             "tag": "Premium MPV",
             "rate": "₹18/km",
-            "rateVisible": false
+            "rateVisible": false,
+            "showSeats": false,
+            "showLuggage": false
         },
         {
             "name": "Force Traveller",
@@ -142,7 +150,9 @@
             "ac": true,
             "tag": "Group Travel",
             "rate": "₹22/km",
-            "rateVisible": false
+            "rateVisible": false,
+            "showLuggage": false,
+            "showSeats": false
         }
     ],
     "packages": [
